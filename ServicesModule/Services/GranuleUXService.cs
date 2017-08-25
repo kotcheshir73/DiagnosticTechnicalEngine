@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassGranuleUX
-	{
+    public class GranuleUXService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -18,7 +18,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.GranuleUXs.Where(rec => rec.DiagnosticTestId == parentId).ToList().Select(rec => ModelConvector.ToGranuleUX(rec));
+					return _context.GranuleUXs
+                                        .Where(gux => gux.DiagnosticTestId == parentId)
+                                        .ToList()
+                                        .Select(gux => ModelConvector.ToGranuleUX(gux));
 				}
 			}
 			catch (Exception ex)
@@ -34,23 +37,13 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToGranuleUX(_context.GranuleUXs.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToGranuleUX(_context.GranuleUXs.SingleOrDefault(gux => gux.Id == id));
 				}
 			}
 			catch (Exception ex)
 			{
 				_error = ex.Message;
 				return null;
-			}
-		}
-
-		public bool DelGranuleUXFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.GranuleUXs.RemoveRange(_context.GranuleUXs.Where(rec => rec.DiagnosticTestId == seriesId));
-				_context.SaveChanges();
-				return true;
 			}
 		}
 	}

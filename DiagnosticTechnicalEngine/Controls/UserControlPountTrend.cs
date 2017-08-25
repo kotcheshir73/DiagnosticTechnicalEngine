@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _seriesId;
 
-		private BLClassPointTrend _logicClass;
+		private PointTrendService _logicClass;
 
 		public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassPointTrend();
+			_logicClass = new PointTrendService();
 
 			var ruleTrend = _logicClass.GetListPointTrend(_seriesId);
 			if (ruleTrend == null)

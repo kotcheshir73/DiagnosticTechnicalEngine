@@ -11,7 +11,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private int _seriesId;
 
-		private BLClassPointTrend _logicClass;
+		private PointTrendService _logicClass;
 
 		public FormPointTrend(int seriesId, int? id = null)
 		{
@@ -22,7 +22,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormPointTrend_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassPointTrend();
+			_logicClass = new PointTrendService();
 			if (_id.HasValue)
 			{
 				var elem = _logicClass.GetElemPointTrend(_id.Value);

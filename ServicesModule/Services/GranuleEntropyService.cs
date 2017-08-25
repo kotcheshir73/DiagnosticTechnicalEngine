@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassGranuleEntropy
-	{
+    public class GranuleEntropyService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -18,7 +18,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.GranuleEntropys.Where(rec => rec.DiagnosticTestId == parentId).ToList().Select(rec => ModelConvector.ToGranuleEntropy(rec));
+					return _context.GranuleEntropys
+                                        .Where(ge => ge.DiagnosticTestId == parentId)
+                                        .ToList()
+                                        .Select(ge => ModelConvector.ToGranuleEntropy(ge));
 				}
 			}
 			catch (Exception ex)
@@ -34,23 +37,13 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToGranuleEntropy(_context.GranuleEntropys.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToGranuleEntropy(_context.GranuleEntropys.SingleOrDefault(ge => ge.Id == id));
 				}
 			}
 			catch (Exception ex)
 			{
 				_error = ex.Message;
 				return null;
-			}
-		}
-
-		public bool DelGranuleEntropyFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.GranuleEntropys.RemoveRange(_context.GranuleEntropys.Where(rec => rec.DiagnosticTestId == seriesId));
-				_context.SaveChanges();
-				return true;
 			}
 		}
 	}

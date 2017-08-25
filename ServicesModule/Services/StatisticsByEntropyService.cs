@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassStatisticsByEntropy
-	{
+    public class StatisticsByEntropyService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -18,7 +18,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.StatisticsByEntropys.Where(rec => rec.DiagnosticTestId == parentId).ToList().Select(rec => ModelConvector.ToStatisticsByEntropy(rec));
+					return _context.StatisticsByEntropys
+                                        .Where(sbe => sbe.DiagnosticTestId == parentId)
+                                        .ToList()
+                                        .Select(sbe => ModelConvector.ToStatisticsByEntropy(sbe));
 				}
 			}
 			catch (Exception ex)
@@ -34,23 +37,13 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.SingleOrDefault(sbe => sbe.Id == id));
 				}
 			}
 			catch (Exception ex)
 			{
 				_error = ex.Message;
 				return null;
-			}
-		}
-
-		public bool DelStatisticsByEntropyFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.StatisticsByEntropys.RemoveRange(_context.StatisticsByEntropys.Where(rec => rec.DiagnosticTestId == seriesId));
-				_context.SaveChanges();
-				return true;
 			}
 		}
 	}

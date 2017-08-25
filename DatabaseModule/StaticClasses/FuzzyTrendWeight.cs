@@ -9,13 +9,13 @@ namespace DatabaseModule
 	{
 		private static Dictionary<FuzzyTrendLabel, int> _trendWeights = new Dictionary<FuzzyTrendLabel, int>()
 			{
-				{FuzzyTrendLabel.ПадениеСильное, 0},
-				{FuzzyTrendLabel.ПадениеСреднее, 1},
-				{FuzzyTrendLabel.ПадениеСлабое, 2},
-				{FuzzyTrendLabel.СтабильностьСредняя, 3},
-				{FuzzyTrendLabel.РостСлабый, 4},
-				{FuzzyTrendLabel.РостСредний, 5},
-				{FuzzyTrendLabel.РостСильный, 6}
+				{FuzzyTrendLabel.ПадениеСильное, -3},
+				{FuzzyTrendLabel.ПадениеСреднее, -2},
+				{FuzzyTrendLabel.ПадениеСлабое, -1},
+				{FuzzyTrendLabel.СтабильностьСредняя, 0},
+				{FuzzyTrendLabel.РостСлабый, 1},
+				{FuzzyTrendLabel.РостСредний, 2},
+				{FuzzyTrendLabel.РостСильный, 3}
 			};
 		/// <summary>
 		/// Веса для расчета меры энтропии по нечеткой тенденции

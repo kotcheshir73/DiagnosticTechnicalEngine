@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
     {
         private int _seriesId;
 
-        private BLClassFuzzyLabel _logicClass;
+        private FuzzyLabelService _logicClass;
 
         public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
         private void LoadData()
         {
-            _logicClass = new BLClassFuzzyLabel();
+            _logicClass = new FuzzyLabelService();
 
             var fuzzyLabel = _logicClass.GetListFuzzyLabel(_seriesId);
             if (fuzzyLabel == null)

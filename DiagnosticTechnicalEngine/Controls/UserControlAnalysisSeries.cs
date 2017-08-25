@@ -158,6 +158,7 @@ namespace DiagnosticTechnicalEngine.Controls
 					DatasInFile = _list,
 					SeriesDiscriptionId = _seriesId.Value,
 					CountPointsForMemmory = Convert.ToInt32(textBoxCountPointsForMemmory.Text),
+                    NeedForecast = checkBoxGetForecast.Checked,
 					MessagerEvent = AddMessage,
 					MessageCountPoint = AddValue,
 					MakeGranuleUX = true,

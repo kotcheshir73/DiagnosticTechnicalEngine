@@ -56,6 +56,15 @@
     <Compile Include="Enums\TypeFile.cs" />
     <Compile Include="Enums\TypeMemoryValue.cs" />
     <Compile Include="Enums\TypeSituation.cs" />
+    <Compile Include="Migrations\201708251157271_ChangeDiagonsticTestRecords.cs" />
+    <Compile Include="Migrations\201708251157271_ChangeDiagonsticTestRecords.Designer.cs">
+      <DependentUpon>201708251157271_ChangeDiagonsticTestRecords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708251547265_UpdateDiagnosticTest.cs" />
+    <Compile Include="Migrations\201708251547265_UpdateDiagnosticTest.Designer.cs">
+      <DependentUpon>201708251547265_UpdateDiagnosticTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
     <Compile Include="Models\DiagnosticTestRecord.cs" />
@@ -81,6 +90,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201708251157271_ChangeDiagonsticTestRecords.resx">
+      <DependentUpon>201708251157271_ChangeDiagonsticTestRecords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708251547265_UpdateDiagnosticTest.resx">
+      <DependentUpon>201708251547265_UpdateDiagnosticTest.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

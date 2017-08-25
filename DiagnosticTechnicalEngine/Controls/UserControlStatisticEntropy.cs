@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
     {
         private int _diagnosticTestId;
 
-        private BLClassStatisticsByEntropy _logicClass;
+        private StatisticsByEntropyService _logicClass;
 
         public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
         public void LoadData()
         {
-            _logicClass = new BLClassStatisticsByEntropy();
+            _logicClass = new StatisticsByEntropyService();
 
             var statisticsByEntropy = _logicClass.GetListStatisticsByEntropy(_diagnosticTestId);
             if (statisticsByEntropy == null)

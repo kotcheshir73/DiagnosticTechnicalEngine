@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Forms
     {
         private int _id;
 
-        private BLClassAnomalyInfo _logicClass;
+        private AnomalyInfoService _logicClass;
 
         public FormShowAnomaly(int id)
         {
@@ -18,7 +18,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private void FormShowAnomaly_Load(object sender, EventArgs e)
         {
-            _logicClass = new BLClassAnomalyInfo();
+            _logicClass = new AnomalyInfoService();
             if (_id != 0)
             {
                 var elem = _logicClass.GetElemAnomalyInfo(_id);

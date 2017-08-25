@@ -3,12 +3,13 @@ using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassFuzzyLabel
-	{
+    public class FuzzyLabelService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -19,7 +20,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == parentId).ToList().Select(rec => ModelConvector.ToFuzzyLabel(rec));
+					return _context.FuzzyLabels
+                                .Where(fl => fl.SeriesDiscriptionId == parentId)
+                                .ToList()
+                                .Select(fl => ModelConvector.ToFuzzyLabel(fl));
 				}
 			}
 			catch (Exception ex)
@@ -35,7 +39,7 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToFuzzyLabel(_context.FuzzyLabels.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToFuzzyLabel(_context.FuzzyLabels.SingleOrDefault(fl => fl.Id == id));
 				}
 			}
 			catch (Exception ex)
@@ -51,13 +55,13 @@ namespace ServicesModule
 			{
 				try
 				{
-					var list = _context.FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == model.SeriesId);
+					var list = _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == model.SeriesId);
 					if (list.FirstOrDefault(fl => fl.FuzzyLabelName == model.FuzzyLabelName) != null)
 					{
 						_error = "Уже есть нечеткая метка с таким именем!";
 						return false;
 					}
-					if (list.FirstOrDefault(rec => rec.FuzzyLabelType == model.FuzzyLabelType) == null)
+					if (list.FirstOrDefault(fl => fl.FuzzyLabelType == model.FuzzyLabelType) == null && list.Count() > 0)
 					{
 						_error = "Тип нечеткой метки должен совпадать с типами других нечетких меток!";
 						return false;
@@ -80,8 +84,8 @@ namespace ServicesModule
 			{
 				try
 				{
-					var list = _context.FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == model.SeriesId);
-					var elem = _context.FuzzyLabels.SingleOrDefault(rec => rec.Id == model.Id);
+					var list = _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == model.SeriesId);
+					var elem = _context.FuzzyLabels.SingleOrDefault(fl => fl.Id == model.Id);
 					if (list.FirstOrDefault(fl => fl.FuzzyLabelName == model.FuzzyLabelName && fl.Id != model.Id) != null)
 					{
 						_error = "Уже есть нечеткая метка с таким именем!";
@@ -94,7 +98,7 @@ namespace ServicesModule
 					}
 					elem = ModelConvector.ToFuzzyLabel(model, elem);
 
-					_context.Entry(elem).State = System.Data.Entity.EntityState.Modified;
+					_context.Entry(elem).State = EntityState.Modified;
 					_context.SaveChanges();
 					return true;
 				}
@@ -110,21 +114,20 @@ namespace ServicesModule
 		{
 			using (var _context = new DissertationDbContext())
 			{
-				_context.FuzzyLabels.Remove(_context.FuzzyLabels.SingleOrDefault(rec => rec.Id == id));
+				_context.FuzzyLabels.Remove(_context.FuzzyLabels.SingleOrDefault(fl => fl.Id == id));
 				_context.SaveChanges();
 				return true;
 			}
-		}
+        }
 
-		public bool DelFuzzyLabelFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.FuzzyLabels.RemoveRange(_context.FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == seriesId));
-				_context.SaveChanges();
-				return true;
-			}
-		}
-
-	}
+        public bool DelFuzzyLabelFromSeries(int seriesId)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                _context.FuzzyLabels.RemoveRange(_context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == seriesId));
+                _context.SaveChanges();
+                return true;
+            }
+        }
+    }
 }

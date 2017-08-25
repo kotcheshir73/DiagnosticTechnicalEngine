@@ -3,12 +3,13 @@ using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassFuzzyTrend
-	{
+    public class FuzzyTrendService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -19,7 +20,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == parentId).ToList().Select(rec => ModelConvector.ToFuzzyTrend(rec));
+					return _context.FuzzyTrends
+                                .Where(ft => ft.SeriesDiscriptionId == parentId)
+                                .ToList()
+                                .Select(ft => ModelConvector.ToFuzzyTrend(ft));
 				}
 			}
 			catch (Exception ex)
@@ -35,7 +39,7 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToFuzzyTrend(_context.FuzzyTrends.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToFuzzyTrend(_context.FuzzyTrends.SingleOrDefault(ft => ft.Id == id));
 				}
 			}
 			catch (Exception ex)
@@ -51,8 +55,8 @@ namespace ServicesModule
 			{
 				try
 				{
-					var list = _context.FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == model.SeriesId);
-					if (list.FirstOrDefault(rec => rec.TrendName == model.TrendName) != null)
+					var list = _context.FuzzyTrends.Where(ft => ft.SeriesDiscriptionId == model.SeriesId);
+					if (list.FirstOrDefault(ft => ft.TrendName == model.TrendName) != null)
 					{
 						_error = "Уже есть нечеткая тенденция с таким названием!";
 						return false;
@@ -75,16 +79,16 @@ namespace ServicesModule
 			{
 				try
 				{
-					var list = _context.FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == model.SeriesId);
-					var elem = _context.FuzzyTrends.SingleOrDefault(rec => rec.Id == model.Id);
-					if (list.FirstOrDefault(rec => rec.TrendName == model.TrendName && rec.Id != model.Id) != null)
+					var list = _context.FuzzyTrends.Where(ft => ft.SeriesDiscriptionId == model.SeriesId);
+					var elem = _context.FuzzyTrends.SingleOrDefault(ft => ft.Id == model.Id);
+					if (list.FirstOrDefault(ft => ft.TrendName == model.TrendName && ft.Id != model.Id) != null)
 					{
 						_error = "Уже есть нечеткая тенденция с таким названием!";
 						return false;
 					}
 					elem = ModelConvector.ToFuzzyTrend(model, elem);
 
-					_context.Entry(elem).State = System.Data.Entity.EntityState.Modified;
+					_context.Entry(elem).State = EntityState.Modified;
 					_context.SaveChanges();
 					return true;
 				}
@@ -100,7 +104,7 @@ namespace ServicesModule
 		{
 			using (var _context = new DissertationDbContext())
 			{
-				_context.FuzzyTrends.Remove(_context.FuzzyTrends.SingleOrDefault(rec => rec.Id == id));
+				_context.FuzzyTrends.Remove(_context.FuzzyTrends.SingleOrDefault(ft => ft.Id == id));
 				_context.SaveChanges();
 				return true;
 			}
@@ -110,7 +114,7 @@ namespace ServicesModule
 		{
 			using (var _context = new DissertationDbContext())
 			{
-				_context.FuzzyTrends.RemoveRange(_context.FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == seriesId));
+				_context.FuzzyTrends.RemoveRange(_context.FuzzyTrends.Where(ft => ft.SeriesDiscriptionId == seriesId));
 				_context.SaveChanges();
 				return true;
 			}

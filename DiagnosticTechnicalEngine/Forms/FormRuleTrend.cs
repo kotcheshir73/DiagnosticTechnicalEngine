@@ -14,7 +14,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private int _seriesId;
 
-        private BLClassRuleTrends _logicClass;
+        private RuleTrendsService _logicClass;
 
         public FormRuleTrend(int seriesId, int? id = null)
         {
@@ -22,10 +22,10 @@ namespace DiagnosticTechnicalEngine.Forms
             _id = id;
             _seriesId = seriesId;
 
-			comboBoxTrends.DataSource = (new BLClassFuzzyTrend()).GetListFuzzyTrend(_seriesId).Select(t => new {ValueMember = t.Id, DisplayNumber = t.TrendName });
+			comboBoxTrends.DataSource = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).Select(t => new {ValueMember = t.Id, DisplayNumber = t.TrendName });
             comboBoxTrends.ValueMember = "Value";
             comboBoxTrends.DisplayMember = "Display";
-            var list = (new BLClassFuzzyLabel()).GetListFuzzyLabel(_seriesId);
+            var list = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
 
 			comboBoxFuzzyLabelFrom.DataSource = list.Select(t => new { ValueMember = t.Id, DisplayNumber = t.FuzzyLabelName });
 			comboBoxFuzzyLabelFrom.ValueMember = "Value";
@@ -38,7 +38,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private void FormRuleTrend_Load(object sender, EventArgs e)
         {
-            _logicClass = new BLClassRuleTrends();
+            _logicClass = new RuleTrendsService();
             if (_id.HasValue)
             {
 				var elem = _logicClass.GetElemRuleTrend(_id.Value);

@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _diagnosticTestId;
 
-		private BLClassGranuleEntropy _logicClass;
+		private GranuleEntropyService _logicClass;
 
 		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassGranuleEntropy();
+			_logicClass = new GranuleEntropyService();
 
 			var granules = _logicClass.GetListGranuleEntropy(_diagnosticTestId);
 			if (granules == null)

@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _diagnosticTestId;
 
-		private BLClassGranuleFuzzy _logicClass;
+		private GranuleFuzzyService _logicClass;
 
 		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassGranuleFuzzy();
+			_logicClass = new GranuleFuzzyService();
 
 			var granules = _logicClass.GetListGranuleFuzzy(_diagnosticTestId);
 			if (granules == null)

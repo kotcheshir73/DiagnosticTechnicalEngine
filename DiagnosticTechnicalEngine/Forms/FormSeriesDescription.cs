@@ -9,7 +9,7 @@ namespace DiagnosticTechnicalEngine.Forms
 	{
 		private int? _id;
 
-		private BLClassSeriesDescrip _logicClass;
+		private SeriesDescriptionService _logicClass;
 
 		public FormSeriesDescription(int? id = null)
 		{
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormSeriesDescription_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassSeriesDescrip();
+			_logicClass = new SeriesDescriptionService();
 			if (_id.HasValue)
 			{
 				var elem = _logicClass.GetElemSeriesDescrip(_id.Value);

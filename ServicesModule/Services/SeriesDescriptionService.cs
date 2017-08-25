@@ -3,12 +3,13 @@ using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassSeriesDescrip
-	{
+    public class SeriesDescriptionService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -19,7 +20,9 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.SeriesDescriptions.ToList().Select(rec => ModelConvector.ToSeriesDescription(rec));
+					return _context.SeriesDescriptions
+                                        .ToList()
+                                        .Select(sd => ModelConvector.ToSeriesDescription(sd));
 				}
 			}
 			catch (Exception ex)
@@ -35,7 +38,7 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToSeriesDescription(_context.SeriesDescriptions.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToSeriesDescription(_context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == id));
 				}
 			}
 			catch (Exception ex)
@@ -52,7 +55,7 @@ namespace ServicesModule
 				try
 				{
 					var list = _context.SeriesDescriptions;
-					if (list.Where(rec => rec.SeriesName == model.SeriesName).Count() > 0)
+					if (list.SingleOrDefault(sd => sd.SeriesName == model.SeriesName) != null)
 					{
 						_error = "Уже есть ряд с таким именем!";
 						return false;
@@ -76,15 +79,15 @@ namespace ServicesModule
 				try
 				{
 					var list = _context.SeriesDescriptions;
-					var elem = _context.SeriesDescriptions.SingleOrDefault(rec => rec.Id == model.Id);
-					if (list.Where(rec => rec.SeriesName == model.SeriesName && rec.Id != model.Id).Count() > 0)
+					var elem = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == model.Id);
+					if (list.SingleOrDefault(sd => sd.SeriesName == model.SeriesName && sd.Id != model.Id) != null)
 					{
 						_error = "Уже есть ряд с таким именем!";
 						return false;
 					}
 					elem = ModelConvector.ToSeriesDescription(model, elem);
 
-					_context.Entry(elem).State = System.Data.Entity.EntityState.Modified;
+					_context.Entry(elem).State = EntityState.Modified;
 					_context.SaveChanges();
 					return true;
 				}
@@ -100,7 +103,7 @@ namespace ServicesModule
 		{
 			using (var _context = new DissertationDbContext())
 			{
-				_context.SeriesDescriptions.Remove(_context.SeriesDescriptions.SingleOrDefault(rec => rec.Id == id));
+				_context.SeriesDescriptions.Remove(_context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == id));
 				_context.SaveChanges();
 				return true;
 			}

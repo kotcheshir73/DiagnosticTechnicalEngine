@@ -12,7 +12,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private int _seriesId;
 
-        private BLClassFuzzyLabel _logicClass;
+        private FuzzyLabelService _logicClass;
 
         public FormFuzzyLabel(int seriesId, int? id = null)
         {
@@ -23,7 +23,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private void FormFuzzyLabel_Load(object sender, EventArgs e)
         {
-            _logicClass = new BLClassFuzzyLabel();
+            _logicClass = new FuzzyLabelService();
 			foreach (var elem in Enum.GetValues(typeof(FuzzyLabelType)))
 			{
 				comboBoxType.Items.Add(elem.ToString());

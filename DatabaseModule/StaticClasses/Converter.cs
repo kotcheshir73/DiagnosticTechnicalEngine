@@ -4,6 +4,7 @@ namespace DatabaseModule
 {
 	public static class Converter
 	{
+        public static int TrendWeightNotFound = -100;
 		/// <summary>
 		/// Получение лингвистического значения меры энтропии по нечеткой тенденции
 		/// </summary>
@@ -102,7 +103,7 @@ namespace DatabaseModule
 			if (FuzzyTrendWeight.TrendWeights.ContainsKey(trendName))
 				return FuzzyTrendWeight.TrendWeights[trendName];
 			else
-				return -1;
+				return TrendWeightNotFound;
 		}
 		/// <summary>
 		/// Получение веса нечеткой тенденции по названию

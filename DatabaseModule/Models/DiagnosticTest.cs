@@ -11,6 +11,8 @@ namespace DatabaseModule
 	{
 		public int Id { get; set; }
 
+        public string TestNumber { get; set; }
+
 		public int SeriesDiscriptionId { get; set; }
 
 		public SeriesDescription SeriesDescription { get; set; }

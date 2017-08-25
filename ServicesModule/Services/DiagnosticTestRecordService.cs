@@ -2,12 +2,13 @@
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassDiagnosticTestRecord
-	{
+    public class DiagnosticTestRecordService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -18,7 +19,11 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.DiagnosticTestRecords.Where(rec => rec.DiagnosticTestId == parentId).ToList().Select(rec => ModelConvector.ToDiagnosticTestRecord(rec));
+					return _context.DiagnosticTestRecords
+                                        .Include(dtr => dtr.AnomalyInfo)
+                                        .Where(dtr => dtr.DiagnosticTestId == parentId)
+                                        .ToList()
+                                        .Select(dtr => ModelConvector.ToDiagnosticTestRecord(dtr));
 				}
 			}
 			catch (Exception ex)
@@ -34,23 +39,15 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToDiagnosticTestRecord(_context.DiagnosticTestRecords.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToDiagnosticTestRecord(_context.DiagnosticTestRecords
+                                        .Include(dtr => dtr.AnomalyInfo)
+                                        .SingleOrDefault(dtr => dtr.Id == id));
 				}
 			}
 			catch (Exception ex)
 			{
 				_error = ex.Message;
 				return null;
-			}
-		}
-
-		public bool DelDiagnosticTestRecordFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.DiagnosticTestRecords.RemoveRange(_context.DiagnosticTestRecords.Where(rec => rec.DiagnosticTestId == seriesId));
-				_context.SaveChanges();
-				return true;
 			}
 		}
 	}

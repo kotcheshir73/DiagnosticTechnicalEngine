@@ -10,7 +10,7 @@ namespace DiagnosticTechnicalEngine.Forms
 	{
 		private int _seriesId;
 
-		BLClassRuleTrends rules;
+        RuleTrendsService rules;
 
 		public FormMakeRules(int seriesId)
 		{
@@ -20,7 +20,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void buttonMakeRules_Click(object sender, EventArgs e)
 		{
-			rules = new BLClassRuleTrends();
+			rules = new RuleTrendsService();
 			var list = rules.MakeRules(_seriesId);
 			if (list != null)
 			{

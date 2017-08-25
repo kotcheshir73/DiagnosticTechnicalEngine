@@ -9,12 +9,18 @@ namespace ServicesModule
 		/// <summary>
 		/// Вычисление значения функции принадлежности и определение нечеткой метки, к которой принадлежит точка
 		/// </summary>
-		public static PointInfo CalcFUX(PointInfo point)
+		public static PointInfo CalcFUX(PointInfo point, int? seriesId = null)
 		{
+            if(point.DiagnosticTest == null && !seriesId.HasValue)
+            {
+                throw new Exception("Невозможно получить нечеткие метки");
+            }
 			using (var _context = new DissertationDbContext())
 			{   // индекс нечеткой метки, к которой будет принадлежать точка
-				var fuzzyLabels = _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == point.DiagnosticTest.SeriesDiscriptionId);
-				var needForecast = point.DiagnosticTest.NeedForecast;
+				var fuzzyLabels = (point.DiagnosticTest == null) ?
+                    _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == seriesId.Value).ToList() :
+                    _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == point.DiagnosticTest.SeriesDiscriptionId).ToList();
+				var needForecast = (point.DiagnosticTest == null) ? false : point.DiagnosticTest.NeedForecast;
 				switch (fuzzyLabels.First().FuzzyLabelType)
 				{
 					case FuzzyLabelType.FuzzyTriangle://фаззификация
@@ -127,17 +133,17 @@ namespace ServicesModule
 		public static double CalcEntropyByFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, FuzzyTrendLabel beforeBeforeLastPointFTN, int seriesId)
 		{
 			var xNow = Converter.ToFuzzyTrendLabelWeight(lastPointFTN);
-			if (xNow == -1)
+			if (xNow == Converter.TrendWeightNotFound)
 			{
 				throw new Exception(string.Format("Не найден вес для тенденции {0}", lastPointFTN));
 			}
 			var xLast = Converter.ToFuzzyTrendLabelWeight(beforeLastPointFTN);
-			if (xLast == -1)
+			if (xLast == Converter.TrendWeightNotFound)
 			{
 				throw new Exception(string.Format("Не найден вес для тенденции {0}", beforeLastPointFTN));
 			}
 			var xLastLast = Converter.ToFuzzyTrendLabelWeight(beforeBeforeLastPointFTN);
-			if (xLastLast == -1)
+			if (xLastLast == Converter.TrendWeightNotFound)
 			{
 				throw new Exception(string.Format("Не найден вес для тенденции {0}", beforeBeforeLastPointFTN));
 			}
@@ -290,10 +296,10 @@ namespace ServicesModule
 		public static int CalcPointFromFFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, StatisticsByEntropy tempStateEntropy)
 		{
 			var xLast = Converter.ToFuzzyTrendLabelWeight(lastPointFTN);
-			if (xLast == -1)
+			if (xLast == Converter.TrendWeightNotFound)
 				throw new Exception("Не найден вес для тенденции " + lastPointFTN);
 			var xLastLast = Converter.ToFuzzyTrendLabelWeight(beforeLastPointFTN);
-			if (xLastLast == -1)
+			if (xLastLast == Converter.TrendWeightNotFound)
 				throw new Exception("Не найден вес для тенденции " + beforeLastPointFTN);
 			var speedTrendLast = xLastLast - xLast;
 

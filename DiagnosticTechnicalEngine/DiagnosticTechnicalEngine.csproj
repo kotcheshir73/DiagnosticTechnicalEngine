@@ -71,6 +71,12 @@
     <Compile Include="Controls\UserControlDiagnosticTest.Designer.cs">
       <DependentUpon>UserControlDiagnosticTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserControlDiagnosticTestRecord.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControlDiagnosticTestRecord.Designer.cs">
+      <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserControlFuzzyLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -244,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlDiagnosticTest.resx">
       <DependentUpon>UserControlDiagnosticTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserControlDiagnosticTestRecord.resx">
+      <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlFuzzyLabel.resx">
       <DependentUpon>UserControlFuzzyLabel.cs</DependentUpon>

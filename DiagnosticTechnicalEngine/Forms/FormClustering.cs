@@ -125,7 +125,7 @@ namespace DiagnosticTechnicalEngine.Forms
             if (MessageBox.Show("Сохранить кластеры?", "Анализ временных рядов", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                var logic = new BLClassFuzzyLabel();
+                var logic = new FuzzyLabelService();
                 for(int i = 0; i < dataGridView.Rows.Count; ++i)
                 {
                     if (!logic.AddFuzzyLabel(new FuzzyLabelBindingModel

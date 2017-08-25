@@ -11,7 +11,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private int _seriesId;
 
-		private BLClassStatisticsByFuzzy _logicClass;
+		private StatisticsByFuzzyService _logicClass;
 
 		public FormStatisticFuzzy(int seriesId, int id)
 		{
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Forms
 			_id = id;
 			_seriesId = seriesId;
 
-			var dbclassLabels = new BLClassFuzzyLabel();
+			var dbclassLabels = new FuzzyLabelService();
 			var listFuzzyLabels = dbclassLabels.GetListFuzzyLabel(_seriesId);
 			if (listFuzzyLabels == null)
 			{
@@ -31,7 +31,7 @@ namespace DiagnosticTechnicalEngine.Forms
 				MessageBox.Show("Список меток пуст", "Анализ временных рядов",
 				 MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-			var dbclassTrends = new BLClassFuzzyTrend();
+			var dbclassTrends = new FuzzyTrendService();
 			var listFuzzyTrends = dbclassTrends.GetListFuzzyTrend(_seriesId);
 			if (listFuzzyLabels == null)
 			{
@@ -52,7 +52,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormStatisticFuzzy_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassStatisticsByFuzzy();
+			_logicClass = new StatisticsByFuzzyService();
 			var elem = _logicClass.GetElemStatisticsByFuzzy(_id);
 			if (elem == null)
 			{

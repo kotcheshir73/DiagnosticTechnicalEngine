@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _diagnosticTestId;
 
-		private BLClassGranuleUX _logicClass;
+		private GranuleUXService _logicClass;
 
 		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassGranuleUX();
+			_logicClass = new GranuleUXService();
 
 			var granules = _logicClass.GetListGranuleUX(_diagnosticTestId);
 			if (granules == null)

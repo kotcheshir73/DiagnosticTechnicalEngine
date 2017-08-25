@@ -9,7 +9,7 @@ namespace DiagnosticTechnicalEngine.Forms
 	{
 		private int _id;
 
-		private BLClassStatisticsByEntropy _logicClass;
+		private StatisticsByEntropyService _logicClass;
 
 		public FormStatisticEntropy(int id)
 		{
@@ -30,7 +30,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormStatisticEntropy_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassStatisticsByEntropy();
+			_logicClass = new StatisticsByEntropyService();
 			var elem = _logicClass.GetElemStatisticsByEntropy(_id);
 			if (elem == null)
 			{

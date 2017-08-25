@@ -4,8 +4,6 @@ namespace DiagnosticTechnicalEngine.Forms
 {
 	public partial class FormDiagnosticTest : Form
 	{
-		private int _diagnosticTestId;
-
 		public FormDiagnosticTest(int? diagnosticTestId, int? seriesId)
 		{
 			InitializeComponent();
@@ -15,6 +13,7 @@ namespace DiagnosticTechnicalEngine.Forms
 			{
 				userControlStatisticEntropy.DiagnosticTestId = diagnosticTestId.Value;
 				userControlStatisticFuzzy.DiagnosticTestId = diagnosticTestId.Value;
+                userControlDiagnosticTestRecord.DiagnosticTestId = diagnosticTestId.Value;
 				userControlAnomalyInfo.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleUX.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleFT.DiagnosticTestId = diagnosticTestId.Value;

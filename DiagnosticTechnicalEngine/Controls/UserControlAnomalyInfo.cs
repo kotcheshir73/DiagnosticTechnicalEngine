@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _diagnosticTestId;
 
-		private BLClassAnomalyInfo _logicClass;
+		private AnomalyInfoService _logicClass;
 
 		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		public void LoadData()
 		{
-			_logicClass = new BLClassAnomalyInfo();
+			_logicClass = new AnomalyInfoService();
 
 			var anomalyInfo = _logicClass.GetListAnomalyInfo(_diagnosticTestId);
 			if (anomalyInfo == null)

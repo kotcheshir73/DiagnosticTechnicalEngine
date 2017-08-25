@@ -7,7 +7,7 @@ namespace DiagnosticTechnicalEngine.Controls
     {
         private int _seriesId;
 
-        private BLClassSeriesDescrip _logicClass;
+        private SeriesDescriptionService _logicClass;
 
         public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { Visible = true; LoadData(); } } }
 
@@ -20,7 +20,7 @@ namespace DiagnosticTechnicalEngine.Controls
         private void LoadData()
         {
 
-            _logicClass = new BLClassSeriesDescrip();
+            _logicClass = new SeriesDescriptionService();
 
             var series = _logicClass.GetElemSeriesDescrip(_seriesId);
             if (series == null)

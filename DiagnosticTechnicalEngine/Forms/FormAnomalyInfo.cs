@@ -12,7 +12,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private int _diagnosticTestId;
 
-		private BLClassAnomalyInfo _logicClass;
+		private AnomalyInfoService _logicClass;
 
 		public FormAnomalyInfo(int seriesId, int id)
 		{
@@ -22,7 +22,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormAnomalyInfo_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassAnomalyInfo();
+			_logicClass = new AnomalyInfoService();
 			foreach (var val in Enum.GetValues(typeof(TypeSituation)))
 			{
 				comboBoxTypeSituation.Items.Add(val.ToString());

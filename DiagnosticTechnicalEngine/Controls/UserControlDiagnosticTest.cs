@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _seriesId;
 
-		private BLClassDiagnosticTest _logicClass;
+		private DiagnosticTestRecordService _logicClass;
 
 		public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassDiagnosticTest();
+			_logicClass = new DiagnosticTestRecordService();
 
 			var diagnosticTests = _logicClass.GetListDiagnosticTest(_seriesId);
 			if (diagnosticTests == null)
@@ -54,8 +54,7 @@ namespace DiagnosticTechnicalEngine.Controls
 			{
 				Forms.FormDiagnosticTest form = new Forms.FormDiagnosticTest(
 														Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value), null);
-				if (form.ShowDialog() == DialogResult.OK)
-					LoadData();
+                form.Show();
 			}
 		}
 

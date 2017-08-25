@@ -9,7 +9,10 @@ namespace ServicesModule.BindingModels
 	{
 		public int Id { get; set; }
 
-		[Required(ErrorMessage = "required")]
+        [Required(ErrorMessage = "required")]
+        public string TestNumber { get; set; }
+
+        [Required(ErrorMessage = "required")]
 		public int SeriesDiscriptionId { get; set; }
 
 		[Required(ErrorMessage = "required")]

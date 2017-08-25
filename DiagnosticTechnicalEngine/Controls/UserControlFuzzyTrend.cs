@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public partial class UserControlFuzzyTrend : UserControl
+    public partial class UserControlFuzzyTrend : UserControl
 	{
 		private int _seriesId;
 
-		private BLClassFuzzyTrend _logicClass;
+		private FuzzyTrendService _logicClass;
 
 		public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new BLClassFuzzyTrend();
+			_logicClass = new FuzzyTrendService();
 
 			var fuzzyTrend = _logicClass.GetListFuzzyTrend(_seriesId);
 			if (fuzzyTrend == null)

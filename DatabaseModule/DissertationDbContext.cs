@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 
 namespace DatabaseModule
 {
@@ -58,6 +59,48 @@ namespace DatabaseModule
 
 			base.OnModelCreating(modelBuilder);
 		}
+
+        /// <summary>
+        /// Удаления для диагностического теста и временного ряда
+        /// </summary>
+        /// <returns></returns>
+        public override int SaveChanges()
+        {
+            var entrieDTs = ChangeTracker.Entries<DiagnosticTest>();
+            foreach(var entry in entrieDTs)
+            {
+                if(entry.State == EntityState.Deleted)
+                {
+                    var entity = entry.Entity;
+
+                    DiagnosticTestRecords.RemoveRange(DiagnosticTestRecords.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    AnomalyInfos.RemoveRange(AnomalyInfos.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    StatisticsByEntropys.RemoveRange(StatisticsByEntropys.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    StatisticsByFuzzys.RemoveRange(StatisticsByFuzzys.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    GranuleFuzzys.RemoveRange(GranuleFuzzys.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    GranuleEntropys.RemoveRange(GranuleEntropys.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    GranuleUXs.RemoveRange(GranuleUXs.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    GranuleFTs.RemoveRange(GranuleFTs.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    PointInfos.RemoveRange(PointInfos.Where(rec => rec.DiagnosticTestId == entity.Id));
+                }
+            }
+            var entrieSDs = ChangeTracker.Entries<SeriesDescription>();
+            foreach (var entry in entrieSDs)
+            {
+                if (entry.State == EntityState.Deleted)
+                {
+                    var entity = entry.Entity;
+
+                    FuzzyLabels.RemoveRange(FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    FuzzyTrends.RemoveRange(FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    RuleTrends.RemoveRange(RuleTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    PointTrends.RemoveRange(PointTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    DiagnosticTests.RemoveRange(DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                }
+            }
+
+            return base.SaveChanges();
+        }
 
 		public virtual DbSet<SeriesDescription> SeriesDescriptions { set; get; }
 

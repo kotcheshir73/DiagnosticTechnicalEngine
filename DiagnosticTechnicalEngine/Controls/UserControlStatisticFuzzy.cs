@@ -10,7 +10,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private int _seriesId;
 
-		private BLClassStatisticsByFuzzy _logicClass;
+		private StatisticsByFuzzyService _logicClass;
 
 		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
 
@@ -21,7 +21,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
         public void LoadData()
         {
-            _logicClass = new BLClassStatisticsByFuzzy();
+            _logicClass = new StatisticsByFuzzyService();
 
             var statisticsByFuzzy = _logicClass.GetListStatisticsByFuzzy(_diagnosticTestId);
             if (statisticsByFuzzy == null)

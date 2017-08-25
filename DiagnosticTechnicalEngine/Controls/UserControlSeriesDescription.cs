@@ -6,7 +6,7 @@ namespace DiagnosticTechnicalEngine.Controls
 {
     public partial class UserControlSeriesDescription : UserControl
     {
-        private BLClassSeriesDescrip _logicClass;
+        private SeriesDescriptionService _logicClass;
 
         private event selectRowInDataGridView _onSelect;
 
@@ -18,7 +18,7 @@ namespace DiagnosticTechnicalEngine.Controls
         public void LoadData()
         {
 
-            _logicClass = new BLClassSeriesDescrip();
+            _logicClass = new SeriesDescriptionService();
 
             var seriesDescrip = _logicClass.GetListSeriesDescrip();
             if (seriesDescrip == null)

@@ -1,18 +1,18 @@
-﻿using ServicesModule;
+﻿using DatabaseModule;
+using ServicesModule;
 using ServicesModule.BindingModels;
-using DatabaseModule;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormFuzzyTrend : Form
+    public partial class FormFuzzyTrend : Form
 	{
 		private int? _id;
 
 		private int _seriesId;
 
-		private BLClassFuzzyTrend _logicClass;
+		private FuzzyTrendService _logicClass;
 
 		public FormFuzzyTrend(int seriesId, int? id = null)
 		{
@@ -23,7 +23,7 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormFuzzyTrend_Load(object sender, EventArgs e)
 		{
-			_logicClass = new BLClassFuzzyTrend();
+			_logicClass = new FuzzyTrendService();
 			foreach (var elem in Enum.GetValues(typeof(FuzzyTrendLabel)))
 			{
 				comboBoxTrendNames.Items.Add(elem.ToString());

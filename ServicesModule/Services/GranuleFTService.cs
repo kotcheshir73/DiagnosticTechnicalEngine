@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace ServicesModule
 {
-    public class BLClassGranuleFT
-	{
+    public class GranuleFTService
+    {
 		private string _error;
 
 		public string Error { get { return _error; } }
@@ -18,7 +18,10 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return _context.GranuleFTs.Where(rec => rec.DiagnosticTestId == parentId).ToList().Select(rec => ModelConvector.ToGranuleFT(rec));
+					return _context.GranuleFTs
+                                        .Where(gft => gft.DiagnosticTestId == parentId)
+                                        .ToList()
+                                        .Select(gft => ModelConvector.ToGranuleFT(gft));
 				}
 			}
 			catch (Exception ex)
@@ -34,23 +37,13 @@ namespace ServicesModule
 			{
 				using (var _context = new DissertationDbContext())
 				{
-					return ModelConvector.ToGranuleFT(_context.GranuleFTs.SingleOrDefault(rec => rec.Id == id));
+					return ModelConvector.ToGranuleFT(_context.GranuleFTs.SingleOrDefault(gft => gft.Id == id));
 				}
 			}
 			catch (Exception ex)
 			{
 				_error = ex.Message;
 				return null;
-			}
-		}
-
-		public bool DelGranuleFTFromSeries(int seriesId)
-		{
-			using (var _context = new DissertationDbContext())
-			{
-				_context.GranuleFTs.RemoveRange(_context.GranuleFTs.Where(rec => rec.DiagnosticTestId == seriesId));
-				_context.SaveChanges();
-				return true;
 			}
 		}
 	}

@@ -149,6 +149,7 @@ namespace ServicesModule
 			return new DiagnosticTestViewModel
 			{
 				Id = elem.Id,
+                TestNumber = elem.TestNumber,
 				SeriesDiscriptionId = elem.SeriesDiscriptionId,
 				DateTest = elem.DateTest,
 				FileName = elem.FileName,
@@ -163,6 +164,7 @@ namespace ServicesModule
 			{
 				elem = new DiagnosticTest();
 			}
+            elem.TestNumber = model.TestNumber;
 			elem.SeriesDiscriptionId = model.SeriesDiscriptionId;
 			elem.DateTest = model.DateTest;
 			elem.FileName = model.FileName;

@@ -113,7 +113,7 @@ namespace DiagnosticTechnicalEngine.Forms
 			if (_dialog.ShowDialog() == DialogResult.OK)
 			{
 
-				var logic = new BLClassPointTrend();
+				var logic = new PointTrendService();
 				if (!logic.CalcPointsTrend(new PointTrendCalcBindingModel
 				{
 					FileName = _dialog.FileName,
