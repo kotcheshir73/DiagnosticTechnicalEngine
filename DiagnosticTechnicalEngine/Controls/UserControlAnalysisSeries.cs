@@ -151,8 +151,9 @@ namespace DiagnosticTechnicalEngine.Controls
 				richTextBox.SelectionAlignment = HorizontalAlignment.Left;
 
 				var logic = new DiagnosticTestService();
-				if (!logic.MakeDiagnosticTest(new DiagnosticTestBindingModel
-				{
+                if (!logic.MakeDiagnosticTest(new DiagnosticTestBindingModel
+                {
+                    TestNumber = textBoxNumber.Text,
 					FileName = _dialog.FileName,
 					TypeFile = Converter.ToTypeFile(_typeFile),
 					DatasInFile = _list,
@@ -161,10 +162,10 @@ namespace DiagnosticTechnicalEngine.Controls
                     NeedForecast = checkBoxGetForecast.Checked,
 					MessagerEvent = AddMessage,
 					MessageCountPoint = AddValue,
-					MakeGranuleUX = true,
-					MakeGranuleFT = true,
-					MakeGranuleEntropy = true,
-					MakeGranuleFuzzy = true
+					MakeGranuleUX = checkBoxGranuleUX.Checked,
+					MakeGranuleFT = checkBoxGranuleFT.Checked,
+					MakeGranuleEntropy = checkBoxGranuleEntropy.Checked,
+					MakeGranuleFuzzy = checkBoxGranuleFuzzy.Checked
 				}))
 				{
 					if (checkBoxSaveLog.Checked)
@@ -187,10 +188,6 @@ namespace DiagnosticTechnicalEngine.Controls
 					{
 						MessageBox.Show("Сделано", "Анализ временных рядов",
 						 MessageBoxButtons.OK, MessageBoxIcon.Information);
-					}
-					if (checkBoxGetForecast.Checked)
-					{
-						//labelForecast.Text = "Прогноз: " + logic.GetForecast(_seriesId);
 					}
 				}
 				if (checkBoxSaveLog.Checked)

@@ -13,7 +13,5 @@ namespace ServicesModule.BindingModels
 
 		[Required(ErrorMessage = "required")]
 		public string Description { get; set; }
-
-		public double? Probability { get; set; }
 	}
 }

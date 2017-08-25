@@ -96,6 +96,19 @@ namespace ServicesModule
         {
             using (var _context = new DissertationDbContext())
             {
+                if(_context.DiagnosticTests.FirstOrDefault(dt => dt.TestNumber == model.TestNumber && dt.SeriesDiscriptionId == model.SeriesDiscriptionId) != null)
+                {
+                    _error = "Уже есть диагностический тест с таким номером!";
+                    return false;
+                }
+
+                var elem = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == model.SeriesDiscriptionId);
+                if (elem == null)
+                {
+                    _error = "Не удалось получить информацию по ряду";
+                    return false;
+                }
+
                 var test = ModelConvector.ToDiagnosticTest(model);
                 test.DateTest = DateTime.Now;
                 test.Count = 0;
@@ -121,13 +134,6 @@ namespace ServicesModule
                 if (model.MakeGranuleFuzzy.HasValue && model.MakeGranuleFuzzy.Value)
                 {
                     _granuleFuzzy = new List<GranuleFuzzy>();
-                }
-
-                var elem = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == model.SeriesDiscriptionId);
-                if (elem == null)
-                {
-                    _error = "Не удалось получить информацию по ряду";
-                    return false;
                 }
 
                 _points = new List<PointInfo>();
@@ -780,18 +786,20 @@ namespace ServicesModule
                                 anomaly.CountMeet++;
 
                                 var probability = Math.Round((((double)statistic.CountMeet) / _countPoints) * 100, 2);
+
+                                var message = string.Format("Точка № {0}. Возникла аномалия: {1} ({2}%)", _countAddedPoints,
+                                    _anomalyDetected[i].Key.AnomalyName, probability);
+
                                 _context.DiagnosticTestRecords.Add(new DiagnosticTestRecord
                                 {
                                     DiagnosticTestId = anomaly.DiagnosticTestId,
                                     PointNumber = _countAddedPoints,
-                                    Description = anomaly.AnomalyName,
-                                    Probability = probability,
+                                    Description = message,
                                     AnomalyInfoId = anomalyId
                                 });
                                 _context.SaveChanges();
 
-                                _evMessage("Точка №" + _countAddedPoints + ". Возникла аномалия: " + _anomalyDetected[i].Key.AnomalyName + " (" +
-                                                    probability + "%)");
+                                _evMessage(message);
 
                                 if (AnalysAnomaly(_anomalyDetected[i].Key))
                                 {//аномалия встречается слишком часто, удаляем ее
@@ -923,8 +931,9 @@ namespace ServicesModule
 
                             _context.AnomalyInfos.Add(anomaly);
                             var probability = Math.Round((((double)statistic.CountMeet) / _countPoints) * 100, 2);
-                            _evMessage("Точка №" + _countAddedPoints + ". Обнаружена аномалия по " + typeString + ": " + setSituations + " (" +
-                                                        probability + "%)");
+                            var message = string.Format("Точка № {0}. Обнаружена аномалия по {1}: {2} ({3}%)", _countAddedPoints,
+                                    typeString, setSituations, probability);
+                            _evMessage(message);
 
                             _context.SaveChanges();
 
@@ -932,8 +941,7 @@ namespace ServicesModule
                             {
                                 DiagnosticTestId = anomaly.DiagnosticTestId,
                                 PointNumber = _countAddedPoints,
-                                Description = anomaly.AnomalyName,
-                                Probability = probability,
+                                Description = message,
                                 AnomalyInfoId = anomaly.Id
                             });
                             _context.SaveChanges();

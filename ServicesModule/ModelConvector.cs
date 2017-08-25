@@ -180,8 +180,7 @@ namespace ServicesModule
 				Id = elem.Id,
 				DiagnosticTestId = elem.DiagnosticTestId,
 				Description = elem.Description,
-				PointNumber = elem.PointNumber,
-				Probability = elem.Probability
+				PointNumber = elem.PointNumber
 			};
 		}
 
@@ -194,7 +193,6 @@ namespace ServicesModule
 			elem.DiagnosticTestId = model.DiagnosticTestId;
 			elem.Description = model.Description;
 			elem.PointNumber = model.PointNumber;
-			elem.Probability = model.Probability;
 			return elem;
 		}
 
