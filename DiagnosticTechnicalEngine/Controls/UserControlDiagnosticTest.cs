@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
 	{
 		private int _seriesId;
 
-		private DiagnosticTestRecordService _logicClass;
+		private DiagnosticTestService _logicClass;
 
 		public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
 
@@ -19,7 +19,7 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void LoadData()
 		{
-			_logicClass = new DiagnosticTestRecordService();
+			_logicClass = new DiagnosticTestService();
 
 			var diagnosticTests = _logicClass.GetListDiagnosticTest(_seriesId);
 			if (diagnosticTests == null)

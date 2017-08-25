@@ -150,7 +150,7 @@ namespace DiagnosticTechnicalEngine.Controls
 				richTextBox.AppendText("Результат анализа:\r\n");
 				richTextBox.SelectionAlignment = HorizontalAlignment.Left;
 
-				var logic = new BLClassDiagnosticTest();
+				var logic = new DiagnosticTestService();
 				if (!logic.MakeDiagnosticTest(new DiagnosticTestBindingModel
 				{
 					FileName = _dialog.FileName,

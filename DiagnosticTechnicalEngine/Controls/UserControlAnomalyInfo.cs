@@ -28,7 +28,7 @@ namespace DiagnosticTechnicalEngine.Controls
 					MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			var logic = new BLClassDiagnosticTest();
+			var logic = new DiagnosticTestService();
 			var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
 
 			dataGridView.Rows.Clear();
