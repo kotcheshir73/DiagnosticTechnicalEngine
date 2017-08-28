@@ -17,14 +17,22 @@
 		/// <summary>
 		/// Значение нечеткой метки
 		/// </summary>
-		public string FuzzyLabel { get; set; }
-		/// <summary>
-		/// Значение нечеткой тенденции
-		/// </summary>
-		public string FuzzyTrend { get; set; }
-		/// <summary>
-		/// Количество точек в грануле
-		/// </summary>
-		public int Count { get; set; }
+		public FuzzyLabel FuzzyLabel { get; set; }
+        /// <summary>
+        /// Идентификатор нечеткой метки
+        /// </summary>
+        public int FuzzyLabelId { get; set; }
+        /// <summary>
+        /// Значение нечеткой тенденции
+        /// </summary>
+        public FuzzyTrend FuzzyTrend { get; set; }
+        /// <summary>
+        /// Идентификатор нечеткой тенденции
+        /// </summary>
+        public int FuzzyTrendId { get; set; }
+        /// <summary>
+        /// Количество точек в грануле
+        /// </summary>
+        public int Count { get; set; }
 	}
 }

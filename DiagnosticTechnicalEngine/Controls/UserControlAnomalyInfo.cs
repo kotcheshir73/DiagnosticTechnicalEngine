@@ -47,17 +47,6 @@ namespace DiagnosticTechnicalEngine.Controls
 			}
 		}
 
-		private void buttonShow_Click(object sender, EventArgs e)
-		{
-			if (dataGridView.SelectedRows.Count > 0)
-			{
-				Forms.FormShowAnomaly form = new Forms.FormShowAnomaly(
-					Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
-				if (form.ShowDialog() == DialogResult.OK)
-					LoadData();
-			}
-		}
-
 		private void buttonWatch_Click(object sender, EventArgs e)
 		{
 			if (dataGridView.SelectedRows.Count > 0)
@@ -68,5 +57,15 @@ namespace DiagnosticTechnicalEngine.Controls
 					LoadData();
 			}
 		}
-	}
+
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonWatch_Click(sender, e);
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+    }
 }

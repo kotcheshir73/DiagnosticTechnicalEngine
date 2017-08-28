@@ -7,8 +7,14 @@ namespace DiagnosticTechnicalEngine.Forms
 		public FormDiagnosticTest(int? diagnosticTestId, int? seriesId)
 		{
 			InitializeComponent();
-			userControlAnalysisSeries.DiagnosticTestId = diagnosticTestId;
-			userControlAnalysisSeries.SeriesId = seriesId;
+            if (seriesId.HasValue)
+            {
+                userControlAnalysisSeries.SeriesId = seriesId;
+            }
+            else
+            {
+                tabControl.TabPages.Remove(tabPageLoadSeries);
+            }
 			if(diagnosticTestId.HasValue)
 			{
 				userControlStatisticEntropy.DiagnosticTestId = diagnosticTestId.Value;

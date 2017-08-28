@@ -56,9 +56,14 @@ namespace DiagnosticTechnicalEngine.Controls
 				if (form.ShowDialog() == DialogResult.OK)
 					LoadData();
 			}
-		}
+        }
 
-		private void buttonDel_Click(object sender, EventArgs e)
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonUpd_Click(sender, e);
+        }
+
+        private void buttonDel_Click(object sender, EventArgs e)
 		{
 			if (dataGridView.SelectedRows.Count > 0)
 			{
@@ -98,9 +103,14 @@ namespace DiagnosticTechnicalEngine.Controls
 					LoadData();
 				}
 			}
-		}
+        }
 
-		private void buttonGeneric_Click(object sender, EventArgs e)
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void buttonGeneric_Click(object sender, EventArgs e)
 		{
 			if (MessageBox.Show("Вы хотите сгенрировать нечеткие тенденции?", "Анализ временных рядов", MessageBoxButtons.YesNo,
 					MessageBoxIcon.Question) == DialogResult.Yes)
@@ -114,5 +124,5 @@ namespace DiagnosticTechnicalEngine.Controls
 				LoadData();
 			}
 		}
-	}
+    }
 }

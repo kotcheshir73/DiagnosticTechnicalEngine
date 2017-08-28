@@ -57,9 +57,6 @@
             // 
             this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxType.FormattingEnabled = true;
-            this.comboBoxType.Items.AddRange(new object[] {
-            "Фаззификация. Треугольник",
-            "FCM-кластеризация"});
             this.comboBoxType.Location = new System.Drawing.Point(81, 6);
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(250, 21);

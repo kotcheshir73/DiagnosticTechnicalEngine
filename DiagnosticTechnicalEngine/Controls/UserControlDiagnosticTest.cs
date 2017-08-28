@@ -34,10 +34,11 @@ namespace DiagnosticTechnicalEngine.Controls
 			{
 				dataGridView.Rows.Add();
 				dataGridView.Rows[i].Cells[0].Value = test.Id;
-				dataGridView.Rows[i].Cells[1].Value = test.FileName;
-				dataGridView.Rows[i].Cells[2].Value = test.DateTest.ToLongDateString();
+                dataGridView.Rows[i].Cells[1].Value = test.TestNumber;
+                dataGridView.Rows[i].Cells[2].Value = test.FileName;
+				dataGridView.Rows[i].Cells[3].Value = test.DateTest.ToString();
+                dataGridView.Rows[i].Cells[4].Value = test.NeedForecast;
 				i++;
-
 			}
 		}
 
@@ -56,9 +57,14 @@ namespace DiagnosticTechnicalEngine.Controls
 														Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value), null);
                 form.Show();
 			}
-		}
+        }
 
-		private void buttonDel_Click(object sender, EventArgs e)
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonWatch_Click(sender, e);
+        }
+
+        private void buttonDel_Click(object sender, EventArgs e)
 		{
 			if (dataGridView.SelectedRows.Count > 0)
 			{
@@ -78,5 +84,10 @@ namespace DiagnosticTechnicalEngine.Controls
 				}
 			}
 		}
-	}
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+    }
 }

@@ -6,6 +6,8 @@
 
 		public int DiagnosticTestId { get; set; }
 
+        public int AnomalyId { get; set; }
+
 		public int? PointNumber { get; set; }
 
 		public string Description { get; set; }

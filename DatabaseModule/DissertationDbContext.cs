@@ -57,7 +57,7 @@ namespace DatabaseModule
 				.HasForeignKey(rt => rt.StartStateFuzzyTrendId)
 				.WillCascadeOnDelete(false);
 
-			base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 		}
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace DatabaseModule
 		/// Значение пары в начальной точке
 		/// </summary>
 		[NotMapped]
-		public string StartState
+		public override string StartState
 		{
 			get
 			{
@@ -38,7 +38,7 @@ namespace DatabaseModule
 		/// Значение пары в конечной точке
 		/// </summary>
 		[NotMapped]
-		public string EndState
+		public override string EndState
 		{
 			get
 			{

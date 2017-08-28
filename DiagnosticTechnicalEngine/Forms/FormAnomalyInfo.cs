@@ -53,7 +53,25 @@ namespace DiagnosticTechnicalEngine.Forms
 			checkBoxNotDetected.Checked = elem.NotDetected;
 			comboBoxTypeSituation.Enabled = false;
 			buttonSave.Enabled = false;
-		}
+
+            textBoxDesription.Text = elem.Rashifrovka;
+
+            switch (elem.TypeMemoryValue)
+            {
+                case TypeMemoryValue.ПоЗначению:
+                    chart.Titles["Title"].Text = "График аномалии " + elem.AnomalyName +
+                        " по значению точек ряда";
+                    break;
+                case TypeMemoryValue.ПоФункции:
+                    chart.Titles["Title"].Text = "График аномалии " + elem.AnomalyName +
+                        " по функции принадлежности точек ряда";
+                    break;
+            }
+            for (int i = 0; i < elem.SetValues.Split(';').Length; ++i)
+            {
+                chart.Series["Series"].Points.AddXY(i, Convert.ToDouble(elem.SetValues.Split(';')[i]));
+            }
+        }
 
 		private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{

@@ -31,6 +31,8 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageLoadSeries = new System.Windows.Forms.TabPage();
             this.userControlAnalysisSeries = new DiagnosticTechnicalEngine.Controls.UserControlAnalysisSeries();
+            this.tabPageRecords = new System.Windows.Forms.TabPage();
+            this.userControlDiagnosticTestRecord = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTestRecord();
             this.tabPageStaticticsEntropy = new System.Windows.Forms.TabPage();
             this.userControlStatisticEntropy = new DiagnosticTechnicalEngine.Controls.UserControlStatisticEntropy();
             this.tabPageStaticticsFuzzy = new System.Windows.Forms.TabPage();
@@ -45,10 +47,9 @@
             this.splitContainerEF = new System.Windows.Forms.SplitContainer();
             this.userControlGranuleEntropy = new DiagnosticTechnicalEngine.Controls.UserControlGranuleEntropy();
             this.userControlGranuleFuzzy = new DiagnosticTechnicalEngine.Controls.UserControlGranuleFuzzy();
-            this.tabPageRecords = new System.Windows.Forms.TabPage();
-            this.userControlDiagnosticTestRecord = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTestRecord();
             this.tabControl.SuspendLayout();
             this.tabPageLoadSeries.SuspendLayout();
+            this.tabPageRecords.SuspendLayout();
             this.tabPageStaticticsEntropy.SuspendLayout();
             this.tabPageStaticticsFuzzy.SuspendLayout();
             this.tabPageAnomalyInfo.SuspendLayout();
@@ -62,7 +63,6 @@
             this.splitContainerEF.Panel1.SuspendLayout();
             this.splitContainerEF.Panel2.SuspendLayout();
             this.splitContainerEF.SuspendLayout();
-            this.tabPageRecords.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -79,7 +79,7 @@
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1315, 841);
-            this.tabControl.TabIndex = 1;
+            this.tabControl.TabIndex = 0;
             // 
             // tabPageLoadSeries
             // 
@@ -99,6 +99,25 @@
             this.userControlAnalysisSeries.Name = "userControlAnalysisSeries";
             this.userControlAnalysisSeries.Size = new System.Drawing.Size(1301, 809);
             this.userControlAnalysisSeries.TabIndex = 0;
+            // 
+            // tabPageRecords
+            // 
+            this.tabPageRecords.Controls.Add(this.userControlDiagnosticTestRecord);
+            this.tabPageRecords.Location = new System.Drawing.Point(4, 22);
+            this.tabPageRecords.Name = "tabPageRecords";
+            this.tabPageRecords.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRecords.Size = new System.Drawing.Size(1307, 815);
+            this.tabPageRecords.TabIndex = 7;
+            this.tabPageRecords.Text = "Записи";
+            this.tabPageRecords.UseVisualStyleBackColor = true;
+            // 
+            // userControlDiagnosticTestRecord
+            // 
+            this.userControlDiagnosticTestRecord.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.userControlDiagnosticTestRecord.Location = new System.Drawing.Point(3, 3);
+            this.userControlDiagnosticTestRecord.Name = "userControlDiagnosticTestRecord";
+            this.userControlDiagnosticTestRecord.Size = new System.Drawing.Size(1301, 809);
+            this.userControlDiagnosticTestRecord.TabIndex = 0;
             // 
             // tabPageStaticticsEntropy
             // 
@@ -253,24 +272,6 @@
             this.userControlGranuleFuzzy.Size = new System.Drawing.Size(689, 815);
             this.userControlGranuleFuzzy.TabIndex = 0;
             // 
-            // tabPageRecords
-            // 
-            this.tabPageRecords.Controls.Add(this.userControlDiagnosticTestRecord);
-            this.tabPageRecords.Location = new System.Drawing.Point(4, 22);
-            this.tabPageRecords.Name = "tabPageRecords";
-            this.tabPageRecords.Size = new System.Drawing.Size(1307, 815);
-            this.tabPageRecords.TabIndex = 7;
-            this.tabPageRecords.Text = "Записи";
-            this.tabPageRecords.UseVisualStyleBackColor = true;
-            // 
-            // userControlDiagnosticTestRecord
-            // 
-            this.userControlDiagnosticTestRecord.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.userControlDiagnosticTestRecord.Location = new System.Drawing.Point(0, 0);
-            this.userControlDiagnosticTestRecord.Name = "userControlDiagnosticTestRecord";
-            this.userControlDiagnosticTestRecord.Size = new System.Drawing.Size(1307, 815);
-            this.userControlDiagnosticTestRecord.TabIndex = 0;
-            // 
             // FormDiagnosticTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -281,6 +282,7 @@
             this.Text = "Диагностический тест";
             this.tabControl.ResumeLayout(false);
             this.tabPageLoadSeries.ResumeLayout(false);
+            this.tabPageRecords.ResumeLayout(false);
             this.tabPageStaticticsEntropy.ResumeLayout(false);
             this.tabPageStaticticsFuzzy.ResumeLayout(false);
             this.tabPageAnomalyInfo.ResumeLayout(false);
@@ -294,7 +296,6 @@
             this.splitContainerEF.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerEF)).EndInit();
             this.splitContainerEF.ResumeLayout(false);
-            this.tabPageRecords.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}

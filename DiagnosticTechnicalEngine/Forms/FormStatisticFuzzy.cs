@@ -19,35 +19,21 @@ namespace DiagnosticTechnicalEngine.Forms
 			_id = id;
 			_seriesId = seriesId;
 
-			var dbclassLabels = new FuzzyLabelService();
-			var listFuzzyLabels = dbclassLabels.GetListFuzzyLabel(_seriesId);
-			if (listFuzzyLabels == null)
-			{
-				MessageBox.Show("Список меток пуст: " + dbclassLabels.Error, "Анализ временных рядов",
-				 MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			if (listFuzzyLabels.Count() == 0)
-			{
-				MessageBox.Show("Список меток пуст", "Анализ временных рядов",
-				 MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			var dbclassTrends = new FuzzyTrendService();
-			var listFuzzyTrends = dbclassTrends.GetListFuzzyTrend(_seriesId);
-			if (listFuzzyLabels == null)
-			{
-				MessageBox.Show("Список меток пуст: " + dbclassTrends.Error, "Анализ временных рядов",
-				 MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			foreach (var labels in listFuzzyLabels)
-			{
-				comboBoxStartStateFL.Items.Add(labels.FuzzyLabelName);
-				comboBoxEndStateFL.Items.Add(labels.FuzzyLabelName);
-			}
-			foreach (var trend in listFuzzyTrends)
-			{
-				comboBoxStartStateFT.Items.Add(trend.TrendName);
-				comboBoxEndStateFT.Items.Add(trend.TrendName);
-			}
+            var trends = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).ToList();
+            comboBoxStartStateFT.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
+            comboBoxStartStateFT.ValueMember = "Value";
+            comboBoxStartStateFT.DisplayMember = "Display";
+            comboBoxEndStateFT.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
+            comboBoxEndStateFT.ValueMember = "Value";
+            comboBoxEndStateFT.DisplayMember = "Display";
+
+            var labels = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
+            comboBoxStartStateFL.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+            comboBoxStartStateFL.ValueMember = "Value";
+            comboBoxStartStateFL.DisplayMember = "Display";
+            comboBoxEndStateFL.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+            comboBoxEndStateFL.ValueMember = "Value";
+            comboBoxEndStateFL.DisplayMember = "Display";
 		}
 
 		private void FormStatisticFuzzy_Load(object sender, EventArgs e)
@@ -61,10 +47,14 @@ namespace DiagnosticTechnicalEngine.Forms
 				return;
 			}
 			textBoxNumberSituation.Text = elem.NumberSituation.ToString();
-			comboBoxStartStateFL.Text = elem.StartState.Split('-')[0];
-			comboBoxStartStateFT.Text = elem.StartState.Split('-')[1];
-			comboBoxEndStateFL.Text = elem.EndState.Split('-')[0];
-			comboBoxEndStateFT.Text = elem.EndState.Split('-')[1];
+			comboBoxStartStateFL.SelectedValue = elem.StartStateFuzzyLabelId;
+            comboBoxStartStateFL.Enabled = false;
+			comboBoxStartStateFT.SelectedValue = elem.StartStateFuzzyTrendId;
+            comboBoxStartStateFT.Enabled = false;
+			comboBoxEndStateFL.SelectedValue = elem.EndStateFuzzyLabelId;
+            comboBoxEndStateFL.Enabled = false;
+			comboBoxEndStateFT.SelectedValue = elem.EndStateFuzzyTrendId;
+            comboBoxEndStateFT.Enabled = false;
 			textBoxDescription.Text = elem.Description;
 			textBoxNumberSituation.Enabled = false;
 		}

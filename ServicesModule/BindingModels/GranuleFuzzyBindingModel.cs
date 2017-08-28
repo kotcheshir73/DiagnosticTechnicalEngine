@@ -13,10 +13,10 @@ namespace ServicesModule.BindingModels
 		public int GranulePosition { get; set; }
 
 		[Required(ErrorMessage = "required")]
-		public string FuzzyLabelName { get; set; }
+		public int FuzzyLabelId { get; set; }
 
 		[Required(ErrorMessage = "required")]
-		public string FuzzyTrendName { get; set; }
+		public int FuzzyTrendId { get; set; }
 
 		[Required(ErrorMessage = "required")]
 		public int Count { get; set; }

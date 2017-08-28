@@ -29,40 +29,56 @@
         private void InitializeComponent()
         {
             this.groupBoxSeries = new System.Windows.Forms.GroupBox();
-            this.labelDescription = new System.Windows.Forms.Label();
-            this.userControlDiagnosticTest = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTest();
-            this.userControlPountTrend = new DiagnosticTechnicalEngine.Controls.UserControlPountTrend();
-            this.userControlFuzzyTrend = new DiagnosticTechnicalEngine.Controls.UserControlFuzzyTrend();
             this.userControlRuleTrend = new DiagnosticTechnicalEngine.Controls.UserControlRuleTrend();
+            this.userControlFuzzyTrend = new DiagnosticTechnicalEngine.Controls.UserControlFuzzyTrend();
             this.userControlFuzzyLabel = new DiagnosticTechnicalEngine.Controls.UserControlFuzzyLabel();
+            this.userControlDiagnosticTest = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTest();
+            this.labelDescription = new System.Windows.Forms.Label();
+            this.userControlPountTrend = new DiagnosticTechnicalEngine.Controls.UserControlPountTrend();
             this.groupBoxSeries.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxSeries
             // 
-            this.groupBoxSeries.Controls.Add(this.userControlDiagnosticTest);
             this.groupBoxSeries.Controls.Add(this.userControlPountTrend);
-            this.groupBoxSeries.Controls.Add(this.userControlFuzzyTrend);
             this.groupBoxSeries.Controls.Add(this.userControlRuleTrend);
+            this.groupBoxSeries.Controls.Add(this.userControlFuzzyTrend);
             this.groupBoxSeries.Controls.Add(this.userControlFuzzyLabel);
+            this.groupBoxSeries.Controls.Add(this.userControlDiagnosticTest);
             this.groupBoxSeries.Controls.Add(this.labelDescription);
             this.groupBoxSeries.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxSeries.Location = new System.Drawing.Point(0, 0);
             this.groupBoxSeries.Name = "groupBoxSeries";
-            this.groupBoxSeries.Size = new System.Drawing.Size(1078, 699);
+            this.groupBoxSeries.Size = new System.Drawing.Size(1402, 699);
             this.groupBoxSeries.TabIndex = 0;
             this.groupBoxSeries.TabStop = false;
             this.groupBoxSeries.Text = "ряд";
             // 
-            // labelDescription
+            // userControlRuleTrend
             // 
-            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDescription.Location = new System.Drawing.Point(17, 27);
-            this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(1038, 40);
-            this.labelDescription.TabIndex = 0;
-            this.labelDescription.Text = "описание ряда";
+            this.userControlRuleTrend.BackColor = System.Drawing.Color.Transparent;
+            this.userControlRuleTrend.Location = new System.Drawing.Point(0, 276);
+            this.userControlRuleTrend.MinimumSize = new System.Drawing.Size(530, 200);
+            this.userControlRuleTrend.Name = "userControlRuleTrend";
+            this.userControlRuleTrend.Size = new System.Drawing.Size(600, 200);
+            this.userControlRuleTrend.TabIndex = 3;
+            // 
+            // userControlFuzzyTrend
+            // 
+            this.userControlFuzzyTrend.BackColor = System.Drawing.Color.Transparent;
+            this.userControlFuzzyTrend.Location = new System.Drawing.Point(606, 70);
+            this.userControlFuzzyTrend.Name = "userControlFuzzyTrend";
+            this.userControlFuzzyTrend.Size = new System.Drawing.Size(600, 200);
+            this.userControlFuzzyTrend.TabIndex = 2;
+            // 
+            // userControlFuzzyLabel
+            // 
+            this.userControlFuzzyLabel.BackColor = System.Drawing.Color.Transparent;
+            this.userControlFuzzyLabel.Location = new System.Drawing.Point(0, 70);
+            this.userControlFuzzyLabel.MinimumSize = new System.Drawing.Size(530, 200);
+            this.userControlFuzzyLabel.Name = "userControlFuzzyLabel";
+            this.userControlFuzzyLabel.Size = new System.Drawing.Size(600, 200);
+            this.userControlFuzzyLabel.TabIndex = 1;
             // 
             // userControlDiagnosticTest
             // 
@@ -72,42 +88,26 @@
             this.userControlDiagnosticTest.BackColor = System.Drawing.Color.Transparent;
             this.userControlDiagnosticTest.Location = new System.Drawing.Point(0, 482);
             this.userControlDiagnosticTest.Name = "userControlDiagnosticTest";
-            this.userControlDiagnosticTest.Size = new System.Drawing.Size(1072, 211);
+            this.userControlDiagnosticTest.Size = new System.Drawing.Size(1396, 211);
             this.userControlDiagnosticTest.TabIndex = 7;
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDescription.Location = new System.Drawing.Point(17, 27);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(1362, 40);
+            this.labelDescription.TabIndex = 0;
+            this.labelDescription.Text = "описание ряда";
             // 
             // userControlPountTrend
             // 
             this.userControlPountTrend.BackColor = System.Drawing.Color.Transparent;
-            this.userControlPountTrend.Location = new System.Drawing.Point(542, 276);
+            this.userControlPountTrend.Location = new System.Drawing.Point(606, 276);
             this.userControlPountTrend.Name = "userControlPountTrend";
-            this.userControlPountTrend.Size = new System.Drawing.Size(530, 200);
-            this.userControlPountTrend.TabIndex = 6;
-            // 
-            // userControlFuzzyTrend
-            // 
-            this.userControlFuzzyTrend.BackColor = System.Drawing.Color.Transparent;
-            this.userControlFuzzyTrend.Location = new System.Drawing.Point(0, 276);
-            this.userControlFuzzyTrend.Name = "userControlFuzzyTrend";
-            this.userControlFuzzyTrend.Size = new System.Drawing.Size(536, 200);
-            this.userControlFuzzyTrend.TabIndex = 2;
-            // 
-            // userControlRuleTrend
-            // 
-            this.userControlRuleTrend.BackColor = System.Drawing.Color.Transparent;
-            this.userControlRuleTrend.Location = new System.Drawing.Point(542, 70);
-            this.userControlRuleTrend.MinimumSize = new System.Drawing.Size(530, 200);
-            this.userControlRuleTrend.Name = "userControlRuleTrend";
-            this.userControlRuleTrend.Size = new System.Drawing.Size(530, 200);
-            this.userControlRuleTrend.TabIndex = 3;
-            // 
-            // userControlFuzzyLabel
-            // 
-            this.userControlFuzzyLabel.BackColor = System.Drawing.Color.Transparent;
-            this.userControlFuzzyLabel.Location = new System.Drawing.Point(6, 70);
-            this.userControlFuzzyLabel.MinimumSize = new System.Drawing.Size(530, 200);
-            this.userControlFuzzyLabel.Name = "userControlFuzzyLabel";
-            this.userControlFuzzyLabel.Size = new System.Drawing.Size(530, 200);
-            this.userControlFuzzyLabel.TabIndex = 1;
+            this.userControlPountTrend.Size = new System.Drawing.Size(600, 200);
+            this.userControlPountTrend.TabIndex = 4;
             // 
             // UserControlSeriesInfo
             // 
@@ -118,7 +118,7 @@
             this.Controls.Add(this.groupBoxSeries);
             this.MinimumSize = new System.Drawing.Size(540, 500);
             this.Name = "UserControlSeriesInfo";
-            this.Size = new System.Drawing.Size(1078, 699);
+            this.Size = new System.Drawing.Size(1402, 699);
             this.groupBoxSeries.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -128,10 +128,10 @@
 
         private System.Windows.Forms.GroupBox groupBoxSeries;
         private System.Windows.Forms.Label labelDescription;
-        private UserControlFuzzyLabel userControlFuzzyLabel;
-        private UserControlRuleTrend userControlRuleTrend;
-		private UserControlFuzzyTrend userControlFuzzyTrend;
-		private UserControlPountTrend userControlPountTrend;
         private UserControlDiagnosticTest userControlDiagnosticTest;
+        private UserControlFuzzyLabel userControlFuzzyLabel;
+        private UserControlFuzzyTrend userControlFuzzyTrend;
+        private UserControlRuleTrend userControlRuleTrend;
+        private UserControlPountTrend userControlPountTrend;
     }
 }

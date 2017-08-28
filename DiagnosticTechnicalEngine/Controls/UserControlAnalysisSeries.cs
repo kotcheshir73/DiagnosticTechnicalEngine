@@ -11,8 +11,6 @@ namespace DiagnosticTechnicalEngine.Controls
 {
 	public partial class UserControlAnalysisSeries : UserControl
 	{
-		private int? _diagnosticTestId;
-
 		private int? _seriesId;
 
 		OpenFileDialog _dialog;
@@ -22,14 +20,6 @@ namespace DiagnosticTechnicalEngine.Controls
 		private string _typeFile;
 
 		private StreamWriter _writer;
-
-		public int? DiagnosticTestId
-		{
-			set
-			{
-				_diagnosticTestId = value;
-			}
-		}
 
 		public int? SeriesId
 		{
@@ -109,6 +99,12 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private void buttonLoad_Click(object sender, EventArgs e)
 		{
+            if(textBoxNumber.Text == "")
+            {
+                MessageBox.Show("Укажите номер теста", "Анализ временных рядов",
+                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 			if (listBoxSelected.Items.Count == 0)
 			{
 				MessageBox.Show("Укажите что считывать", "Анализ временных рядов",

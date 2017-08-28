@@ -59,6 +59,11 @@ namespace DiagnosticTechnicalEngine.Controls
             }
         }
 
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonUpd_Click(sender, e);
+        }
+
         private void buttonDel_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -78,6 +83,11 @@ namespace DiagnosticTechnicalEngine.Controls
                     LoadData();
                 }
             }
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
         }
 
         private void buttonClear_Click(object sender, EventArgs e)

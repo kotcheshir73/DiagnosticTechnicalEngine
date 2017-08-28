@@ -1,4 +1,10 @@
-﻿namespace DatabaseModule
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Data.Entity;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Информация по аномалии
@@ -50,5 +56,61 @@
 		/// Данную аномалию невозможно выявить, так как точки, предшествующие ей имеют одинаковые значения
 		/// </summary>
         public bool NotDetected { get; set; }
+
+        [NotMapped]
+        public string Rashfrovka
+        {
+            get
+            {
+                using (var _context = new DissertationDbContext())
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendLine("Ситуации:");
+                    var situations = SetSituations.Split(',');
+                    StatisticBy statistic = null;
+                    foreach (var sit in situations)
+                    {
+                        int number = Convert.ToInt32(sit);
+                        switch(TypeSituation)
+                        {
+                            case TypeSituation.ПоНечеткости:
+                                statistic = _context.StatisticsByFuzzys
+                                                    .Include(stf => stf.EndStateFuzzyLabel)
+                                                    .Include(stf => stf.EndStateFuzzyTrend)
+                                                    .Include(stf => stf.StartStateFuzzyLabel)
+                                                    .Include(stf => stf.StartStateFuzzyTrend)
+                                                    .FirstOrDefault(stf => stf.NumberSituation == number &&
+                                                        stf.DiagnosticTestId == DiagnosticTestId);
+                                break;
+                            case TypeSituation.ПоЭнтропии:
+                                statistic = _context.StatisticsByEntropys.FirstOrDefault(ste => ste.NumberSituation == number &&
+                                                        ste.DiagnosticTestId == DiagnosticTestId);
+                                break;
+                        }
+                        sb.AppendLine(string.Format("{0} -> {1}", statistic.StartState, statistic.EndState));
+                    }
+                    sb.AppendLine("Аномалия:");
+                    switch (TypeSituation)
+                    {
+                        case TypeSituation.ПоНечеткости:
+                            statistic = _context.StatisticsByFuzzys
+                                                    .Include(stf => stf.EndStateFuzzyLabel)
+                                                    .Include(stf => stf.EndStateFuzzyTrend)
+                                                    .Include(stf => stf.StartStateFuzzyLabel)
+                                                    .Include(stf => stf.StartStateFuzzyTrend)
+                                                    .FirstOrDefault(stf => stf.NumberSituation == AnomalySituation &&
+                                                    stf.DiagnosticTestId == DiagnosticTestId);
+                            break;
+                        case TypeSituation.ПоЭнтропии:
+                            statistic = _context.StatisticsByEntropys.FirstOrDefault(stf => stf.NumberSituation == AnomalySituation &&
+                                                    stf.DiagnosticTestId == DiagnosticTestId);
+                            break;
+                    }
+                    sb.AppendLine(string.Format("{0} -> {1}", statistic.StartState, statistic.EndState));
+
+                    return sb.ToString();
+                }
+            }
+        }
 	}
 }

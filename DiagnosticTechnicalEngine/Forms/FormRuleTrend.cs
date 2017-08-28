@@ -22,16 +22,16 @@ namespace DiagnosticTechnicalEngine.Forms
             _id = id;
             _seriesId = seriesId;
 
-			comboBoxTrends.DataSource = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).Select(t => new {ValueMember = t.Id, DisplayNumber = t.TrendName });
+            var trends = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).ToList();
+            comboBoxTrends.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
             comboBoxTrends.ValueMember = "Value";
             comboBoxTrends.DisplayMember = "Display";
-            var list = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
 
-			comboBoxFuzzyLabelFrom.DataSource = list.Select(t => new { ValueMember = t.Id, DisplayNumber = t.FuzzyLabelName });
+            var labels = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
+			comboBoxFuzzyLabelFrom.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
 			comboBoxFuzzyLabelFrom.ValueMember = "Value";
 			comboBoxFuzzyLabelFrom.DisplayMember = "Display";
-
-			comboBoxFuzzyLabelTo.DataSource = list.Select(t => new { ValueMember = t.Id, DisplayNumber = t.FuzzyLabelName });
+			comboBoxFuzzyLabelTo.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
 			comboBoxFuzzyLabelTo.ValueMember = "Value";
 			comboBoxFuzzyLabelTo.DisplayMember = "Display";
         }

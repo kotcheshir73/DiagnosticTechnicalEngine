@@ -96,7 +96,7 @@ namespace ServicesModule
         {
             using (var _context = new DissertationDbContext())
             {
-                if(_context.DiagnosticTests.FirstOrDefault(dt => dt.TestNumber == model.TestNumber && dt.SeriesDiscriptionId == model.SeriesDiscriptionId) != null)
+                if (_context.DiagnosticTests.FirstOrDefault(dt => dt.TestNumber == model.TestNumber && dt.SeriesDiscriptionId == model.SeriesDiscriptionId) != null)
                 {
                     _error = "Уже есть диагностический тест с таким номером!";
                     return false;
@@ -153,8 +153,13 @@ namespace ServicesModule
                 if (flag)
                 {
                     test.Count = _countPoints;
-                    // test.FirstPoint = _points[_points.Count - 1];
-                    // test.SecondPoint = _points[_points.Count - 2];
+                    var lastPoint = _points[_points.Count - 1];
+                    var preLastPoint = _points[_points.Count - 2];
+                    _context.PointInfos.Add(lastPoint);
+                    _context.PointInfos.Add(preLastPoint);
+                    _context.SaveChanges();
+                    test.FirstPointId = lastPoint.Id;
+                    test.SecondPointId = preLastPoint.Id;
                     _context.SaveChanges();
                 }
                 _evMessage?.Invoke("Обработка завершена. Всего точек: " + _countPoints + ". Добавлено новых: " + _countAddedPoints);
@@ -379,7 +384,7 @@ namespace ServicesModule
                 }
             }
         }
-        #region
+        #region Granules
         /// <summary>
         /// Определяем, нужно ли формировать гранулы по каким-то данным
         /// </summary>
@@ -462,7 +467,9 @@ namespace ServicesModule
                             DiagnosticTestId = gr.DiagnosticTestId,
                             GranulePosition = gr.GranulePosition,
                             FuzzyLabel = gr.FuzzyLabel,
+                            FuzzyLabelId = gr.FuzzyLabelId,
                             FuzzyTrend = gr.FuzzyTrend,
+                            FuzzyTrendId = gr.FuzzyTrendId,
                             Count = gr.Count
                         });
                         _context.SaveChanges();
@@ -609,18 +616,16 @@ namespace ServicesModule
                         Count = 1,
                         DiagnosticTestId = point.DiagnosticTestId,
                         GranulePosition = 0,
-                        FuzzyLabel = point.FuzzyLabel.FuzzyLabelName,
-                        FuzzyTrend = point.FuzzyTrend.TrendName.ToString()
+                        FuzzyLabelId = point.FuzzyLabelId.Value,
+                        FuzzyTrendId = point.FuzzyTrendId.Value
                     });
                 }
                 // иначе 
                 else
                 {
-                    var fuzzyValue = point.FuzzyLabel.FuzzyLabelName;
-                    var fuzzyTrend = point.FuzzyTrend.TrendName.ToString();
                     // если энтропии совпадают, то просто увеличиваем кол-во
-                    if (_granuleFuzzy[_granuleFuzzy.Count - 1].FuzzyLabel == fuzzyValue &&
-                        _granuleFuzzy[_granuleFuzzy.Count - 1].FuzzyTrend == fuzzyTrend)
+                    if (_granuleFuzzy[_granuleFuzzy.Count - 1].FuzzyLabelId == point.FuzzyLabelId &&
+                        _granuleFuzzy[_granuleFuzzy.Count - 1].FuzzyTrendId == point.FuzzyTrendId)
                     {
                         _granuleFuzzy[_granuleFuzzy.Count - 1].Count++;
                     }
@@ -632,8 +637,8 @@ namespace ServicesModule
                             Count = 1,
                             DiagnosticTestId = point.DiagnosticTestId,
                             GranulePosition = _granuleFuzzy[_granuleFuzzy.Count - 1].GranulePosition + 1,
-                            FuzzyLabel = fuzzyValue,
-                            FuzzyTrend = fuzzyTrend
+                            FuzzyLabelId = point.FuzzyLabelId.Value,
+                            FuzzyTrendId = point.FuzzyTrendId.Value
                         });
                     }
                 }

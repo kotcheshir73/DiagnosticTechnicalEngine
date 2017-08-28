@@ -27,5 +27,7 @@ namespace ServicesModule.ViewModels
 		public bool NotAnomaly { get; set; }
 
 		public bool NotDetected { get; set; }
+
+        public string Rashifrovka { get; set; }
 	}
 }

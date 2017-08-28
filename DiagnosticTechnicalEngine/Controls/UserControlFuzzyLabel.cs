@@ -64,6 +64,11 @@ namespace DiagnosticTechnicalEngine.Controls
             }
         }
 
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonUpd_Click(sender, e);
+        }
+
         private void buttonDel_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -106,11 +111,16 @@ namespace DiagnosticTechnicalEngine.Controls
             }
         }
 
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
         private void buttonClustreing_Click(object sender, EventArgs e)
         {
             Forms.FormClustering form = new Forms.FormClustering(_seriesId);
             if (form.ShowDialog() == DialogResult.OK)
                 LoadData();
         }
-	}
+    }
 }

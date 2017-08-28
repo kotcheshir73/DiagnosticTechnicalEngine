@@ -64,6 +64,26 @@
     <Compile Include="Migrations\201708251547265_UpdateDiagnosticTest.Designer.cs">
       <DependentUpon>201708251547265_UpdateDiagnosticTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708261234241_NewChanges.cs" />
+    <Compile Include="Migrations\201708261234241_NewChanges.Designer.cs">
+      <DependentUpon>201708261234241_NewChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708261522520_ChangeGranuleFuzzy.cs" />
+    <Compile Include="Migrations\201708261522520_ChangeGranuleFuzzy.Designer.cs">
+      <DependentUpon>201708261522520_ChangeGranuleFuzzy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708261541505_ChangeGranuleFuzzy2.cs" />
+    <Compile Include="Migrations\201708261541505_ChangeGranuleFuzzy2.Designer.cs">
+      <DependentUpon>201708261541505_ChangeGranuleFuzzy2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708261812307_ChangeDiagnosticTestByPoints.cs" />
+    <Compile Include="Migrations\201708261812307_ChangeDiagnosticTestByPoints.Designer.cs">
+      <DependentUpon>201708261812307_ChangeDiagnosticTestByPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708261815389_ChangeDiagnosticTestByPoints2.cs" />
+    <Compile Include="Migrations\201708261815389_ChangeDiagnosticTestByPoints2.Designer.cs">
+      <DependentUpon>201708261815389_ChangeDiagnosticTestByPoints2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
@@ -97,6 +117,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708251547265_UpdateDiagnosticTest.resx">
       <DependentUpon>201708251547265_UpdateDiagnosticTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261234241_NewChanges.resx">
+      <DependentUpon>201708261234241_NewChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261522520_ChangeGranuleFuzzy.resx">
+      <DependentUpon>201708261522520_ChangeGranuleFuzzy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261541505_ChangeGranuleFuzzy2.resx">
+      <DependentUpon>201708261541505_ChangeGranuleFuzzy2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261812307_ChangeDiagnosticTestByPoints.resx">
+      <DependentUpon>201708261812307_ChangeDiagnosticTestByPoints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708261815389_ChangeDiagnosticTestByPoints2.resx">
+      <DependentUpon>201708261815389_ChangeDiagnosticTestByPoints2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

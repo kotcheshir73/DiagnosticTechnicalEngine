@@ -26,18 +26,26 @@ namespace DatabaseModule
 		public bool NeedForecast { get; set; }
 
 		public string FileName { get; set; }
-		/// <summary>
-		/// Последняя тчока ряда
-		/// </summary>
-		public PointInfo FirstPoint { get; set; }
+        /// <summary>
+        /// Последняя тчока ряда
+        /// </summary>
+        public int? FirstPointId { get; set; }
+        /// <summary>
+        /// Последняя тчока ряда
+        /// </summary>
+        public PointInfo FirstPoint { get; set; }
 		/// <summary>
 		/// Предпоследняя точка ряда
 		/// </summary>
-		public PointInfo SecondPoint { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
+		public int? SecondPointId { get; set; }
+        /// <summary>
+        /// Предпоследняя точка ряда
+        /// </summary>
+        public PointInfo SecondPoint { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("DiagnosticTestId")]
 		public virtual ICollection<DiagnosticTestRecord> DiagnosticTestRecords { get; set; }
 		/// <summary>
 		/// Ситуации по паре энтропий

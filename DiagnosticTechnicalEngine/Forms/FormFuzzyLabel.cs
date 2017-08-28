@@ -39,6 +39,7 @@ namespace DiagnosticTechnicalEngine.Forms
                     return;
                 }
                 comboBoxType.SelectedIndex = comboBoxType.Items.IndexOf(elem.FuzzyLabelType);
+                comboBoxType.Enabled = false;
                 textBoxName.Text = elem.FuzzyLabelName;
                 textBoxWeight.Text = elem.FuzzyLabelWeight.ToString();
                 textBoxMinVal.Text = elem.FuzzyLabelMinVal.ToString();

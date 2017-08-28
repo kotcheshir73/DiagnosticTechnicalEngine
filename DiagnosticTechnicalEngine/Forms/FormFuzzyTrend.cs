@@ -39,6 +39,7 @@ namespace DiagnosticTechnicalEngine.Forms
 					return;
 				}
 				comboBoxTrendNames.SelectedIndex = comboBoxTrendNames.Items.IndexOf(elem.TrendName);
+                comboBoxTrendNames.Enabled = false;
 				textBoxWeight.Text = elem.Weight.ToString();
 				buttonSave.Enabled = false;
 			}

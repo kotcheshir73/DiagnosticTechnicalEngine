@@ -179,6 +179,7 @@ namespace ServicesModule
 			{
 				Id = elem.Id,
 				DiagnosticTestId = elem.DiagnosticTestId,
+                AnomalyId = elem.AnomalyInfoId,
 				Description = elem.Description,
 				PointNumber = elem.PointNumber
 			};
@@ -278,7 +279,8 @@ namespace ServicesModule
 				Description = elem.Description,
 				CountMeet = elem.CountMeet,
 				NotAnomaly = elem.NotAnomaly,
-				NotDetected = elem.NotDetected
+				NotDetected = elem.NotDetected,
+                Rashifrovka = elem.Rashfrovka
 			};
 		}
 
@@ -390,8 +392,8 @@ namespace ServicesModule
 				Id = elem.Id,
 				DiagnosticTestId = elem.DiagnosticTestId,
 				GranulePosition = elem.GranulePosition,
-				FuzzyLabelName = elem.FuzzyLabel,
-				FuzzyTrendName = elem.FuzzyTrend,
+				FuzzyLabelName = elem.FuzzyLabel.FuzzyLabelName,
+				FuzzyTrendName = elem.FuzzyTrend.TrendName.ToString(),
 				Count = elem.Count
 			};
 		}
@@ -404,8 +406,8 @@ namespace ServicesModule
 			}
 			elem.DiagnosticTestId = model.DiagnosticTestId;
 			elem.GranulePosition = model.GranulePosition;
-			elem.FuzzyLabel = model.FuzzyLabelName;
-			elem.FuzzyTrend = model.FuzzyTrendName;
+			elem.FuzzyLabelId = model.FuzzyLabelId;
+			elem.FuzzyTrendId = model.FuzzyTrendId;
 			elem.Count = model.Count;
 			return elem;
 		}

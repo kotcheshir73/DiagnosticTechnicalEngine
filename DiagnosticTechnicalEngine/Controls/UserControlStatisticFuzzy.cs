@@ -48,7 +48,7 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					if (elem.Count > 0)
 					{
-						dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet / elem.Count;
+						dataGridView.Rows[i].Cells[5].Value = (double)fuzzy.CountMeet / elem.Count;
 					}
 					else
 					{
@@ -73,5 +73,15 @@ namespace DiagnosticTechnicalEngine.Controls
 					LoadData();
 			}
 		}
-	}
+
+        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonWatch_Click(sender, e);
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+    }
 }
