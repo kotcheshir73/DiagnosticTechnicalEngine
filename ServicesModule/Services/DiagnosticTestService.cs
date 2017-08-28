@@ -156,6 +156,7 @@ namespace ServicesModule
                     var lastPoint = _points[_points.Count - 1];
                     var preLastPoint = _points[_points.Count - 2];
                     _context.PointInfos.Add(lastPoint);
+                    _context.SaveChanges();
                     _context.PointInfos.Add(preLastPoint);
                     _context.SaveChanges();
                     test.FirstPointId = lastPoint.Id;
