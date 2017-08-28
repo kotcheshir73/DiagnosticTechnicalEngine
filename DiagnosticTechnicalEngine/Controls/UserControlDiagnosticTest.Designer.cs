@@ -40,6 +40,7 @@
             this.buttonDel = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonWatch = new System.Windows.Forms.Button();
+            this.buttonForecast = new System.Windows.Forms.Button();
             this.groupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelStatisticEntropyMove.SuspendLayout();
@@ -115,6 +116,7 @@
             // 
             // panelStatisticEntropyMove
             // 
+            this.panelStatisticEntropyMove.Controls.Add(this.buttonForecast);
             this.panelStatisticEntropyMove.Controls.Add(this.buttonRefresh);
             this.panelStatisticEntropyMove.Controls.Add(this.buttonDel);
             this.panelStatisticEntropyMove.Controls.Add(this.buttonAdd);
@@ -173,6 +175,18 @@
             this.buttonWatch.UseVisualStyleBackColor = true;
             this.buttonWatch.Click += new System.EventHandler(this.buttonWatch_Click);
             // 
+            // buttonForecast
+            // 
+            this.buttonForecast.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonForecast.Location = new System.Drawing.Point(516, 3);
+            this.buttonForecast.Name = "buttonForecast";
+            this.buttonForecast.Size = new System.Drawing.Size(75, 23);
+            this.buttonForecast.TabIndex = 4;
+            this.buttonForecast.Text = "Прогноз";
+            this.buttonForecast.UseVisualStyleBackColor = true;
+            this.buttonForecast.Click += new System.EventHandler(this.buttonForecast_Click);
+            // 
             // UserControlDiagnosticTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,5 +216,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDate;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnNeedForecast;
+        private System.Windows.Forms.Button buttonForecast;
     }
 }

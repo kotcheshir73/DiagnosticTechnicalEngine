@@ -152,16 +152,18 @@ namespace ServicesModule
                 SaveGranules();
                 if (flag)
                 {
-                    test.Count = _countPoints;
-                    var lastPoint = _points[_points.Count - 1];
-                    var preLastPoint = _points[_points.Count - 2];
-                    _context.PointInfos.Add(lastPoint);
-                    _context.SaveChanges();
-                    _context.PointInfos.Add(preLastPoint);
-                    _context.SaveChanges();
-                    test.FirstPointId = lastPoint.Id;
-                    test.SecondPointId = preLastPoint.Id;
-                    _context.SaveChanges();
+                    using (var transaction = _context.Database.BeginTransaction())
+                    {
+                        test.Count = _countPoints;
+                        var lastPoint = _points[_points.Count - 1];
+                        lastPoint.IsLast = true;
+                        _context.PointInfos.Add(lastPoint);
+                        _context.SaveChanges();
+                        var preLastPoint = _points[_points.Count - 2];
+                        _context.PointInfos.Add(preLastPoint);
+                        _context.SaveChanges();
+                        transaction.Commit();
+                    }
                 }
                 _evMessage?.Invoke("Обработка завершена. Всего точек: " + _countPoints + ". Добавлено новых: " + _countAddedPoints);
                 return flag;
@@ -186,9 +188,11 @@ namespace ServicesModule
                 var excelcell = excelworksheet.get_Range("A2", "A2");
                 while (excelcell.Value2 != null)
                 {
-                    PointInfo point = new PointInfo();
-                    point.DiagnosticTest = diagnosticTest;
-                    point.DiagnosticTestId = diagnosticTest.Id;
+                    PointInfo point = new PointInfo
+                    {
+                        DiagnosticTest = diagnosticTest,
+                        DiagnosticTestId = diagnosticTest.Id
+                    };
                     for (int i = 0; i < elements.Count; ++i)
                     {
                         var tempexcelcell = excelcell.get_Offset(0, i);
@@ -246,9 +250,11 @@ namespace ServicesModule
                     {
                         throw new Exception("Не совпадают данные из файла и ожидаемые");
                     }
-                    PointInfo point = new PointInfo();
-                    point.DiagnosticTest = diagnosticTest;
-                    point.DiagnosticTestId = diagnosticTest.Id;
+                    PointInfo point = new PointInfo
+                    {
+                        DiagnosticTest = diagnosticTest,
+                        DiagnosticTestId = diagnosticTest.Id
+                    };
                     for (int i = 0; i < elements.Count; ++i)
                     {
                         switch (elements[i])
@@ -889,7 +895,7 @@ namespace ServicesModule
                             {
                                 setSituations += ",";
                             }
-                            setValues += ((_points[i].Value.HasValue) ? _points[i].Value.Value : _points[i].Fux.Value) + ";";
+                            setValues += (_points[i].Value ?? _points[i].Fux.Value) + ";";
                             if (i > 0)
                             {
                                 var temp2Entropy = type == TypeSituation.ПоНечеткости ?
@@ -906,7 +912,7 @@ namespace ServicesModule
                         }
                     }
                     //последний номер - аномальное состояние
-                    setValues += ((point.Value.HasValue) ? point.Value.Value : point.Fux.Value);
+                    setValues += (point.Value ?? point.Fux.Value);
 
                     if (setSituations.Split(',').Length < 6)
                     {
@@ -1028,8 +1034,6 @@ namespace ServicesModule
             {   // 0 - находиим диагностический тест
                 var diagTest = _context.DiagnosticTests
                 .Include(dt => dt.SeriesDescription)
-                .Include(dt => dt.FirstPoint)
-                .Include(dt => dt.SecondPoint)
                 .SingleOrDefault(dt => dt.Id == id);
                 // 0- проверяем, что для этого ряда возможно вычислить прогноз
                 var canMakeForecast = diagTest.NeedForecast;
@@ -1039,21 +1043,33 @@ namespace ServicesModule
                 }
                 // результат - прогнозное значение
                 double result = 0;
+                var LastPoint = _context.PointInfos.FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && pi.IsLast);
+                var PreLastPoint = _context.PointInfos.FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && !pi.IsLast);
                 // пока что - эот будет значение в последней точке
-                result = diagTest.FirstPoint.Value.Value;
+                result = LastPoint.Value.Value;
                 // определяем ситуации по энтропии и по неопределенности
-                var entropy = ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.Single(dt => dt.Id == diagTest.FirstPoint.StatisticsByEntropyId));
-                var fuzzy = ModelConvector.ToStatisticsByFuzzy(_context.StatisticsByFuzzys.Single(dt => dt.Id == diagTest.FirstPoint.StatisticsByFuzzyId));
+                var entropy = ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.Single(dt => dt.Id == LastPoint.StatisticsByEntropyId));
+                var fuzzy = ModelConvector.ToStatisticsByFuzzy(_context.StatisticsByFuzzys.Single(dt => dt.Id == LastPoint.StatisticsByFuzzyId));
 
                 // 1 - отбираем ситуации из двух наборов
-                var listStatEntropyOrdered = _context.StatisticsByEntropys.Where(r => r.StartState ==
-                        entropy.EndState).OrderByDescending(r => r.CountMeet).ToList();
-                var listStatFuzzyOrdered = _context.StatisticsByFuzzys.Where(r => r.StartState ==
-                        fuzzy.EndState).OrderByDescending(r => r.CountMeet).ToList();
+                var listStatEntropyOrdered = _context.StatisticsByEntropys
+                                                .Where(r => 
+                                                    r.StartStateLingvistFT == entropy.EndStateLingvistFT && 
+                                                    r.StartStateLingvistUX == entropy.EndStateLingvistUX &&
+                                                    r.DiagnosticTestId == entropy.DiagnosticTestId)
+                                                .OrderByDescending(r => r.CountMeet)
+                                                .ToList();
+                var listStatFuzzyOrdered = _context.StatisticsByFuzzys
+												.Where(r => 
+													r.StartStateFuzzyLabelId == fuzzy.EndStateFuzzyLabelId &&
+													r.StartStateFuzzyTrendId == fuzzy.EndStateFuzzyTrendId &&
+													r.DiagnosticTestId == fuzzy.DiagnosticTestId)
+												.OrderByDescending(r => r.CountMeet)
+												.ToList();
 
-                int indexEntropy = -1;
+                int indexEntropy = 0;
 
-                int indexFuzzy = -1;
+                int indexFuzzy = 0;
 
                 bool fuzzyLabelEqFuzzyTrend = false;
 
@@ -1065,11 +1081,10 @@ namespace ServicesModule
                     StatisticsByFuzzy tempStateFuzzy = null;
                     fuzzyLabelEqFuzzyTrend = false;
                     // сбрасываем счетчик по энтропии
-                    indexEntropy = -1;
+                    indexEntropy = 0;
                     // получаем ситуацию по нечеткости
-                    while (!fuzzyLabelEqFuzzyTrend && indexFuzzy < listStatFuzzyOrdered.Count)
+                    while (indexFuzzy < listStatFuzzyOrdered.Count)
                     {
-                        indexFuzzy++;
                         tempStateFuzzy = listStatFuzzyOrdered[indexFuzzy];
                         // находим правило для нечеткой тенденции и нечетких меток
                         var rule = _context.RuleTrends.SingleOrDefault(r =>
@@ -1078,15 +1093,19 @@ namespace ServicesModule
                                     r.FuzzyTrendId == tempStateFuzzy.EndStateFuzzyTrendId);
                         // убеждаемся, что есть такое правило 
                         fuzzyLabelEqFuzzyTrend = rule != null;
+						if(fuzzyLabelEqFuzzyTrend)
+						{
+							break;
+						}
+                        indexFuzzy++;
                     }
                     // получаем ситуацию по энтропии (ищем с первой ситуации, пока не найдем нужную или не дойдем до конца), (если нашли ситуацию по нечеткости)
-                    while (!fuzzyTrendEqEntropyTrend && indexEntropy < listStatEntropyOrdered.Count && fuzzyLabelEqFuzzyTrend)
+                    while (indexEntropy < listStatEntropyOrdered.Count && fuzzyLabelEqFuzzyTrend)
                     {
-                        indexEntropy++;
                         var tempStateEntropy = listStatEntropyOrdered[indexEntropy];
 
                         // получаем тенденцию в прогнозной точки
-                        int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(diagTest.FirstPoint.FuzzyTrend.TrendName, diagTest.SecondPoint.FuzzyTrend.TrendName, tempStateEntropy);
+                        int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy);
                         // получаем знак прогнозируемой тенденции
                         double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
                         var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);
@@ -1108,8 +1127,13 @@ namespace ServicesModule
                             fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСильное) ||
                                                         (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСлабое) ||
                                                         (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСреднее);
-                        }
-                    }
+						}
+						if (fuzzyTrendEqEntropyTrend)
+						{
+							break;
+						}
+						indexEntropy++;
+					}
                     // если дошли до конца по нечеткости, но так и не получили сочетания, просто берем первые по выпадению
                     if (indexFuzzy == listStatFuzzyOrdered.Count && !fuzzyLabelEqFuzzyTrend)
                     {
@@ -1135,7 +1159,7 @@ namespace ServicesModule
                         switch (trendName)
                         {
                             case FuzzyTrendLabel.СтабильностьСредняя:
-                                return diagTest.FirstPoint.Value.Value;
+                                return LastPoint.Value.Value;
                             case FuzzyTrendLabel.РостСильный:
                             case FuzzyTrendLabel.РостСлабый:
                             case FuzzyTrendLabel.РостСредний:
@@ -1143,9 +1167,9 @@ namespace ServicesModule
                             case FuzzyTrendLabel.ПадениеСлабое:
                             case FuzzyTrendLabel.ПадениеСреднее:
                                 //получить прирост по последним точкам
-                                return diagTest.FirstPoint.Value.Value * 2 - diagTest.SecondPoint.Value.Value;
+                                return LastPoint.Value.Value * 2 - PreLastPoint.Value.Value;
                         }
-                        return diagTest.FirstPoint.Value.Value;
+                        return LastPoint.Value.Value;
                     }
                 }
                 // значения не совпадают, значит идет незначителньое изменение в точке

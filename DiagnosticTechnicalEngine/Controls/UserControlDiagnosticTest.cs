@@ -89,5 +89,17 @@ namespace DiagnosticTechnicalEngine.Controls
         {
             LoadData();
         }
+
+        private void buttonForecast_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
+                {
+                    var value = _logicClass.GetForecast(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value));
+                    MessageBox.Show("Прогнозное значение: " + value);
+                }
+            }
+        }
     }
 }

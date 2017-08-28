@@ -27,22 +27,6 @@ namespace DatabaseModule
 
 		public string FileName { get; set; }
         /// <summary>
-        /// Последняя тчока ряда
-        /// </summary>
-        public int? FirstPointId { get; set; }
-        /// <summary>
-        /// Последняя тчока ряда
-        /// </summary>
-        public PointInfo FirstPoint { get; set; }
-		/// <summary>
-		/// Предпоследняя точка ряда
-		/// </summary>
-		public int? SecondPointId { get; set; }
-        /// <summary>
-        /// Предпоследняя точка ряда
-        /// </summary>
-        public PointInfo SecondPoint { get; set; }
-        /// <summary>
         /// 
         /// </summary>
         [ForeignKey("DiagnosticTestId")]

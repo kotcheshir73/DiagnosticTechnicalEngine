@@ -28,6 +28,10 @@ namespace DatabaseModule
 		/// Позиция функции принадлежности относителньо центра кластера (для прогнозирования)
 		/// </summary>
 		public bool? PositionFUX { get; set; }
+        /// <summary>
+        /// Последняя точка ряда
+        /// </summary>
+        public bool IsLast { get; set; }
 		/// <summary>
 		/// Идентификатор нечеткой метки
 		/// </summary>

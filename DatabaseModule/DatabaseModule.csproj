@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201708261815389_ChangeDiagnosticTestByPoints2.Designer.cs">
       <DependentUpon>201708261815389_ChangeDiagnosticTestByPoints2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708281519104_ChangePointInfoLink.cs" />
+    <Compile Include="Migrations\201708281519104_ChangePointInfoLink.Designer.cs">
+      <DependentUpon>201708281519104_ChangePointInfoLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
@@ -132,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708261815389_ChangeDiagnosticTestByPoints2.resx">
       <DependentUpon>201708261815389_ChangeDiagnosticTestByPoints2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708281519104_ChangePointInfoLink.resx">
+      <DependentUpon>201708281519104_ChangePointInfoLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
