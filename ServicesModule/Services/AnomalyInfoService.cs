@@ -20,7 +20,7 @@ namespace ServicesModule
 				using (var _context = new DissertationDbContext())
 				{
 					return _context.AnomalyInfos
-                                        .Where(ai => ai.DiagnosticTestId == parentId)
+                                        .Where(ai => ai.SeriesDiscriptionId == parentId)
                                         .ToList()
                                         .Select(ai => ModelConvector.ToAnomalyInfo(ai));
 				}
@@ -54,7 +54,7 @@ namespace ServicesModule
 			{
 				try
 				{
-					var list = _context.AnomalyInfos.Where(ai => ai.DiagnosticTestId == model.DiagnosticTestId);
+					var list = _context.AnomalyInfos.Where(ai => ai.SeriesDiscriptionId == model.SeriesDiscriptionId);
 					var elem = _context.AnomalyInfos.SingleOrDefault(ai => ai.Id == model.Id);
 					if (list.Count() > 0)
 					{

@@ -74,9 +74,6 @@ namespace DatabaseModule
                     var entity = entry.Entity;
 
                     DiagnosticTestRecords.RemoveRange(DiagnosticTestRecords.Where(rec => rec.DiagnosticTestId == entity.Id));
-                    AnomalyInfos.RemoveRange(AnomalyInfos.Where(rec => rec.DiagnosticTestId == entity.Id));
-                    StatisticsByEntropys.RemoveRange(StatisticsByEntropys.Where(rec => rec.DiagnosticTestId == entity.Id));
-                    StatisticsByFuzzys.RemoveRange(StatisticsByFuzzys.Where(rec => rec.DiagnosticTestId == entity.Id));
                     GranuleFuzzys.RemoveRange(GranuleFuzzys.Where(rec => rec.DiagnosticTestId == entity.Id));
                     GranuleEntropys.RemoveRange(GranuleEntropys.Where(rec => rec.DiagnosticTestId == entity.Id));
                     GranuleUXs.RemoveRange(GranuleUXs.Where(rec => rec.DiagnosticTestId == entity.Id));
@@ -95,7 +92,10 @@ namespace DatabaseModule
                     FuzzyTrends.RemoveRange(FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
                     RuleTrends.RemoveRange(RuleTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
                     PointTrends.RemoveRange(PointTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-                    DiagnosticTests.RemoveRange(DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+					AnomalyInfos.RemoveRange(AnomalyInfos.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+					StatisticsByEntropys.RemoveRange(StatisticsByEntropys.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+					StatisticsByFuzzys.RemoveRange(StatisticsByFuzzys.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+					DiagnosticTests.RemoveRange(DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id));
                 }
             }
 

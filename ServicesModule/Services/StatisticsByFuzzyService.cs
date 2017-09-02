@@ -24,7 +24,7 @@ namespace ServicesModule
                                 .Include(sbf => sbf.EndStateFuzzyTrend)
                                 .Include(sbf => sbf.StartStateFuzzyLabel)
                                 .Include(sbf => sbf.StartStateFuzzyTrend)
-                                .Where(sbf => sbf.DiagnosticTestId == parentId)
+                                .Where(sbf => sbf.SeriesDiscriptionId == parentId)
                                 .ToList()
                                 .Select(sbf => ModelConvector.ToStatisticsByFuzzy(sbf));
 				}

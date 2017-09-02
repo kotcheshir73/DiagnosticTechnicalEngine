@@ -20,10 +20,6 @@ namespace DatabaseModule
 		public DateTime DateTest { get; set; }
 
 		public int Count { get; set; }
-		/// <summary>
-		/// Нужен прогноз или нет
-		/// </summary>
-		public bool NeedForecast { get; set; }
 
 		public string FileName { get; set; }
         /// <summary>
@@ -31,21 +27,6 @@ namespace DatabaseModule
         /// </summary>
         [ForeignKey("DiagnosticTestId")]
 		public virtual ICollection<DiagnosticTestRecord> DiagnosticTestRecords { get; set; }
-		/// <summary>
-		/// Ситуации по паре энтропий
-		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
-		public virtual ICollection<StatisticsByEntropy> StatisticsByEntropys { get; set; }
-		/// <summary>
-		/// Ситуации по нечеткой паре
-		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
-		public virtual ICollection<StatisticsByFuzzy> StatisticsByFuzzys { get; set; }
-		/// <summary>
-		/// Набор возможных аномалий в ряду
-		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
-		public virtual ICollection<AnomalyInfo> AnomalyInfos { get; set; }
 		/// <summary>
 		/// Гранулы по мере энтропии по функции принадлежности
 		/// </summary>

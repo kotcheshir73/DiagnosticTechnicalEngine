@@ -15,12 +15,16 @@ namespace ServicesModule
             {
                 throw new Exception("Невозможно получить нечеткие метки");
             }
+			if(point.DiagnosticTest != null)
+			{
+				seriesId = point.DiagnosticTest.SeriesDiscriptionId;
+			}
 			using (var _context = new DissertationDbContext())
 			{   // индекс нечеткой метки, к которой будет принадлежать точка
 				var fuzzyLabels = (point.DiagnosticTest == null) ?
                     _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == seriesId.Value).ToList() :
                     _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == point.DiagnosticTest.SeriesDiscriptionId).ToList();
-				var needForecast = (point.DiagnosticTest == null) ? false : point.DiagnosticTest.NeedForecast;
+				var needForecast = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == seriesId.Value)?.NeedForecast ?? false;
 				switch (fuzzyLabels.First().FuzzyLabelType)
 				{
 					case FuzzyLabelType.FuzzyTriangle://фаззификация

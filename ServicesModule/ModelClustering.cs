@@ -7,7 +7,7 @@ namespace ServicesModule
 	/// <summary>
 	/// 
 	/// </summary>
-    public class Clustering
+    public class ModelClustering
     {
         /// <summary>
         /// список центров кластеров
@@ -51,7 +51,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="data">данные</param>
         /// <param name="_accuracy">точность</param>
-        public Clustering(string path, int type, int countCenters)
+        public ModelClustering(string path, int type, int countCenters)
         {
             centers = new List<ClusterCenter>();
             for (int i = 0; i < countCenters; ++i)

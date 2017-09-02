@@ -22,9 +22,6 @@ namespace ServicesModule.BindingModels
 		public int Count { get; set; }
 
 		[Required(ErrorMessage = "required")]
-		public bool NeedForecast { get; set; }
-
-		[Required(ErrorMessage = "required")]
 		public string FileName { get; set; }
 		/// <summary>
 		/// Тип файла

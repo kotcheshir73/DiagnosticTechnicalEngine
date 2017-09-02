@@ -31,7 +31,7 @@ namespace DiagnosticTechnicalEngine.Forms
             dialog.Filter = "Excel files(*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx";
             if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                var clust = new Clustering(dialog.FileName, 0, countCenters);
+                var clust = new ModelClustering(dialog.FileName, 0, countCenters);
                 if (clust.Calc())
                 {
                     dataGridView.Rows.Clear();
@@ -82,7 +82,7 @@ namespace DiagnosticTechnicalEngine.Forms
             dialog.Filter = "TXT files(*.txt)|*.txt";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                var clust = new Clustering(dialog.FileName, 1, countCenters);
+                var clust = new ModelClustering(dialog.FileName, 1, countCenters);
                 if (clust.Calc())
                 {
                     dataGridView.Rows.Clear();

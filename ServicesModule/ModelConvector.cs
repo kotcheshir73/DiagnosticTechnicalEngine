@@ -14,7 +14,8 @@ namespace ServicesModule
 			{
 				Id = elem.Id,
 				SeriesName = elem.SeriesName,
-				SeriesDiscription = elem.SeriesDiscription
+				SeriesDiscription = elem.SeriesDiscription,
+				NeedForecast = elem.NeedForecast
 			};
 		}
 
@@ -26,6 +27,7 @@ namespace ServicesModule
 			}
 			elem.SeriesName = model.SeriesName;
 			elem.SeriesDiscription = model.SeriesDiscription;
+			elem.NeedForecast = model.NeedForecast;
 			return elem;
 		}
 
@@ -142,8 +144,114 @@ namespace ServicesModule
 			elem.FuzzyLabelToId = model.FuzzyLabelToId;
 			return elem;
 		}
+
+		public static StatisticsByEntropyViewModel ToStatisticsByEntropy(StatisticsByEntropy elem)
+		{
+			return new StatisticsByEntropyViewModel
+			{
+				Id = elem.Id,
+				SeriesDiscriptionId = elem.SeriesDiscriptionId,
+				NumberSituation = elem.NumberSituation,
+				Description = elem.Description,
+				StartStateLingvistUX = elem.StartStateLingvistUX,
+				StartStateLingvistFT = elem.StartStateLingvistFT,
+				EndStateLingvistUX = elem.EndStateLingvistUX,
+				EndStateLingvistFT = elem.EndStateLingvistFT,
+				CountMeet = elem.CountMeet
+			};
+		}
+
+		public static StatisticsByEntropy ToStatisticsByEntropy(StatisticsByEntropyBindingModel model, StatisticsByEntropy elem = null)
+		{
+			if (elem == null)
+			{
+				elem = new StatisticsByEntropy();
+			}
+			elem.SeriesDiscriptionId = model.SeriesDiscriptionId;
+			elem.NumberSituation = model.NumberSituation;
+			elem.Description = model.Description;
+			elem.StartStateLingvistUX = (LingvistUX)Enum.Parse(typeof(LingvistUX), model.StartStateLingvistUX);
+			elem.StartStateLingvistFT = (LingvistFT)Enum.Parse(typeof(LingvistFT), model.StartStateLingvistFT);
+			elem.EndStateLingvistUX = (LingvistUX)Enum.Parse(typeof(LingvistUX), model.EndStateLingvistUX);
+			elem.EndStateLingvistFT = (LingvistFT)Enum.Parse(typeof(LingvistFT), model.EndStateLingvistFT);
+			return elem;
+		}
+
+
+		public static StatisticsByFuzzyViewModel ToStatisticsByFuzzy(StatisticsByFuzzy elem)
+		{
+			return new StatisticsByFuzzyViewModel
+			{
+				Id = elem.Id,
+				SeriesDiscriptionId = elem.SeriesDiscriptionId,
+				NumberSituation = elem.NumberSituation,
+				Description = elem.Description,
+				StartStateFuzzyLabelId = elem.StartStateFuzzyLabelId,
+				StartStateFuzzyTrendId = elem.StartStateFuzzyTrendId,
+				EndStateFuzzyLabelId = elem.EndStateFuzzyLabelId,
+				EndStateFuzzyTrendId = elem.EndStateFuzzyTrendId,
+				CountMeet = elem.CountMeet
+			};
+		}
+
+		public static StatisticsByFuzzy ToStatisticsByFuzzy(StatisticsByFuzzyBindingModel model, StatisticsByFuzzy elem = null)
+		{
+			if (elem == null)
+			{
+				elem = new StatisticsByFuzzy();
+			}
+			elem.SeriesDiscriptionId = model.SeriesDiscriptionId;
+			elem.NumberSituation = model.NumberSituation;
+			elem.Description = model.Description;
+			elem.StartStateFuzzyLabelId = model.StartStateFuzzyLabelId;
+			elem.StartStateFuzzyTrendId = model.StartStateFuzzyTrendId;
+			elem.EndStateFuzzyLabelId = model.EndStateFuzzyLabelId;
+			elem.EndStateFuzzyTrendId = model.EndStateFuzzyTrendId;
+			return elem;
+		}
+
+
+		public static AnomalyInfoViewModel ToAnomalyInfo(AnomalyInfo elem)
+		{
+			return new AnomalyInfoViewModel
+			{
+				Id = elem.Id,
+				SeriesDiscriptionId = elem.SeriesDiscriptionId,
+				TypeSituation = elem.TypeSituation,
+				AnomalyName = elem.AnomalyName,
+				AnomalySituation = elem.AnomalySituation,
+				SetSituations = elem.SetSituations,
+				TypeMemoryValue = elem.TypeMemoryValue,
+				SetValues = elem.SetValues,
+				Description = elem.Description,
+				CountMeet = elem.CountMeet,
+				NotAnomaly = elem.NotAnomaly,
+				NotDetected = elem.NotDetected,
+				Rashifrovka = elem.Rashfrovka
+			};
+		}
+
+		public static AnomalyInfo ToAnomalyInfo(AnomalyInfoBindingModel model, AnomalyInfo elem = null)
+		{
+			if (elem == null)
+			{
+				elem = new AnomalyInfo();
+			}
+			elem.SeriesDiscriptionId = model.SeriesDiscriptionId;
+			elem.AnomalyName = model.AnomalyName;
+			elem.Description = model.Description;
+			elem.AnomalySituation = model.AnomalySituation;
+			elem.SetSituations = model.SetSituations;
+			elem.SetValues = model.SetValues;
+			elem.TypeMemoryValue = Converter.ToTypeMemoryValue(model.TypeMemoryValue);
+			elem.TypeSituation = Converter.ToTypeSituation(model.TypeSituation);
+			elem.NotAnomaly = model.NotAnomaly;
+			elem.NotDetected = model.NotDetected;
+			elem.CountMeet = model.CountMeet;
+			return elem;
+		}
 		#endregion
-		
+
 		public static DiagnosticTestViewModel ToDiagnosticTest(DiagnosticTest elem)
 		{
 			return new DiagnosticTestViewModel
@@ -153,8 +261,7 @@ namespace ServicesModule
 				SeriesDiscriptionId = elem.SeriesDiscriptionId,
 				DateTest = elem.DateTest,
 				FileName = elem.FileName,
-				Count = elem.Count,
-				NeedForecast = elem.NeedForecast
+				Count = elem.Count
 			};
 		}
 
@@ -169,7 +276,6 @@ namespace ServicesModule
 			elem.DateTest = model.DateTest;
 			elem.FileName = model.FileName;
 			elem.Count = model.Count;
-			elem.NeedForecast = model.NeedForecast;
 			return elem;
 		}
 
@@ -197,112 +303,6 @@ namespace ServicesModule
 			return elem;
 		}
 
-
-		public static StatisticsByEntropyViewModel ToStatisticsByEntropy(StatisticsByEntropy elem)
-		{
-			return new StatisticsByEntropyViewModel
-			{
-				Id = elem.Id,
-				DiagnosticTestId = elem.DiagnosticTestId,
-				NumberSituation = elem.NumberSituation,
-				Description = elem.Description,
-				StartStateLingvistUX = elem.StartStateLingvistUX,
-				StartStateLingvistFT = elem.StartStateLingvistFT,
-				EndStateLingvistUX = elem.EndStateLingvistUX,
-				EndStateLingvistFT = elem.EndStateLingvistFT,
-				CountMeet = elem.CountMeet
-			};
-		}
-
-		public static StatisticsByEntropy ToStatisticsByEntropy(StatisticsByEntropyBindingModel model, StatisticsByEntropy elem = null)
-		{
-			if (elem == null)
-			{
-				elem = new StatisticsByEntropy();
-			}
-			elem.DiagnosticTestId = model.DiagnosticTestId;
-			elem.NumberSituation = model.NumberSituation;
-			elem.Description = model.Description;
-			elem.StartStateLingvistUX = (LingvistUX)Enum.Parse(typeof(LingvistUX), model.StartStateLingvistUX);
-			elem.StartStateLingvistFT = (LingvistFT)Enum.Parse(typeof(LingvistFT), model.StartStateLingvistFT);
-			elem.EndStateLingvistUX = (LingvistUX)Enum.Parse(typeof(LingvistUX), model.EndStateLingvistUX);
-			elem.EndStateLingvistFT = (LingvistFT)Enum.Parse(typeof(LingvistFT), model.EndStateLingvistFT);
-			return elem;
-		}
-
-
-		public static StatisticsByFuzzyViewModel ToStatisticsByFuzzy(StatisticsByFuzzy elem)
-		{
-			return new StatisticsByFuzzyViewModel
-			{
-				Id = elem.Id,
-				DiagnosticTestId = elem.DiagnosticTestId,
-				NumberSituation = elem.NumberSituation,
-				Description = elem.Description,
-				StartStateFuzzyLabelId = elem.StartStateFuzzyLabelId,
-				StartStateFuzzyTrendId = elem.StartStateFuzzyTrendId,
-				EndStateFuzzyLabelId = elem.EndStateFuzzyLabelId,
-				EndStateFuzzyTrendId = elem.EndStateFuzzyTrendId,
-				CountMeet = elem.CountMeet
-			};
-		}
-
-		public static StatisticsByFuzzy ToStatisticsByFuzzy(StatisticsByFuzzyBindingModel model, StatisticsByFuzzy elem = null)
-		{
-			if (elem == null)
-			{
-				elem = new StatisticsByFuzzy();
-			}
-			elem.DiagnosticTestId = model.DiagnosticTestId;
-			elem.NumberSituation = model.NumberSituation;
-			elem.Description = model.Description;
-			elem.StartStateFuzzyLabelId = model.StartStateFuzzyLabelId;
-			elem.StartStateFuzzyTrendId = model.StartStateFuzzyTrendId;
-			elem.EndStateFuzzyLabelId = model.EndStateFuzzyLabelId;
-			elem.EndStateFuzzyTrendId = model.EndStateFuzzyTrendId;
-			return elem;
-		}
-
-
-		public static AnomalyInfoViewModel ToAnomalyInfo(AnomalyInfo elem)
-		{
-			return new AnomalyInfoViewModel
-			{
-				Id = elem.Id,
-				DiagnosticTestId = elem.DiagnosticTestId,
-				TypeSituation = elem.TypeSituation,
-				AnomalyName = elem.AnomalyName,
-				AnomalySituation = elem.AnomalySituation,
-				SetSituations = elem.SetSituations,
-				TypeMemoryValue = elem.TypeMemoryValue,
-				SetValues = elem.SetValues,
-				Description = elem.Description,
-				CountMeet = elem.CountMeet,
-				NotAnomaly = elem.NotAnomaly,
-				NotDetected = elem.NotDetected,
-                Rashifrovka = elem.Rashfrovka
-			};
-		}
-
-		public static AnomalyInfo ToAnomalyInfo(AnomalyInfoBindingModel model, AnomalyInfo elem = null)
-		{
-			if (elem == null)
-			{
-				elem = new AnomalyInfo();
-			}
-			elem.DiagnosticTestId = model.DiagnosticTestId;
-			elem.AnomalyName = model.AnomalyName;
-			elem.Description = model.Description;
-			elem.AnomalySituation = model.AnomalySituation;
-			elem.SetSituations = model.SetSituations;
-			elem.SetValues = model.SetValues;
-			elem.TypeMemoryValue = Converter.ToTypeMemoryValue(model.TypeMemoryValue);
-			elem.TypeSituation = Converter.ToTypeSituation(model.TypeSituation);
-			elem.NotAnomaly = model.NotAnomaly;
-			elem.NotDetected = model.NotDetected;
-			elem.CountMeet = model.CountMeet;
-			return elem;
-		}
 
 
 		public static GranuleUXViewModel ToGranuleUX(GranuleUX elem)

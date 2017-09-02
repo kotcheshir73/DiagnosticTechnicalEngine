@@ -11,5 +11,8 @@ namespace ServicesModule.BindingModels
 
 		[Required(ErrorMessage = "required")]
 		public string SeriesDiscription { get; set; }
+
+		[Required(ErrorMessage = "required")]
+		public bool NeedForecast { get; set; }
 	}
 }

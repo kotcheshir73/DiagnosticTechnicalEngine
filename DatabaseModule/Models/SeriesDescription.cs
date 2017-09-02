@@ -18,6 +18,10 @@ namespace DatabaseModule
 		/// </summary>
         public string SeriesDiscription { get; set; }
 		/// <summary>
+		/// Нужен прогноз или нет
+		/// </summary>
+		public bool NeedForecast { get; set; }
+		/// <summary>
 		/// Нечеткие метки, относящиеся к НВР
 		/// </summary>
 		[ForeignKey("SeriesDiscriptionId")]
@@ -42,5 +46,20 @@ namespace DatabaseModule
 		/// </summary>
 		[ForeignKey("SeriesDiscriptionId")]
 		public virtual ICollection<DiagnosticTest> DiagnosticTests { get; set; }
+		/// <summary>
+		/// Набор возможных аномалий в ряду
+		/// </summary>
+		[ForeignKey("DiagnosticTestId")]
+		public virtual ICollection<AnomalyInfo> AnomalyInfos { get; set; }
+		/// <summary>
+		/// Ситуации по паре энтропий
+		/// </summary>
+		[ForeignKey("DiagnosticTestId")]
+		public virtual ICollection<StatisticsByEntropy> StatisticsByEntropys { get; set; }
+		/// <summary>
+		/// Ситуации по нечеткой паре
+		/// </summary>
+		[ForeignKey("DiagnosticTestId")]
+		public virtual ICollection<StatisticsByFuzzy> StatisticsByFuzzys { get; set; }
 	}
 }

@@ -14,8 +14,6 @@ namespace ServicesModule.ViewModels
 
 		public int Count { get; set; }
 
-		public bool NeedForecast { get; set; }
-
 		public string FileName { get; set; }
 	}
 }

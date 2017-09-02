@@ -13,9 +13,9 @@ namespace DatabaseModule
     {
         public int Id { get; set; }
 
-		public int DiagnosticTestId { get; set; }
+		public int SeriesDiscriptionId { get; set; }
 
-		public DiagnosticTest DiagnosticTest { get; set; }
+		public SeriesDescription SeriesDescription { get; set; }
 		/// <summary>
 		/// По какой паре определена аномалия
 		/// </summary>
@@ -80,11 +80,11 @@ namespace DatabaseModule
                                                     .Include(stf => stf.StartStateFuzzyLabel)
                                                     .Include(stf => stf.StartStateFuzzyTrend)
                                                     .FirstOrDefault(stf => stf.NumberSituation == number &&
-                                                        stf.DiagnosticTestId == DiagnosticTestId);
+                                                        stf.SeriesDiscriptionId == SeriesDiscriptionId);
                                 break;
                             case TypeSituation.ПоЭнтропии:
                                 statistic = _context.StatisticsByEntropys.FirstOrDefault(ste => ste.NumberSituation == number &&
-                                                        ste.DiagnosticTestId == DiagnosticTestId);
+                                                        ste.SeriesDiscriptionId == SeriesDiscriptionId);
                                 break;
                         }
                         sb.AppendLine(string.Format("{0} -> {1}", statistic.StartState, statistic.EndState));
@@ -99,11 +99,11 @@ namespace DatabaseModule
                                                     .Include(stf => stf.StartStateFuzzyLabel)
                                                     .Include(stf => stf.StartStateFuzzyTrend)
                                                     .FirstOrDefault(stf => stf.NumberSituation == AnomalySituation &&
-                                                    stf.DiagnosticTestId == DiagnosticTestId);
+                                                    stf.SeriesDiscriptionId == SeriesDiscriptionId);
                             break;
                         case TypeSituation.ПоЭнтропии:
                             statistic = _context.StatisticsByEntropys.FirstOrDefault(stf => stf.NumberSituation == AnomalySituation &&
-                                                    stf.DiagnosticTestId == DiagnosticTestId);
+                                                    stf.SeriesDiscriptionId == SeriesDiscriptionId);
                             break;
                     }
                     sb.AppendLine(string.Format("{0} -> {1}", statistic.StartState, statistic.EndState));

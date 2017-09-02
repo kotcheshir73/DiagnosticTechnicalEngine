@@ -6,7 +6,7 @@ namespace ServicesModule.ViewModels
 	{
 		public int Id { get; set; }
 
-		public int DiagnosticTestId { get; set; }
+		public int SeriesDiscriptionId { get; set; }
 
 		public int NumberSituation { get; set; }
 

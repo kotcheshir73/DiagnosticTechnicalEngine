@@ -7,5 +7,7 @@
 		public string SeriesName { get; set; }
 
 		public string SeriesDiscription { get; set; }
+
+		public bool NeedForecast { get; set; }
 	}
 }

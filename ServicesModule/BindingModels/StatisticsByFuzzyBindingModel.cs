@@ -7,7 +7,7 @@ namespace ServicesModule.BindingModels
 		public int Id { get; set; }
 
 		[Required(ErrorMessage = "required")]
-		public int DiagnosticTestId { get; set; }
+		public int SeriesDiscriptionId { get; set; }
 
 		[Required(ErrorMessage = "required")]
 		public int NumberSituation { get; set; }

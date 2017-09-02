@@ -19,7 +19,7 @@ namespace ServicesModule
 				using (var _context = new DissertationDbContext())
 				{
 					return _context.StatisticsByEntropys
-                                        .Where(sbe => sbe.DiagnosticTestId == parentId)
+                                        .Where(sbe => sbe.SeriesDiscriptionId == parentId)
                                         .ToList()
                                         .Select(sbe => ModelConvector.ToStatisticsByEntropy(sbe));
 				}
