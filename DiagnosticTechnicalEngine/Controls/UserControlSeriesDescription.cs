@@ -8,7 +8,7 @@ namespace DiagnosticTechnicalEngine.Controls
     {
         private SeriesDescriptionService _logicClass;
 
-        private event selectRowInDataGridView _onSelect;
+        private event Action<int> _onSelect;
 
         public UserControlSeriesDescription()
         {
@@ -32,7 +32,7 @@ namespace DiagnosticTechnicalEngine.Controls
 			}
 		}
 
-        public void AddEvent(selectRowInDataGridView method)
+        public void AddEvent(Action<int> method)
         {
             _onSelect += method;
         }

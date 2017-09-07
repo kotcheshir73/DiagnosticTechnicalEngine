@@ -157,32 +157,13 @@ namespace DiagnosticTechnicalEngine.Forms
 			// buttonClose
 			// 
 			buttonClose.Location = new System.Drawing.Point(196, 187);
-			buttonClose.Name = "buttonClose";
-			buttonClose.Size = new System.Drawing.Size(75, 23);
-			buttonClose.TabIndex = 13;
-			buttonClose.Text = "Закрыть";
-			buttonClose.UseVisualStyleBackColor = true;
-			buttonClose.Click += new EventHandler(ButtonClose_Click);
 			// 
 			// buttonSave
 			// 
-			buttonSave.Enabled = false;
 			buttonSave.Location = new System.Drawing.Point(69, 187);
-			buttonSave.Name = "buttonSave";
-			buttonSave.Size = new System.Drawing.Size(75, 23);
-			buttonSave.TabIndex = 12;
-			buttonSave.Text = "Сохранить";
-			buttonSave.UseVisualStyleBackColor = true;
-			buttonSave.Click += new EventHandler(ButtonSave_Click);
 			// 
 			// FormFuzzyLabel
 			// 
-			AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			AutoScaleMode = AutoScaleMode.Font;
-			AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			ClientSize = new System.Drawing.Size(344, 222);
-			Controls.Add(buttonClose);
-			Controls.Add(buttonSave);
 			Controls.Add(textBoxMaxVal);
 			Controls.Add(labelMaxVal);
 			Controls.Add(textBoxCenter);
@@ -195,12 +176,8 @@ namespace DiagnosticTechnicalEngine.Forms
 			Controls.Add(labelName);
 			Controls.Add(comboBoxType);
 			Controls.Add(labelType);
-			MaximizeBox = false;
-			MinimizeBox = false;
 			Name = "FormFuzzyLabel";
-			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Нечеткая метка";
-			Load += new EventHandler(Form_Load);
 			ResumeLayout(false);
 			PerformLayout();
 		}
