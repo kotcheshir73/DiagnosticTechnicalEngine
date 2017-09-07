@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DatabaseModule.BaseClassies;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseModule
 {
 	/// <summary>
 	/// Статистика ситуаций по паре мер энтропий
 	/// </summary>
-	public class StatisticsByEntropy : StatisticBy
+	public class StatisticsByEntropy : BaseClassStatisticBy
 	{
 		/// <summary>
 		/// Значение меры энтропии по функции принадлежности в начальной точке 

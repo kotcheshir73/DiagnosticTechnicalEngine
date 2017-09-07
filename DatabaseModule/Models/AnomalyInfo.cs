@@ -3,19 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Data.Entity;
+using DatabaseModule.BaseClassies;
 
 namespace DatabaseModule
 {
 	/// <summary>
 	/// Информация по аномалии
 	/// </summary>
-    public class AnomalyInfo
-    {
-        public int Id { get; set; }
-
-		public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
+    public class AnomalyInfo : BaseClassSeriesDescription
+	{
 		/// <summary>
 		/// По какой паре определена аномалия
 		/// </summary>
@@ -67,7 +63,7 @@ namespace DatabaseModule
                     var sb = new StringBuilder();
                     sb.AppendLine("Ситуации:");
                     var situations = SetSituations.Split(',');
-                    StatisticBy statistic = null;
+					BaseClassStatisticBy statistic = null;
                     foreach (var sit in situations)
                     {
                         int number = Convert.ToInt32(sit);

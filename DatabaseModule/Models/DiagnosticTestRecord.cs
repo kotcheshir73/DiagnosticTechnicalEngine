@@ -1,13 +1,9 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
-    public class DiagnosticTestRecord
-    {
-        public int Id { get; set; }
-
-        public int DiagnosticTestId { get; set; }
-
-        public DiagnosticTest DiagnosticTest { get; set; }
-
+    public class DiagnosticTestRecord : BaseClassDiagnosticTest
+	{
         public int AnomalyInfoId { get; set; }
 
         public AnomalyInfo AnomalyInfo { get; set; }

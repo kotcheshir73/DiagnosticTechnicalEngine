@@ -1,15 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Гранула по мере энтропии по нечеткой тенденции
 	/// </summary>
-	public class GranuleFT
+	public class GranuleFT : BaseClassDiagnosticTest
 	{
-		public int Id { get; set; }
-
-		public int DiagnosticTestId { get; set; }
-
-		public DiagnosticTest DiagnosticTest { get; set; }
 		/// <summary>
 		/// Позиция гранулы
 		/// </summary>

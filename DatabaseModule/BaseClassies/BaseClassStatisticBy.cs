@@ -1,14 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DatabaseModule
+namespace DatabaseModule.BaseClassies
 {
-    public class StatisticBy
-    {
-        public int Id { get; set; }
-
-		public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
+	public class BaseClassStatisticBy : BaseClassSeriesDescription
+	{
 		/// <summary>
 		/// Номер ситуации
 		/// </summary>

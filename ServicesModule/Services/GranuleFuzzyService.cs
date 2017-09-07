@@ -1,4 +1,6 @@
 ﻿using DatabaseModule;
+using ServicesModule.BindingModels;
+using ServicesModule.Interfaces;
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,47 +9,47 @@ using System.Linq;
 
 namespace ServicesModule
 {
-    public class GranuleFuzzyService
-    {
-		private string _error;
-
-		public string Error { get { return _error; } }
-
-		public IEnumerable<GranuleFuzzyViewModel> GetListGranuleFuzzy(int parentId)
+	public class GranuleFuzzyService : ISeriesDescriptionModel<GranuleFuzzyViewModel, GranuleFuzzyBindingModel>
+	{
+		public IEnumerable<GranuleFuzzyViewModel> GetElements(int parentId)
 		{
-			try
+			using (var _context = new DissertationDbContext())
 			{
-				using (var _context = new DissertationDbContext())
-				{
-					return _context.GranuleFuzzys
-                                        .Include(gf => gf.FuzzyLabel)
-                                        .Include(gf => gf.FuzzyTrend)
-                                        .Where(gf => gf.DiagnosticTestId == parentId)
-                                        .ToList()
-                                        .Select(gf => ModelConvector.ToGranuleFuzzy(gf));
-				}
-			}
-			catch (Exception ex)
-			{
-				_error = ex.Message;
-				return null;
+				return _context.GranuleFuzzys
+									.Include(gf => gf.FuzzyLabel)
+									.Include(gf => gf.FuzzyTrend)
+									.Where(gf => gf.DiagnosticTestId == parentId)
+									.ToList()
+									.Select(gf => ModelConvector.ToGranuleFuzzy(gf));
 			}
 		}
 
-		public GranuleFuzzyViewModel GetElemGranuleFuzzy(int id)
+		public GranuleFuzzyViewModel GetElement(int id)
 		{
-			try
+			using (var _context = new DissertationDbContext())
 			{
-				using (var _context = new DissertationDbContext())
-				{
-					return ModelConvector.ToGranuleFuzzy(_context.GranuleFuzzys.SingleOrDefault(gf => gf.Id == id));
-				}
+				return ModelConvector.ToGranuleFuzzy(_context.GranuleFuzzys.SingleOrDefault(gf => gf.Id == id));
 			}
-			catch (Exception ex)
-			{
-				_error = ex.Message;
-				return null;
-			}
+		}
+
+		public void InsertElement(GranuleFuzzyBindingModel model)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void UpdateElement(GranuleFuzzyBindingModel model)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DeleteElement(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DeleteElements(int seriesId)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

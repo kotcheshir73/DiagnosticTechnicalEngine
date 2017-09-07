@@ -1,15 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Нечеткая тенденциия
 	/// </summary>
-	public class FuzzyTrend
-    {
-        public int Id { get; set; }
-
-        public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
+	public class FuzzyTrend : BaseClassSeriesDescription
+	{
 		/// <summary>
 		/// Название нечеткой тенденции
 		/// </summary>

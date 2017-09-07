@@ -22,18 +22,18 @@ namespace DiagnosticTechnicalEngine.Forms
             _id = id;
             _seriesId = seriesId;
 
-            var trends = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).ToList();
-            comboBoxTrends.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
-            comboBoxTrends.ValueMember = "Value";
-            comboBoxTrends.DisplayMember = "Display";
+   //         var trends = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).ToList();
+   //         comboBoxTrends.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
+   //         comboBoxTrends.ValueMember = "Value";
+   //         comboBoxTrends.DisplayMember = "Display";
 
-            var labels = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
-			comboBoxFuzzyLabelFrom.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
-			comboBoxFuzzyLabelFrom.ValueMember = "Value";
-			comboBoxFuzzyLabelFrom.DisplayMember = "Display";
-			comboBoxFuzzyLabelTo.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
-			comboBoxFuzzyLabelTo.ValueMember = "Value";
-			comboBoxFuzzyLabelTo.DisplayMember = "Display";
+   //         var labels = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
+			//comboBoxFuzzyLabelFrom.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+			//comboBoxFuzzyLabelFrom.ValueMember = "Value";
+			//comboBoxFuzzyLabelFrom.DisplayMember = "Display";
+			//comboBoxFuzzyLabelTo.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+			//comboBoxFuzzyLabelTo.ValueMember = "Value";
+			//comboBoxFuzzyLabelTo.DisplayMember = "Display";
         }
 
         private void FormRuleTrend_Load(object sender, EventArgs e)
@@ -41,13 +41,13 @@ namespace DiagnosticTechnicalEngine.Forms
             _logicClass = new RuleTrendsService();
             if (_id.HasValue)
             {
-				var elem = _logicClass.GetElemRuleTrend(_id.Value);
-				if(elem != null)
-				{
-					comboBoxTrends.SelectedValue = elem.FuzzyTrendId;
-					comboBoxFuzzyLabelFrom.SelectedValue = elem.FuzzyLabelFromId;
-					comboBoxFuzzyLabelTo.SelectedValue = elem.FuzzyLabelToId;
-				}
+				//var elem = _logicClass.GetElemRuleTrend(_id.Value);
+				//if(elem != null)
+				//{
+				//	comboBoxTrends.SelectedValue = elem.FuzzyTrendId;
+				//	comboBoxFuzzyLabelFrom.SelectedValue = elem.FuzzyLabelFromId;
+				//	comboBoxFuzzyLabelTo.SelectedValue = elem.FuzzyLabelToId;
+				//}
 				
                 buttonSave.Enabled = false;
             }
@@ -62,46 +62,46 @@ namespace DiagnosticTechnicalEngine.Forms
         {
             if (!_id.HasValue)
             {
-				if (!_logicClass.AddRuleTrend(new RuleTrendBindingModel
-				{
-					SeriesId = _seriesId,
-					FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
-					FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
-					FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
-					FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+				//if (!_logicClass.AddRuleTrend(new RuleTrendBindingModel
+				//{
+				//	SeriesId = _seriesId,
+				//	FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
+				//	FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
+				//	FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
+				//	FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
+				//}))
+				//{
+				//	MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
+				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
+				//else
+				//{
+				//	DialogResult = DialogResult.OK;
+				//	Close();
+				//}
 			}
             else
             {
-				if (!_logicClass.UpdRuleTrend(new RuleTrendBindingModel
-				{
-					Id = _id.Value,
-					SeriesId = _seriesId,
-					FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
-					FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
-					FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
-					FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+				//if (!_logicClass.UpdRuleTrend(new RuleTrendBindingModel
+				//{
+				//	Id = _id.Value,
+				//	SeriesId = _seriesId,
+				//	FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
+				//	FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
+				//	FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
+				//	FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
+				//}))
+				//{
+				//	MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
+				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
+				//else
+				//{
+				//	DialogResult = DialogResult.OK;
+				//	Close();
+				//}
 			}
         }
 

@@ -21,25 +21,25 @@ namespace DiagnosticTechnicalEngine.Controls
 		{
 			_logicClass = new PointTrendService();
 
-			var ruleTrend = _logicClass.GetListPointTrend(_seriesId);
-			if (ruleTrend == null)
-			{
-				MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			dataGridView.Rows.Clear();
-			int i = 0;
-			foreach (var rule in ruleTrend)
-			{
-				dataGridView.Rows.Add();
-				dataGridView.Rows[i].Cells[0].Value = rule.Id;
-				dataGridView.Rows[i].Cells[1].Value = rule.StartPoint;
-				dataGridView.Rows[i].Cells[2].Value = rule.FinishPoint;
-				dataGridView.Rows[i].Cells[3].Value = rule.Count;
-				dataGridView.Rows[i].Cells[4].Value = rule.Weight;
-				i++;
-			}
+			//var ruleTrend = _logicClass.GetListPointTrend(_seriesId);
+			//if (ruleTrend == null)
+			//{
+			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+			//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			//dataGridView.Rows.Clear();
+			//int i = 0;
+			//foreach (var rule in ruleTrend)
+			//{
+			//	dataGridView.Rows.Add();
+			//	dataGridView.Rows[i].Cells[0].Value = rule.Id;
+			//	dataGridView.Rows[i].Cells[1].Value = rule.StartPoint;
+			//	dataGridView.Rows[i].Cells[2].Value = rule.FinishPoint;
+			//	dataGridView.Rows[i].Cells[3].Value = rule.Count;
+			//	dataGridView.Rows[i].Cells[4].Value = rule.Weight;
+			//	i++;
+			//}
 		}
 
 		private void buttonAdd_Click(object sender, EventArgs e)
@@ -74,12 +74,12 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
 					{
-						if (!_logicClass.DelPointTrend(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
-						{
-							MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-								MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+						//if (!_logicClass.DelPointTrend(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
+						//{
+						//	MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+						//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+						//	return;
+						//}
 					}
 					LoadData();
 				}
@@ -100,12 +100,12 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
 					{
-						if (!_logicClass.DelPointTrendFromSeries(_seriesId))
-						{
-							MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-								MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+						//if (!_logicClass.DelPointTrendFromSeries(_seriesId))
+						//{
+						//	MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+						//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+						//	return;
+						//}
 					}
 					LoadData();
 				}

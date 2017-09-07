@@ -20,16 +20,17 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private void buttonLoadFromExcel_Click(object sender, EventArgs e)
         {
-            int countCenters = 0;
-            if (!int.TryParse(textBoxCountClusters.Text, out countCenters))
-            {
-                MessageBox.Show("Не удалось получить число центров кластеров", "Анализ временных рядов",
-                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Excel files(*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx";
-            if(dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			if (!int.TryParse(textBoxCountClusters.Text, out int countCenters))
+			{
+				MessageBox.Show("Не удалось получить число центров кластеров", "Анализ временных рядов",
+				 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			OpenFileDialog dialog = new OpenFileDialog
+			{
+				Filter = "Excel files(*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx"
+			};
+			if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var clust = new ModelClustering(dialog.FileName, 0, countCenters);
                 if (clust.Calc())
@@ -71,16 +72,17 @@ namespace DiagnosticTechnicalEngine.Forms
 
         private void buttonLoadFromTxt_Click(object sender, EventArgs e)
         {
-            int countCenters = 0;
-            if (!int.TryParse(textBoxCountClusters.Text, out countCenters))
-            {
-                MessageBox.Show("Не удалось получить число центров кластеров", "Анализ временных рядов",
-                 MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "TXT files(*.txt)|*.txt";
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			if (!int.TryParse(textBoxCountClusters.Text, out int countCenters))
+			{
+				MessageBox.Show("Не удалось получить число центров кластеров", "Анализ временных рядов",
+				 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			OpenFileDialog dialog = new OpenFileDialog
+			{
+				Filter = "TXT files(*.txt)|*.txt"
+			};
+			if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var clust = new ModelClustering(dialog.FileName, 1, countCenters);
                 if (clust.Calc())
@@ -128,24 +130,27 @@ namespace DiagnosticTechnicalEngine.Forms
                 var logic = new FuzzyLabelService();
                 for(int i = 0; i < dataGridView.Rows.Count; ++i)
                 {
-                    if (!logic.AddFuzzyLabel(new FuzzyLabelBindingModel
+					try
 					{
-						SeriesId = _seriesId,
-						FuzzyLabelType = FuzzyLabelType.ClustFCM,
-						FuzzyLabelName = dataGridView.Rows[i].Cells[0].Value.ToString(),
-						Weigth = Convert.ToInt32(
-						dataGridView.Rows[i].Cells[1].Value),
-						MinVal = Convert.ToDouble(dataGridView.Rows[i].Cells[2].Value),
-						Center = Convert.ToDouble(dataGridView.Rows[i].Cells[3].Value),
-						MaxVal = Convert.ToDouble(dataGridView.Rows[i].Cells[4].Value)
-					}))
-                    {
-                        MessageBox.Show("Ошибка при добавлении: " + logic.Error, "Анализ временных рядов",
-                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-                DialogResult = System.Windows.Forms.DialogResult.OK;
+						logic.InsertElement(new FuzzyLabelBindingModel
+						{
+							SeriesId = _seriesId,
+							FuzzyLabelType = FuzzyLabelType.ClustFCM,
+							FuzzyLabelName = dataGridView.Rows[i].Cells[0].Value.ToString(),
+							Weigth = Convert.ToInt32(
+							 dataGridView.Rows[i].Cells[1].Value),
+							MinVal = Convert.ToDouble(dataGridView.Rows[i].Cells[2].Value),
+							Center = Convert.ToDouble(dataGridView.Rows[i].Cells[3].Value),
+							MaxVal = Convert.ToDouble(dataGridView.Rows[i].Cells[4].Value)
+						});
+					}
+					catch(Exception ex)
+					{
+						MessageBox.Show("Ошибка при добавлении: " + ex.Message, "Анализ временных рядов",
+						 MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+				}
+                DialogResult = DialogResult.OK;
                 Close();
             }
         }

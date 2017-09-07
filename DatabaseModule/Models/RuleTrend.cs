@@ -1,18 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DatabaseModule.BaseClassies;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseModule
 {
 	/// <summary>
 	/// Правила получения нечеткой тенденции на основании двух нечектих меток
 	/// </summary>
-	public class RuleTrend
+	public class RuleTrend : BaseClassSeriesDescription
 	{
-		public int Id { get; set; }
-
-		public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
-		
 		public int FuzzyTrendId { get; set; }
 		/// <summary>
 		/// Нечеткая тенденция

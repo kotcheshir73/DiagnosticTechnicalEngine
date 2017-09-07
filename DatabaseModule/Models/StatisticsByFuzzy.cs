@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DatabaseModule.BaseClassies;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseModule
 {
     /// <summary>
     /// Статистика ситуаций по паре нечетких
     /// </summary>
-    public class StatisticsByFuzzy : StatisticBy
-    {
+    public class StatisticsByFuzzy : BaseClassStatisticBy
+	{
         public int StartStateFuzzyLabelId { get; set; }
         /// <summary>
         /// Значение нечеткой метки в начальной точке 

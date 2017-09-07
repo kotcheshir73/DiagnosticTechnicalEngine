@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseModule.BaseClassies;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,15 +8,9 @@ namespace DatabaseModule
 	/// <summary>
 	/// 
 	/// </summary>
-	public class DiagnosticTest
+	public class DiagnosticTest : BaseClassSeriesDescription
 	{
-		public int Id { get; set; }
-
         public string TestNumber { get; set; }
-
-		public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
 
 		public DateTime DateTest { get; set; }
 

@@ -21,23 +21,23 @@ namespace DiagnosticTechnicalEngine.Controls
 		{
 			_logicClass = new FuzzyTrendService();
 
-			var fuzzyTrend = _logicClass.GetListFuzzyTrend(_seriesId);
-			if (fuzzyTrend == null)
-			{
-				MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			dataGridView.Rows.Clear();
-			int i = 0;
-			foreach(var trend in fuzzyTrend)
-			{
-				dataGridView.Rows.Add();
-				dataGridView.Rows[i].Cells[0].Value = trend.Id;
-				dataGridView.Rows[i].Cells[1].Value = trend.TrendName;
-				dataGridView.Rows[i].Cells[2].Value = trend.Weight;
-				i++;
-			}
+			//var fuzzyTrend = _logicClass.GetListFuzzyTrend(_seriesId);
+			//if (fuzzyTrend == null)
+			//{
+			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+			//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			//dataGridView.Rows.Clear();
+			//int i = 0;
+			//foreach(var trend in fuzzyTrend)
+			//{
+			//	dataGridView.Rows.Add();
+			//	dataGridView.Rows[i].Cells[0].Value = trend.Id;
+			//	dataGridView.Rows[i].Cells[1].Value = trend.TrendName;
+			//	dataGridView.Rows[i].Cells[2].Value = trend.Weight;
+			//	i++;
+			//}
 		}
 
 		private void buttonAdd_Click(object sender, EventArgs e)
@@ -72,12 +72,12 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
 					{
-						if (!_logicClass.DelFuzzyTrend(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
-						{
-							MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-								MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+						//if (!_logicClass.DelFuzzyTrend(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
+						//{
+						//	MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+						//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+						//	return;
+						//}
 					}
 					LoadData();
 				}
@@ -93,12 +93,12 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
 					{
-						if (!_logicClass.DelFuzzyTrendFromSeries(_seriesId))
-						{
-							MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-								MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+						//if (!_logicClass.DelFuzzyTrendFromSeries(_seriesId))
+						//{
+						//	MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+						//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+						//	return;
+						//}
 					}
 					LoadData();
 				}
@@ -115,12 +115,12 @@ namespace DiagnosticTechnicalEngine.Controls
 			if (MessageBox.Show("Вы хотите сгенрировать нечеткие тенденции?", "Анализ временных рядов", MessageBoxButtons.YesNo,
 					MessageBoxIcon.Question) == DialogResult.Yes)
 			{
-				if (!_logicClass.Generate(_seriesId))
-				{
-					MessageBox.Show("Ошибка при генерации: " + _logicClass.Error, "Анализ временных рядов",
-						MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
+				//if (!_logicClass.Generate(_seriesId))
+				//{
+				//	MessageBox.Show("Ошибка при генерации: " + _logicClass.Error, "Анализ временных рядов",
+				//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
 				LoadData();
 			}
 		}

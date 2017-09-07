@@ -21,46 +21,46 @@ namespace DiagnosticTechnicalEngine.Controls
 
         public void LoadData()
         {
-            _logicClass = new StatisticsByFuzzyService();
+   //         _logicClass = new StatisticsByFuzzyService();
 
-            var statisticsByFuzzy = _logicClass.GetListStatisticsByFuzzy(_diagnosticTestId);
-            if (statisticsByFuzzy == null)
-            {
-                MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-			}
-			var logic = new DiagnosticTestService();
-			var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
-			_seriesId = elem.SeriesDiscriptionId;
+   //         var statisticsByFuzzy = _logicClass.GetListStatisticsByFuzzy(_diagnosticTestId);
+   //         if (statisticsByFuzzy == null)
+   //         {
+   //             MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+   //                 MessageBoxButtons.OK, MessageBoxIcon.Error);
+   //             return;
+			//}
+			//var logic = new DiagnosticTestService();
+			//var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
+			//_seriesId = elem.SeriesDiscriptionId;
 
-			dataGridView.Rows.Clear();
-			int i = 0;
-			foreach (var fuzzy in statisticsByFuzzy)
-			{
-				dataGridView.Rows.Add();
-				dataGridView.Rows[i].Cells[0].Value = fuzzy.Id;
-				dataGridView.Rows[i].Cells[1].Value = fuzzy.NumberSituation;
-				dataGridView.Rows[i].Cells[2].Value = fuzzy.StartState;
-				dataGridView.Rows[i].Cells[3].Value = fuzzy.EndState;
-				dataGridView.Rows[i].Cells[4].Value = fuzzy.Description;
-				if (elem != null)
-				{
-					if (elem.Count > 0)
-					{
-						dataGridView.Rows[i].Cells[5].Value = (double)fuzzy.CountMeet / elem.Count;
-					}
-					else
-					{
-						dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
-					}
-				}
-				else
-				{
-					dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
-				}
-				i++;
-			}
+			//dataGridView.Rows.Clear();
+			//int i = 0;
+			//foreach (var fuzzy in statisticsByFuzzy)
+			//{
+			//	dataGridView.Rows.Add();
+			//	dataGridView.Rows[i].Cells[0].Value = fuzzy.Id;
+			//	dataGridView.Rows[i].Cells[1].Value = fuzzy.NumberSituation;
+			//	dataGridView.Rows[i].Cells[2].Value = fuzzy.StartState;
+			//	dataGridView.Rows[i].Cells[3].Value = fuzzy.EndState;
+			//	dataGridView.Rows[i].Cells[4].Value = fuzzy.Description;
+			//	if (elem != null)
+			//	{
+			//		if (elem.Count > 0)
+			//		{
+			//			dataGridView.Rows[i].Cells[5].Value = (double)fuzzy.CountMeet / elem.Count;
+			//		}
+			//		else
+			//		{
+			//			dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
+			//		}
+			//	}
+			//	else
+			//	{
+			//		dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
+			//	}
+			//	i++;
+			//}
 		}
 
 		private void buttonWatch_Click(object sender, EventArgs e)

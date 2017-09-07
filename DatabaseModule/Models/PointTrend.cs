@@ -1,16 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Данные по переходам между точками фазового пространства
 	/// </summary>
-	public class PointTrend
+	public class PointTrend : BaseClassSeriesDescription
 	{
-		public int Id { get; set; }
-
-		public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
-
 		public int StartPoint { get; set; }
 
 		public int FinishPoint { get; set; }

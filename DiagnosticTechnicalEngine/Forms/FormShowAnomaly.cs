@@ -21,13 +21,13 @@ namespace DiagnosticTechnicalEngine.Forms
             _logicClass = new AnomalyInfoService();
             if (_id != 0)
             {
-                var elem = _logicClass.GetElemAnomalyInfo(_id);
-                if (elem == null)
-                {
-                    MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                //var elem = _logicClass.GetElemAnomalyInfo(_id);
+                //if (elem == null)
+                //{
+                //    MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+                //     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    return;
+                //}
                 //switch(elem.TypeMemoryValues)
                 //{
                 //    case 0:
@@ -48,10 +48,10 @@ namespace DiagnosticTechnicalEngine.Forms
                 //        chart.Titles["Title"].Text = "График аномалии " + elem.AnomalyName;
                 //        break;
                 //}
-                for(int i = 0; i < elem.SetValues.Split(';').Length; ++i)
-                {
-                    chart.Series["Series"].Points.AddXY(i, Convert.ToDouble(elem.SetValues.Split(';')[i]));
-                }
+                //for(int i = 0; i < elem.SetValues.Split(';').Length; ++i)
+                //{
+                //    chart.Series["Series"].Points.AddXY(i, Convert.ToDouble(elem.SetValues.Split(';')[i]));
+                //}
             }
         }
     }

@@ -20,16 +20,10 @@ namespace DiagnosticTechnicalEngine.Controls
 
             _logicClass = new SeriesDescriptionService();
 
-            var seriesDescrip = _logicClass.GetListSeriesDescrip();
-            if (seriesDescrip == null)
-            {
-                MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            dataGridView.Rows.Clear();
+			var seriesDescrip = _logicClass.GetElements(0);
+			dataGridView.Rows.Clear();
 			int i = 0;
-			foreach(var series in seriesDescrip)
+			foreach (var series in seriesDescrip)
 			{
 				dataGridView.Rows.Add();
 				dataGridView.Rows[i].Cells[0].Value = series.Id;
@@ -70,12 +64,12 @@ namespace DiagnosticTechnicalEngine.Controls
                 {
                     for(int i = 0; i < dataGridView.SelectedRows.Count; ++i)
                     {
-                        if(!_logicClass.DelSeriesDescrip(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
-                        {
-                            MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
+                        //if(!_logicClass.DelSeriesDescrip(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
+                        //{
+                        //    MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+                        //        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //    return;
+                        //}
                     }
                     LoadData();
                 }

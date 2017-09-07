@@ -21,25 +21,25 @@ namespace DiagnosticTechnicalEngine.Controls
 		{
 			_logicClass = new DiagnosticTestService();
 
-			var diagnosticTests = _logicClass.GetListDiagnosticTest(_seriesId);
-			if (diagnosticTests == null)
-			{
-				MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			dataGridView.Rows.Clear();
-			int i = 0;
-			foreach (var test in diagnosticTests)
-			{
-				dataGridView.Rows.Add();
-				dataGridView.Rows[i].Cells[0].Value = test.Id;
-                dataGridView.Rows[i].Cells[1].Value = test.TestNumber;
-                dataGridView.Rows[i].Cells[2].Value = test.FileName;
-				dataGridView.Rows[i].Cells[3].Value = test.DateTest.ToString();
-                dataGridView.Rows[i].Cells[4].Value = test.NeedForecast;
-				i++;
-			}
+			//var diagnosticTests = _logicClass.GetListDiagnosticTest(_seriesId);
+			//if (diagnosticTests == null)
+			//{
+			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+			//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			//dataGridView.Rows.Clear();
+			//int i = 0;
+			//foreach (var test in diagnosticTests)
+			//{
+			//	dataGridView.Rows.Add();
+			//	dataGridView.Rows[i].Cells[0].Value = test.Id;
+   //             dataGridView.Rows[i].Cells[1].Value = test.TestNumber;
+   //             dataGridView.Rows[i].Cells[2].Value = test.FileName;
+			//	dataGridView.Rows[i].Cells[3].Value = test.DateTest.ToString();
+   //             dataGridView.Rows[i].Cells[4].Value = test.NeedForecast;
+			//	i++;
+			//}
 		}
 
 		private void buttonAdd_Click(object sender, EventArgs e)
@@ -73,12 +73,12 @@ namespace DiagnosticTechnicalEngine.Controls
 				{
 					for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
 					{
-						if (!_logicClass.DelDiagnosticTest(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
-						{
-							MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-								MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+						//if (!_logicClass.DelDiagnosticTest(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
+						//{
+						//	MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
+						//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+						//	return;
+						//}
 					}
 					LoadData();
 				}
@@ -96,8 +96,8 @@ namespace DiagnosticTechnicalEngine.Controls
             {
                 for (int i = 0; i < dataGridView.SelectedRows.Count; ++i)
                 {
-                    var value = _logicClass.GetForecast(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value));
-                    MessageBox.Show("Прогнозное значение: " + value);
+                    //var value = _logicClass.GetForecast(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value));
+                    //MessageBox.Show("Прогнозное значение: " + value);
                 }
             }
         }

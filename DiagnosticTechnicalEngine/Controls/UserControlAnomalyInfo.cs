@@ -21,30 +21,30 @@ namespace DiagnosticTechnicalEngine.Controls
 		{
 			_logicClass = new AnomalyInfoService();
 
-			var anomalyInfo = _logicClass.GetListAnomalyInfo(_diagnosticTestId);
-			if (anomalyInfo == null)
-			{
-				MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			var logic = new DiagnosticTestService();
-			var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
+			//var anomalyInfo = _logicClass.GetListAnomalyInfo(_diagnosticTestId);
+			//if (anomalyInfo == null)
+			//{
+			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+			//		MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			//var logic = new DiagnosticTestService();
+			//var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
 
-			dataGridView.Rows.Clear();
-			int i = 0;
-			foreach (var anomaly in anomalyInfo)
-			{
-				dataGridView.Rows.Add();
-				dataGridView.Rows[i].Cells[0].Value = anomaly.Id;
-				dataGridView.Rows[i].Cells[1].Value = anomaly.AnomalyName;
-				dataGridView.Rows[i].Cells[2].Value = anomaly.SetSituations + " -> " + anomaly.AnomalySituation;
-				dataGridView.Rows[i].Cells[3].Value = anomaly.CountMeet;
-				dataGridView.Rows[i].Cells[4].Value = anomaly.Description;
-				dataGridView.Rows[i].Cells[5].Value = anomaly.NotAnomaly;
-				dataGridView.Rows[i].Cells[6].Value = anomaly.NotDetected;
-				i++;
-			}
+			//dataGridView.Rows.Clear();
+			//int i = 0;
+			//foreach (var anomaly in anomalyInfo)
+			//{
+			//	dataGridView.Rows.Add();
+			//	dataGridView.Rows[i].Cells[0].Value = anomaly.Id;
+			//	dataGridView.Rows[i].Cells[1].Value = anomaly.AnomalyName;
+			//	dataGridView.Rows[i].Cells[2].Value = anomaly.SetSituations + " -> " + anomaly.AnomalySituation;
+			//	dataGridView.Rows[i].Cells[3].Value = anomaly.CountMeet;
+			//	dataGridView.Rows[i].Cells[4].Value = anomaly.Description;
+			//	dataGridView.Rows[i].Cells[5].Value = anomaly.NotAnomaly;
+			//	dataGridView.Rows[i].Cells[6].Value = anomaly.NotDetected;
+			//	i++;
+			//}
 		}
 
 		private void buttonWatch_Click(object sender, EventArgs e)

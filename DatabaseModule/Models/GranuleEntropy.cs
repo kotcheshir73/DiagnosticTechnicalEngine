@@ -1,15 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Гранула по мерам энтропий
 	/// </summary>
-	public class GranuleEntropy
+	public class GranuleEntropy : BaseClassDiagnosticTest
 	{
-		public int Id { get; set; }
-
-		public int DiagnosticTestId { get; set; }
-
-		public DiagnosticTest DiagnosticTest { get; set; }
 		/// <summary>
 		/// Позиция гранулы
 		/// </summary>

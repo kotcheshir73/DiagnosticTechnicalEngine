@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-    public partial class FormFuzzyTrend : Form
+	public partial class FormFuzzyTrend : Form
 	{
 		private int? _id;
 
@@ -23,25 +23,27 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void FormFuzzyTrend_Load(object sender, EventArgs e)
 		{
-			_logicClass = new FuzzyTrendService();
-			foreach (var elem in Enum.GetValues(typeof(FuzzyTrendLabel)))
+			try
 			{
-				comboBoxTrendNames.Items.Add(elem.ToString());
-			}
-			comboBoxTrendNames.SelectedIndex = 0;
-			if (_id.HasValue)
-			{
-				var elem = _logicClass.GetElemFuzzyTrend(_id.Value);
-				if (elem == null)
+				_logicClass = new FuzzyTrendService();
+				foreach (var elem in Enum.GetValues(typeof(FuzzyTrendLabel)))
 				{
-					MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
+					comboBoxTrendNames.Items.Add(elem.ToString());
 				}
-				comboBoxTrendNames.SelectedIndex = comboBoxTrendNames.Items.IndexOf(elem.TrendName);
-                comboBoxTrendNames.Enabled = false;
-				textBoxWeight.Text = elem.Weight.ToString();
-				buttonSave.Enabled = false;
+				comboBoxTrendNames.SelectedIndex = 0;
+				if (_id.HasValue)
+				{
+					var elem = _logicClass.GetElement(_id.Value);
+					comboBoxTrendNames.SelectedIndex = comboBoxTrendNames.Items.IndexOf(elem.TrendName);
+					comboBoxTrendNames.Enabled = false;
+					textBoxWeight.Text = elem.Weight.ToString();
+					buttonSave.Enabled = false;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Ошибка при загрузке: " + ex.Message, "Анализ временных рядов",
+				 MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -52,44 +54,34 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		private void buttonSave_Click(object sender, EventArgs e)
 		{
-			if (!_id.HasValue)
+			try
 			{
-				if (!_logicClass.AddFuzzyTrend(new FuzzyTrendBindingModel
+				if (!_id.HasValue)
 				{
-					SeriesId = _seriesId,
-					TrendName = Converter.ToFuzzyTrendLabel(comboBoxTrendNames.Text),
-					Weight = Convert.ToInt32(textBoxWeight.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
+					_logicClass.InsertElement(new FuzzyTrendBindingModel
+					{
+						SeriesId = _seriesId,
+						TrendName = Converter.ToFuzzyTrendLabel(comboBoxTrendNames.Text),
+						Weight = Convert.ToInt32(textBoxWeight.Text)
+					});
 				}
 				else
 				{
-					DialogResult = DialogResult.OK;
-					Close();
+					_logicClass.UpdateElement(new FuzzyTrendBindingModel
+					{
+						Id = _id.Value,
+						SeriesId = _seriesId,
+						TrendName = Converter.ToFuzzyTrendLabel(comboBoxTrendNames.Text),
+						Weight = Convert.ToInt32(textBoxWeight.Text)
+					});
 				}
+				DialogResult = DialogResult.OK;
+				Close();
 			}
-			else
+			catch (Exception ex)
 			{
-				if (!_logicClass.UpdFuzzyTrend(new FuzzyTrendBindingModel
-				{
-					Id = _id.Value,
-					SeriesId = _seriesId,
-					TrendName = Converter.ToFuzzyTrendLabel(comboBoxTrendNames.Text),
-					Weight = Convert.ToInt32(textBoxWeight.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+				MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Анализ временных рядов",
+				 MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 

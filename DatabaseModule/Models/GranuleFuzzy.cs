@@ -1,15 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Гранула по нечетким меткам и тенденции
 	/// </summary>
-	public class GranuleFuzzy
+	public class GranuleFuzzy : BaseClassDiagnosticTest
 	{
-		public int Id { get; set; }
-
-		public int DiagnosticTestId { get; set; }
-
-		public DiagnosticTest DiagnosticTest { get; set; }
 		/// <summary>
 		/// Позиция гранулы
 		/// </summary>

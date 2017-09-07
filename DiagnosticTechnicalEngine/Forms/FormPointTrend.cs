@@ -25,14 +25,14 @@ namespace DiagnosticTechnicalEngine.Forms
 			_logicClass = new PointTrendService();
 			if (_id.HasValue)
 			{
-				var elem = _logicClass.GetElemPointTrend(_id.Value);
-				if (elem != null)
-				{
-					textBoxStartPoint.Text = elem.StartPoint.ToString();
-					textBoxFinishPoint.Text = elem.FinishPoint.ToString();
-					textBoxCount.Text = elem.Count.ToString();
-					textBoxWeight.Text = elem.Weight.ToString();	
-				}
+				//var elem = _logicClass.GetElemPointTrend(_id.Value);
+				//if (elem != null)
+				//{
+				//	textBoxStartPoint.Text = elem.StartPoint.ToString();
+				//	textBoxFinishPoint.Text = elem.FinishPoint.ToString();
+				//	textBoxCount.Text = elem.Count.ToString();
+				//	textBoxWeight.Text = elem.Weight.ToString();	
+				//}
 
 				buttonSave.Enabled = false;
 			}
@@ -47,46 +47,46 @@ namespace DiagnosticTechnicalEngine.Forms
 		{
 			if (!_id.HasValue)
 			{
-				if (!_logicClass.AddPointTrend(new PointTrendBindingModel
-				{
-					SeriesId = _seriesId,
-					StartPoint = Convert.ToInt32(textBoxStartPoint.Text),
-					FinishPoint = Convert.ToInt32(textBoxFinishPoint.Text),
-					Count = Convert.ToInt32(textBoxCount.Text),
-					Weight = Convert.ToDouble(textBoxWeight.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+				//if (!_logicClass.AddPointTrend(new PointTrendBindingModel
+				//{
+				//	SeriesId = _seriesId,
+				//	StartPoint = Convert.ToInt32(textBoxStartPoint.Text),
+				//	FinishPoint = Convert.ToInt32(textBoxFinishPoint.Text),
+				//	Count = Convert.ToInt32(textBoxCount.Text),
+				//	Weight = Convert.ToDouble(textBoxWeight.Text)
+				//}))
+				//{
+				//	MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
+				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
+				//else
+				//{
+				//	DialogResult = DialogResult.OK;
+				//	Close();
+				//}
 			}
 			else
 			{
-				if (!_logicClass.UpdPointTrend(new PointTrendBindingModel
-				{
-					Id = _id.Value,
-					SeriesId = _seriesId,
-					StartPoint = Convert.ToInt32(textBoxStartPoint.Text),
-					FinishPoint = Convert.ToInt32(textBoxFinishPoint.Text),
-					Count = Convert.ToInt32(textBoxCount.Text),
-					Weight = Convert.ToDouble(textBoxWeight.Text)
-				}))
-				{
-					MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+				//if (!_logicClass.UpdPointTrend(new PointTrendBindingModel
+				//{
+				//	Id = _id.Value,
+				//	SeriesId = _seriesId,
+				//	StartPoint = Convert.ToInt32(textBoxStartPoint.Text),
+				//	FinishPoint = Convert.ToInt32(textBoxFinishPoint.Text),
+				//	Count = Convert.ToInt32(textBoxCount.Text),
+				//	Weight = Convert.ToDouble(textBoxWeight.Text)
+				//}))
+				//{
+				//	MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
+				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	return;
+				//}
+				//else
+				//{
+				//	DialogResult = DialogResult.OK;
+				//	Close();
+				//}
 			}
 		}
 

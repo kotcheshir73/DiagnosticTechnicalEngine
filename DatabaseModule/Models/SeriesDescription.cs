@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DatabaseModule.BaseClassies;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseModule
@@ -6,9 +7,8 @@ namespace DatabaseModule
 	/// <summary>
 	/// Информаци по временому ряду
 	/// </summary>
-    public class SeriesDescription
+    public class SeriesDescription : BaseClass
     {
-        public int Id { get; set; }
 		/// <summary>
 		/// Название ряда
 		/// </summary>
@@ -49,17 +49,17 @@ namespace DatabaseModule
 		/// <summary>
 		/// Набор возможных аномалий в ряду
 		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
+		[ForeignKey("SeriesDiscriptionId")]
 		public virtual ICollection<AnomalyInfo> AnomalyInfos { get; set; }
 		/// <summary>
 		/// Ситуации по паре энтропий
 		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
+		[ForeignKey("SeriesDiscriptionId")]
 		public virtual ICollection<StatisticsByEntropy> StatisticsByEntropys { get; set; }
 		/// <summary>
 		/// Ситуации по нечеткой паре
 		/// </summary>
-		[ForeignKey("DiagnosticTestId")]
+		[ForeignKey("SeriesDiscriptionId")]
 		public virtual ICollection<StatisticsByFuzzy> StatisticsByFuzzys { get; set; }
 	}
 }

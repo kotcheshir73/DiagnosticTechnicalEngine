@@ -53,6 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\UserControlFuzzyLabel1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StandartClasses\StandartControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StandartClasses\StandartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\UserControlAnalysisSeries.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -76,12 +85,6 @@
     </Compile>
     <Compile Include="Controls\UserControlDiagnosticTestRecord.Designer.cs">
       <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlFuzzyLabel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlFuzzyLabel.Designer.cs">
-      <DependentUpon>UserControlFuzzyLabel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserControlFuzzyTrend.cs">
       <SubType>UserControl</SubType>
@@ -180,12 +183,6 @@
     <Compile Include="Forms\FormDiagnosticTest.Designer.cs">
       <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormFuzzyLabel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormFuzzyLabel.Designer.cs">
-      <DependentUpon>FormFuzzyLabel.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormFuzzyTrend.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,6 +237,9 @@
     <Compile Include="Forms\FormStatisticFuzzy.Designer.cs">
       <DependentUpon>FormStatisticFuzzy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormFuzzyLabel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\UserControlAnalysisSeries.resx">
@@ -253,9 +253,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlDiagnosticTestRecord.resx">
       <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlFuzzyLabel.resx">
-      <DependentUpon>UserControlFuzzyLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlFuzzyTrend.resx">
       <DependentUpon>UserControlFuzzyTrend.cs</DependentUpon>
@@ -304,9 +301,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormDiagnosticTest.resx">
       <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormFuzzyLabel.resx">
-      <DependentUpon>FormFuzzyLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormFuzzyTrend.resx">
       <DependentUpon>FormFuzzyTrend.cs</DependentUpon>

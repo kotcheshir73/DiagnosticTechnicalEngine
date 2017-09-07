@@ -1,15 +1,12 @@
-﻿namespace DatabaseModule
+﻿using DatabaseModule.BaseClassies;
+
+namespace DatabaseModule
 {
 	/// <summary>
 	/// Нечектая метка
 	/// </summary>
-    public class FuzzyLabel
-    {
-        public int Id { get; set; }
-
-        public int SeriesDiscriptionId { get; set; }
-
-		public SeriesDescription SeriesDescription { get; set; }
+    public class FuzzyLabel : BaseClassSeriesDescription
+	{
 		/// <summary>
 		/// Варинат получения нечеткой метки
 		/// </summary>

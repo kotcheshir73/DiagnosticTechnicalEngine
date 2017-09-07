@@ -22,15 +22,10 @@ namespace DiagnosticTechnicalEngine.Forms
 			_logicClass = new SeriesDescriptionService();
 			if (_id.HasValue)
 			{
-				var elem = _logicClass.GetElemSeriesDescrip(_id.Value);
-				if (elem == null)
-				{
-					MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
+				var elem = _logicClass.GetElement(_id.Value);
 				textBoxName.Text = elem.SeriesName;
 				textBoxDescription.Text = elem.SeriesDiscription;
+				checkBoxNeedForecast.Checked = elem.NeedForecast;
 				buttonSave.Enabled = false;
 			}
 		}
@@ -49,41 +44,25 @@ namespace DiagnosticTechnicalEngine.Forms
 		{
 			if (!_id.HasValue)
 			{
-				if (!_logicClass.AddSeriesDescrip(new SeriesDescriptionBindingModel
+				_logicClass.InsertElement(new SeriesDescriptionBindingModel
 				{
 					SeriesName = textBoxName.Text,
-					SeriesDiscription = textBoxDescription.Text
-				}))
-				{
-					MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+					SeriesDiscription = textBoxDescription.Text,
+					NeedForecast = checkBoxNeedForecast.Checked
+				});
 			}
 			else
 			{
-				if (!_logicClass.UpdSeriesDescrip(new SeriesDescriptionBindingModel
+				_logicClass.UpdateElement(new SeriesDescriptionBindingModel
 				{
 					Id = _id.Value,
 					SeriesName = textBoxName.Text,
-					SeriesDiscription = textBoxDescription.Text
-				}))
-				{
-					MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				else
-				{
-					DialogResult = DialogResult.OK;
-					Close();
-				}
+					SeriesDiscription = textBoxDescription.Text,
+					NeedForecast = checkBoxNeedForecast.Checked
+				});
 			}
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 
 		private void buttonClose_Click(object sender, EventArgs e)

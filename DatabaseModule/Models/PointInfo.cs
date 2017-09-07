@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatabaseModule
 {
@@ -8,6 +9,9 @@ namespace DatabaseModule
 	public class PointInfo
 	{
 		public int Id { get; set; }
+
+		[NotMapped]
+		public int SeriesDiscriptionId { get; set; }
 
 		public int DiagnosticTestId { get; set; }
 

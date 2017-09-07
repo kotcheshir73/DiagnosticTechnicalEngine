@@ -31,24 +31,24 @@ namespace DiagnosticTechnicalEngine.Forms
 		private void FormStatisticEntropy_Load(object sender, EventArgs e)
 		{
 			_logicClass = new StatisticsByEntropyService();
-			var elem = _logicClass.GetElemStatisticsByEntropy(_id);
-			if (elem == null)
-			{
-				MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-				 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			textBoxNumberSituation.Text = elem.NumberSituation.ToString();
-			comboBoxStartStateUX.SelectedIndex = comboBoxStartStateUX.Items.IndexOf(elem.StartStateLingvistUX);
-            comboBoxStartStateUX.Enabled = false;
-			comboBoxStartStateFT.SelectedIndex = comboBoxStartStateFT.Items.IndexOf(elem.StartStateLingvistFT);
-            comboBoxStartStateFT.Enabled = false;
-			comboBoxEndStateUX.SelectedIndex = comboBoxEndStateUX.Items.IndexOf(elem.EndStateLingvistUX);
-            comboBoxEndStateUX.Enabled = false;
-			comboBoxEndStateFT.SelectedIndex = comboBoxEndStateFT.Items.IndexOf(elem.EndStateLingvistFT);
-            comboBoxEndStateFT.Enabled = false;
-			textBoxDescription.Text = elem.Description;
-			textBoxNumberSituation.Enabled = false;
+			//var elem = _logicClass.GetElemStatisticsByEntropy(_id);
+			//if (elem == null)
+			//{
+			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+			//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			//textBoxNumberSituation.Text = elem.NumberSituation.ToString();
+			//comboBoxStartStateUX.SelectedIndex = comboBoxStartStateUX.Items.IndexOf(elem.StartStateLingvistUX);
+   //         comboBoxStartStateUX.Enabled = false;
+			//comboBoxStartStateFT.SelectedIndex = comboBoxStartStateFT.Items.IndexOf(elem.StartStateLingvistFT);
+   //         comboBoxStartStateFT.Enabled = false;
+			//comboBoxEndStateUX.SelectedIndex = comboBoxEndStateUX.Items.IndexOf(elem.EndStateLingvistUX);
+   //         comboBoxEndStateUX.Enabled = false;
+			//comboBoxEndStateFT.SelectedIndex = comboBoxEndStateFT.Items.IndexOf(elem.EndStateLingvistFT);
+   //         comboBoxEndStateFT.Enabled = false;
+			//textBoxDescription.Text = elem.Description;
+			//textBoxNumberSituation.Enabled = false;
 		}
 
 		private void buttonClose_Click(object sender, EventArgs e)

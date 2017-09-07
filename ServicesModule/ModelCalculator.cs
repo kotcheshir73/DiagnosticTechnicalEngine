@@ -15,9 +15,9 @@ namespace ServicesModule
             {
                 throw new Exception("Невозможно получить нечеткие метки");
             }
-			if(point.DiagnosticTest != null)
+			if(!seriesId.HasValue)
 			{
-				seriesId = point.DiagnosticTest.SeriesDiscriptionId;
+				seriesId = point.SeriesDiscriptionId;
 			}
 			using (var _context = new DissertationDbContext())
 			{   // индекс нечеткой метки, к которой будет принадлежать точка

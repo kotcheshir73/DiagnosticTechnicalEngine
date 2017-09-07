@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseClassies\BaseClass.cs" />
+    <Compile Include="BaseClassies\BaseClassDiagnosticTest.cs" />
+    <Compile Include="BaseClassies\BaseClassSeriesDescription.cs" />
     <Compile Include="DissertationDbContext.cs" />
     <Compile Include="Enums\FuzzyLabelType.cs" />
     <Compile Include="Enums\FuzzyTrendLabel.cs" />
@@ -88,6 +91,10 @@
     <Compile Include="Migrations\201708281519104_ChangePointInfoLink.Designer.cs">
       <DependentUpon>201708281519104_ChangePointInfoLink.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709051620038_NewChanges2.cs" />
+    <Compile Include="Migrations\201709051620038_NewChanges2.Designer.cs">
+      <DependentUpon>201709051620038_NewChanges2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
@@ -102,7 +109,7 @@
     <Compile Include="Models\PointTrend.cs" />
     <Compile Include="Models\RuleTrend.cs" />
     <Compile Include="Models\SeriesDescription.cs" />
-    <Compile Include="Models\StatisticBy.cs" />
+    <Compile Include="BaseClassies\BaseClassStatisticBy.cs" />
     <Compile Include="Models\StatisticsByEntropy.cs" />
     <Compile Include="Models\StatisticsByFuzzy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708281519104_ChangePointInfoLink.resx">
       <DependentUpon>201708281519104_ChangePointInfoLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709051620038_NewChanges2.resx">
+      <DependentUpon>201709051620038_NewChanges2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

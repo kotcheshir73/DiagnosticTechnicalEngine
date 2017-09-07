@@ -113,22 +113,22 @@ namespace DiagnosticTechnicalEngine.Forms
 			if (_dialog.ShowDialog() == DialogResult.OK)
 			{
 
-				var logic = new PointTrendService();
-				if (!logic.CalcPointsTrend(new PointTrendCalcBindingModel
-				{
-					FileName = _dialog.FileName,
-					TypeFile = Converter.ToTypeFile(_typeFile),
-					DatasInFile = _list,
-					SeriesDiscriptionId = _seriesId
-				}))
-				{
-					MessageBox.Show("Ошибка при обработке: " + logic.Error, "Анализ временных рядов",
-					 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-				else
-				{
-					MessageBox.Show("Сделано", "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
+				//var logic = new PointTrendService();
+				//if (!logic.CalcPointsTrend(new PointTrendCalcBindingModel
+				//{
+				//	FileName = _dialog.FileName,
+				//	TypeFile = Converter.ToTypeFile(_typeFile),
+				//	DatasInFile = _list,
+				//	SeriesDiscriptionId = _seriesId
+				//}))
+				//{
+				//	MessageBox.Show("Ошибка при обработке: " + logic.Error, "Анализ временных рядов",
+				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//}
+				//else
+				//{
+				//	MessageBox.Show("Сделано", "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				//}
 			}
 		}
 	}

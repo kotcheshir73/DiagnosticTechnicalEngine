@@ -19,45 +19,45 @@ namespace DiagnosticTechnicalEngine.Controls
 
         public void LoadData()
         {
-            _logicClass = new StatisticsByEntropyService();
+            //_logicClass = new StatisticsByEntropyService();
 
-            var statisticsByEntropy = _logicClass.GetListStatisticsByEntropy(_diagnosticTestId);
-            if (statisticsByEntropy == null)
-            {
-                MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            var logic = new DiagnosticTestService();
-            var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
+            //var statisticsByEntropy = _logicClass.GetListStatisticsByEntropy(_diagnosticTestId);
+            //if (statisticsByEntropy == null)
+            //{
+            //    MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
+            //        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return;
+            //}
+            //var logic = new DiagnosticTestService();
+            //var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
 
-            dataGridView.Rows.Clear();
-            int i = 0;
-            foreach (var entropy in statisticsByEntropy)
-            {
-                dataGridView.Rows.Add();
-                dataGridView.Rows[i].Cells[0].Value = entropy.Id;
-                dataGridView.Rows[i].Cells[1].Value = entropy.NumberSituation;
-                dataGridView.Rows[i].Cells[2].Value = entropy.StartState;
-                dataGridView.Rows[i].Cells[3].Value = entropy.EndState;
-                dataGridView.Rows[i].Cells[4].Value = entropy.Description;
-                if (elem != null)
-                {
-                    if (elem.Count > 0)
-                    {
-                        dataGridView.Rows[i].Cells[5].Value = (double)entropy.CountMeet / elem.Count;
-                    }
-                    else
-                    {
-                        dataGridView.Rows[i].Cells[5].Value = entropy.CountMeet;
-                    }
-                }
-                else
-                {
-                    dataGridView.Rows[i].Cells[5].Value = entropy.CountMeet;
-                }
-                i++;
-            }
+            //dataGridView.Rows.Clear();
+            //int i = 0;
+            //foreach (var entropy in statisticsByEntropy)
+            //{
+            //    dataGridView.Rows.Add();
+            //    dataGridView.Rows[i].Cells[0].Value = entropy.Id;
+            //    dataGridView.Rows[i].Cells[1].Value = entropy.NumberSituation;
+            //    dataGridView.Rows[i].Cells[2].Value = entropy.StartState;
+            //    dataGridView.Rows[i].Cells[3].Value = entropy.EndState;
+            //    dataGridView.Rows[i].Cells[4].Value = entropy.Description;
+            //    if (elem != null)
+            //    {
+            //        if (elem.Count > 0)
+            //        {
+            //            dataGridView.Rows[i].Cells[5].Value = (double)entropy.CountMeet / elem.Count;
+            //        }
+            //        else
+            //        {
+            //            dataGridView.Rows[i].Cells[5].Value = entropy.CountMeet;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        dataGridView.Rows[i].Cells[5].Value = entropy.CountMeet;
+            //    }
+            //    i++;
+            //}
         }
 
         private void buttonWatch_Click(object sender, EventArgs e)
