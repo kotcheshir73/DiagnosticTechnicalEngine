@@ -63,7 +63,6 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			AutoScaleMode = AutoScaleMode.Font;
 			AutoSizeMode = AutoSizeMode.GrowAndShrink;
-			ClientSize = new System.Drawing.Size(344, 222);
 			Controls.Add(buttonClose);
 			Controls.Add(buttonSave);
 			MaximizeBox = false;
@@ -114,8 +113,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Анализ временных рядов",
-				 MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -166,7 +164,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// <summary>
 		/// Идентификатор временного ряда или диагностическогго теста
 		/// </summary>
-		protected int _seriesId;
+		protected int _parentId;
 
 		/// <summary>
 		/// Класс, в котором реализован сервис
@@ -183,12 +181,12 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// <summary>
 		/// Инициализация пользовательских параметров
 		/// </summary>
-		/// <param name="seriesId"></param>
+		/// <param name="parentId"></param>
 		/// <param name="id"></param>
-		public void Initialize(ISeriesDescriptionModel<T, U> logicClass, int seriesId, int? id = null)
+		public void Initialize(ISeriesDescriptionModel<T, U> logicClass, int parentId, int? id = null)
 		{
 			_id = id;
-			_seriesId = seriesId;
+			_parentId = parentId;
 			_logicClass = logicClass;
 		}
 
@@ -231,7 +229,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected void ComboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+		protected void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			buttonSave.Enabled = true;
 		}

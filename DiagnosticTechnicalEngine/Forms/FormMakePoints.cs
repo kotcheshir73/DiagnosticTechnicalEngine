@@ -54,7 +54,7 @@ namespace DiagnosticTechnicalEngine.Forms
 				listBoxSelected.Items.RemoveAt(listBoxSelected.SelectedIndex);
 			}
 		}
-		
+
 		private void buttonUpToList_Click(object sender, EventArgs e)
 		{
 			if (listBoxSelected.SelectedIndex > 0)
@@ -112,23 +112,20 @@ namespace DiagnosticTechnicalEngine.Forms
 			}
 			if (_dialog.ShowDialog() == DialogResult.OK)
 			{
-
-				//var logic = new PointTrendService();
-				//if (!logic.CalcPointsTrend(new PointTrendCalcBindingModel
-				//{
-				//	FileName = _dialog.FileName,
-				//	TypeFile = Converter.ToTypeFile(_typeFile),
-				//	DatasInFile = _list,
-				//	SeriesDiscriptionId = _seriesId
-				//}))
-				//{
-				//	MessageBox.Show("Ошибка при обработке: " + logic.Error, "Анализ временных рядов",
-				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//}
-				//else
-				//{
-				//	MessageBox.Show("Сделано", "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				//}
+				try
+				{
+					ModelGenerate.CalcPointsTrend(new PointTrendCalcBindingModel
+					{
+						FileName = _dialog.FileName,
+						TypeFile = Converter.ToTypeFile(_typeFile),
+						DatasInFile = _list,
+						SeriesDiscriptionId = _seriesId
+					});
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Ошибка при обработке: " + ex.Message, "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
 			}
 		}
 	}

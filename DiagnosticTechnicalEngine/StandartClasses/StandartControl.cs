@@ -8,8 +8,19 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.StandartClasses
 {
-	public class StandartControl<T, U> : UserControl
+	public class StandartControl<T, U, Z> : UserControl where Z : StandartForm<T, U>, new()
 	{
+		#region Элементы контрола
+		protected GroupBox groupBox;
+		protected DataGridView dataGridView;
+		protected Panel panel;
+		private Button buttonDel;
+		private Button buttonUpd;
+		private Button buttonAdd;
+		private Button buttonClear;
+		private Button buttonRefresh;
+		#endregion
+
 		#region Component Designer generated code
 		/// <summary> 
 		/// Required designer variable.
@@ -28,18 +39,12 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			}
 			base.Dispose(disposing);
 		}
-		protected GroupBox groupBox;
-		protected DataGridView dataGridView;
-		protected Panel panel;
-		protected Button buttonDel;
-		protected Button buttonUpd;
-		protected Button buttonAdd;
-		protected Button buttonClear;
-		protected Button buttonRefresh;
 
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
+		#endregion
+
+		/// <summary>
+		/// Переопределяем InitializeComponent (описывается контрол + основыне кнокпи и табличный элемент)
+		/// В перегрузке требуется добавить колонки в таблицу и кнокпи, если требуется
 		/// </summary>
 		protected virtual void InitializeComponent()
 		{
@@ -168,39 +173,42 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 
 		}
 
-		#endregion
-
-		protected int _seriesId;
+		#region Пользовательские поля
+		protected int _parentId;
 
 		protected ISeriesDescriptionModel<T, U> _logicClass;
 
-		protected StandartForm<T, U> _form;
-
 		protected IEnumerable<T> _list;
 
-		public int SeriesId { set { _seriesId = value; if (_seriesId > 0) { LoadData(); } } }
+		public int ParentId { set { _parentId = value; if (_parentId > 0) { LoadData(); } } }
+		#endregion
 
+		/// <summary>
+		/// Конструктор, вызывает инициализацию контрола
+		/// </summary>
 		public StandartControl()
 		{
 			InitializeComponent();
 		}
 
 		/// <summary>
-		/// Конструктор, загружаем форму
+		/// Метод, принимающий параметры для работы контроола
 		/// </summary>
-		/// <param name="seriesId"></param>
-		/// <param name="id"></param>
-		public void Initialize(ISeriesDescriptionModel<T, U> logicClass, StandartForm<T, U> form)
+		/// <param name="logicClass"></param>
+		public void Initialize(ISeriesDescriptionModel<T, U> logicClass)
 		{
 			_logicClass = logicClass;
-			_form = form;
 		}
 
+		/// <summary>
+		/// Получение данных для заполнения таблицы
+		/// Требуется перегрузка для заполнения полей таблицы, исходя из объекта
+		/// </summary>
 		protected virtual void LoadData()
 		{
 			try
 			{
-				_list = _logicClass.GetElements(_seriesId);
+				_list = _logicClass.GetElements(_parentId);
 				dataGridView.Rows.Clear();
 			}
 			catch (Exception ex)
@@ -210,33 +218,55 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			}
 		}
 
-		protected void ButtonAdd_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Вызов формы для добавления нового элемента
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ButtonAdd_Click(object sender, EventArgs e)
 		{
-			_form.Initialize(_logicClass, _seriesId);
-			if (_form.ShowDialog() == DialogResult.OK)
+			var form = new Z();
+			form.Initialize(_logicClass, _parentId);
+			if (form.ShowDialog() == DialogResult.OK)
 			{
 				LoadData();
 			}
 		}
 
-		protected void ButtonUpd_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Вызов формы для редактирования элемента
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ButtonUpd_Click(object sender, EventArgs e)
 		{
 			if (dataGridView.SelectedRows.Count > 0)
 			{
-				_form.Initialize(_logicClass, _seriesId, Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
-				if (_form.ShowDialog() == DialogResult.OK)
+				var form = new Z();
+				form.Initialize(_logicClass, _parentId, Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
+				if (form.ShowDialog() == DialogResult.OK)
 				{
 					LoadData();
 				}
 			}
 		}
 
-		protected void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		/// <summary>
+		/// Двойной клик по записи, вызываем форму для редактирования
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
 		{
 			ButtonUpd_Click(sender, e);
 		}
 
-		protected void ButtonDel_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Удаление элемента
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ButtonDel_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -249,7 +279,6 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 						{
 							_logicClass.DeleteElement(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value));
 						}
-						LoadData();
 					}
 				}
 			}
@@ -258,9 +287,18 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 				MessageBox.Show("Ошибка при удалении: " + ex.Message, "Анализ временных рядов",
 					MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+			finally
+			{
+				LoadData();
+			}
 		}
 
-		protected void ButtonClear_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Отчистка всего списка
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ButtonClear_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -269,8 +307,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 					if (MessageBox.Show("Вы хотите удалить?", "Анализ временных рядов", MessageBoxButtons.YesNo,
 						MessageBoxIcon.Question) == DialogResult.Yes)
 					{
-						_logicClass.DeleteElements(_seriesId);
-						LoadData();
+						_logicClass.DeleteElements(_parentId);
 					}
 				}
 			}
@@ -279,8 +316,17 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 				MessageBox.Show("Ошибка при удалении: " + ex.Message, "Анализ временных рядов",
 					MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+			finally
+			{
+				LoadData();
+			}
 		}
 
+		/// <summary>
+		/// Обновление списка
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		protected void ButtonRefresh_Click(object sender, EventArgs e)
 		{
 			LoadData();

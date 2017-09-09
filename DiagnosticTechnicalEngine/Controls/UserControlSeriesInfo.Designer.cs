@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
 			this.groupBoxSeries = new System.Windows.Forms.GroupBox();
-			this.userControlPountTrend = new DiagnosticTechnicalEngine.Controls.UserControlPountTrend();
-			this.userControlRuleTrend = new DiagnosticTechnicalEngine.Controls.UserControlRuleTrend();
-			this.userControlFuzzyTrend = new DiagnosticTechnicalEngine.Controls.UserControlFuzzyTrend();
 			this.userControlDiagnosticTest = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTest();
 			this.labelDescription = new System.Windows.Forms.Label();
 			this.groupBoxSeries.SuspendLayout();
@@ -39,9 +36,6 @@
 			// 
 			// groupBoxSeries
 			// 
-			this.groupBoxSeries.Controls.Add(this.userControlPountTrend);
-			this.groupBoxSeries.Controls.Add(this.userControlRuleTrend);
-			this.groupBoxSeries.Controls.Add(this.userControlFuzzyTrend);
 			this.groupBoxSeries.Controls.Add(this.userControlDiagnosticTest);
 			this.groupBoxSeries.Controls.Add(this.labelDescription);
 			this.groupBoxSeries.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -51,31 +45,6 @@
 			this.groupBoxSeries.TabIndex = 0;
 			this.groupBoxSeries.TabStop = false;
 			this.groupBoxSeries.Text = "ряд";
-			// 
-			// userControlPountTrend
-			// 
-			this.userControlPountTrend.BackColor = System.Drawing.Color.Transparent;
-			this.userControlPountTrend.Location = new System.Drawing.Point(606, 276);
-			this.userControlPountTrend.Name = "userControlPountTrend";
-			this.userControlPountTrend.Size = new System.Drawing.Size(600, 200);
-			this.userControlPountTrend.TabIndex = 4;
-			// 
-			// userControlRuleTrend
-			// 
-			this.userControlRuleTrend.BackColor = System.Drawing.Color.Transparent;
-			this.userControlRuleTrend.Location = new System.Drawing.Point(0, 276);
-			this.userControlRuleTrend.MinimumSize = new System.Drawing.Size(530, 200);
-			this.userControlRuleTrend.Name = "userControlRuleTrend";
-			this.userControlRuleTrend.Size = new System.Drawing.Size(600, 200);
-			this.userControlRuleTrend.TabIndex = 3;
-			// 
-			// userControlFuzzyTrend
-			// 
-			this.userControlFuzzyTrend.BackColor = System.Drawing.Color.Transparent;
-			this.userControlFuzzyTrend.Location = new System.Drawing.Point(606, 70);
-			this.userControlFuzzyTrend.Name = "userControlFuzzyTrend";
-			this.userControlFuzzyTrend.Size = new System.Drawing.Size(600, 200);
-			this.userControlFuzzyTrend.TabIndex = 2;
 			// 
 			// userControlDiagnosticTest
 			// 
@@ -118,8 +87,5 @@
         private System.Windows.Forms.GroupBox groupBoxSeries;
         private System.Windows.Forms.Label labelDescription;
         private UserControlDiagnosticTest userControlDiagnosticTest;
-        private UserControlFuzzyTrend userControlFuzzyTrend;
-        private UserControlRuleTrend userControlRuleTrend;
-        private UserControlPountTrend userControlPountTrend;
     }
 }

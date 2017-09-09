@@ -1,130 +1,158 @@
-﻿using ServicesModule;
+﻿using DatabaseModule;
+using DiagnosticTechnicalEngine.StandartClasses;
+using ServicesModule;
 using ServicesModule.BindingModels;
-using DatabaseModule;
+using ServicesModule.ViewModels;
 using System;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormRuleTrend : Form
-    {
-        private int? _id;
+	public class FormRuleTrend : StandartForm<RuleTrendViewModel, RuleTrendBindingModel>
+	{
+		private Label labelTrend;
+		private Label labelFuzzyLabelFrom;
+		private Label labelFuzzyLabelTo;
+		private ComboBox comboBoxTrends;
+		private ComboBox comboBoxFuzzyLabelFrom;
+		private ComboBox comboBoxFuzzyLabelTo;
 
-        private int _seriesId;
+		protected override void InitializeComponent()
+		{
+			base.InitializeComponent();
+			SuspendLayout();
+			labelTrend = new Label
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(12, 9),
+				Name = "labelTrend",
+				Size = new System.Drawing.Size(65, 13),
+				TabIndex = 0,
+				Text = "Тенденция:"
+			};
+			labelFuzzyLabelFrom = new Label
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(12, 52),
+				Name = "labelFuzzyLabelFrom",
+				Size = new System.Drawing.Size(147, 13),
+				TabIndex = 2,
+				Text = "Нечеткая метка - источник:"
+			};
+			labelFuzzyLabelTo = new Label
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(12, 95),
+				Name = "labelFuzzyLabelTo",
+				Size = new System.Drawing.Size(151, 13),
+				TabIndex = 4,
+				Text = "Нечеткая метка - приемник:"
+			};
+			comboBoxTrends = new ComboBox
+			{
+				DropDownStyle = ComboBoxStyle.DropDownList,
+				FormattingEnabled = true,
+				Location = new System.Drawing.Point(83, 6),
+				Name = "comboBoxTrends",
+				Size = new System.Drawing.Size(250, 21),
+				TabIndex = 1
+			};
+			comboBoxTrends.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);
+			comboBoxFuzzyLabelFrom = new ComboBox
+			{
+				DropDownStyle = ComboBoxStyle.DropDownList,
+				FormattingEnabled = true,
+				Location = new System.Drawing.Point(169, 49),
+				Name = "comboBoxFuzzyLabelFrom",
+				Size = new System.Drawing.Size(164, 21),
+				TabIndex = 3
+			};
+			comboBoxFuzzyLabelFrom.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);
+			comboBoxFuzzyLabelTo = new ComboBox
+			{
+				DropDownStyle = ComboBoxStyle.DropDownList,
+				FormattingEnabled = true,
+				Location = new System.Drawing.Point(169, 92),
+				Name = "comboBoxFuzzyLabelTo",
+				Size = new System.Drawing.Size(164, 21),
+				TabIndex = 5
+			};
+			comboBoxFuzzyLabelTo.SelectedIndexChanged += new EventHandler(ComboBox_SelectedIndexChanged);
 
-        private RuleTrendsService _logicClass;
+			buttonSave.Location = new System.Drawing.Point(83, 129);
+			buttonClose.Location = new System.Drawing.Point(210, 129);
 
-        public FormRuleTrend(int seriesId, int? id = null)
-        {
-            InitializeComponent();
-            _id = id;
-            _seriesId = seriesId;
+			ClientSize = new System.Drawing.Size(344, 162);
+			Controls.Add(labelTrend);
+			Controls.Add(labelFuzzyLabelTo);
+			Controls.Add(labelFuzzyLabelFrom);
+			Controls.Add(comboBoxTrends);
+			Controls.Add(comboBoxFuzzyLabelTo);
+			Controls.Add(comboBoxFuzzyLabelFrom);
+			Name = "FormRuleTrend";
+			Text = "Правила вычилсения тенденции";
+			ResumeLayout(false);
+			PerformLayout();
+		}
 
-   //         var trends = (new FuzzyTrendService()).GetListFuzzyTrend(_seriesId).ToList();
-   //         comboBoxTrends.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
-   //         comboBoxTrends.ValueMember = "Value";
-   //         comboBoxTrends.DisplayMember = "Display";
+		protected override void LoadComboBox()
+		{
+			try
+			{
+				var trends = (new FuzzyTrendService()).GetElements(_parentId).ToList();
+				comboBoxTrends.DataSource = trends.Select(t => new { Value = t.Id, Display = t.TrendName }).ToList();
+				comboBoxTrends.ValueMember = "Value";
+				comboBoxTrends.DisplayMember = "Display";
 
-   //         var labels = (new FuzzyLabelService()).GetListFuzzyLabel(_seriesId);
-			//comboBoxFuzzyLabelFrom.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
-			//comboBoxFuzzyLabelFrom.ValueMember = "Value";
-			//comboBoxFuzzyLabelFrom.DisplayMember = "Display";
-			//comboBoxFuzzyLabelTo.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
-			//comboBoxFuzzyLabelTo.ValueMember = "Value";
-			//comboBoxFuzzyLabelTo.DisplayMember = "Display";
-        }
-
-        private void FormRuleTrend_Load(object sender, EventArgs e)
-        {
-            _logicClass = new RuleTrendsService();
-            if (_id.HasValue)
-            {
-				//var elem = _logicClass.GetElemRuleTrend(_id.Value);
-				//if(elem != null)
-				//{
-				//	comboBoxTrends.SelectedValue = elem.FuzzyTrendId;
-				//	comboBoxFuzzyLabelFrom.SelectedValue = elem.FuzzyLabelFromId;
-				//	comboBoxFuzzyLabelTo.SelectedValue = elem.FuzzyLabelToId;
-				//}
-				
-                buttonSave.Enabled = false;
-            }
-        }
-
-        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            buttonSave.Enabled = true;
-        }
-
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            if (!_id.HasValue)
-            {
-				//if (!_logicClass.AddRuleTrend(new RuleTrendBindingModel
-				//{
-				//	SeriesId = _seriesId,
-				//	FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
-				//	FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
-				//	FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
-				//	FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
-				//}))
-				//{
-				//	MessageBox.Show("Ошибка при добавлении: " + _logicClass.Error, "Анализ временных рядов",
-				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//	return;
-				//}
-				//else
-				//{
-				//	DialogResult = DialogResult.OK;
-				//	Close();
-				//}
+				var labels = (new FuzzyLabelService()).GetElements(_parentId);
+				comboBoxFuzzyLabelFrom.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+				comboBoxFuzzyLabelFrom.ValueMember = "Value";
+				comboBoxFuzzyLabelFrom.DisplayMember = "Display";
+				comboBoxFuzzyLabelTo.DataSource = labels.Select(t => new { Value = t.Id, Display = t.FuzzyLabelName }).ToList();
+				comboBoxFuzzyLabelTo.ValueMember = "Value";
+				comboBoxFuzzyLabelTo.DisplayMember = "Display";
 			}
-            else
-            {
-				//if (!_logicClass.UpdRuleTrend(new RuleTrendBindingModel
-				//{
-				//	Id = _id.Value,
-				//	SeriesId = _seriesId,
-				//	FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
-				//	FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
-				//	FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
-				//	FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
-				//}))
-				//{
-				//	MessageBox.Show("Ошибка при изменении: " + _logicClass.Error, "Анализ временных рядов",
-				//	 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//	return;
-				//}
-				//else
-				//{
-				//	DialogResult = DialogResult.OK;
-				//	Close();
-				//}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Ошибка при загрузке: " + ex.Message, "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-        }
+		}
 
-        private void buttonClose_Click(object sender, EventArgs e)
-        {
-            if (buttonSave.Enabled)
-            {
-                if (MessageBox.Show("Сохранить изменения?", "Анализ временных рядов", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    buttonSave_Click(sender, e);
-                }
-                else
-                {
-                    DialogResult = DialogResult.Cancel;
-                    Close();
-                }
-            }
-            else
-            {
-                DialogResult = DialogResult.None;
-                Close();
-            }
-        }
-    }
+		protected override void LoadElement()
+		{
+			base.LoadElement();
+			if (_element != null)
+			{
+				comboBoxTrends.SelectedValue = _element.FuzzyTrendId;
+				comboBoxFuzzyLabelFrom.SelectedValue = _element.FuzzyLabelFromId;
+				comboBoxFuzzyLabelTo.SelectedValue = _element.FuzzyLabelToId;
+			}
+		}
+
+		protected override RuleTrendBindingModel GetInsertedElement()
+		{
+			return new RuleTrendBindingModel
+			{
+				SeriesId = _parentId,
+				FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
+				FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
+				FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
+				FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
+			};
+		}
+
+		protected override RuleTrendBindingModel GetUpdateedElement()
+		{
+			return new RuleTrendBindingModel
+			{
+				Id = _id.Value,
+				SeriesId = _parentId,
+				FuzzyTrendId = Convert.ToInt32(comboBoxTrends.SelectedValue),
+				FuzzyLabelFromId = Convert.ToInt32(comboBoxFuzzyLabelFrom.SelectedValue),
+				FuzzyLabelToId = Convert.ToInt32(comboBoxFuzzyLabelTo.SelectedValue),
+				FuzzyTrendName = Converter.ToFuzzyTrendLabel(comboBoxTrends.Text)
+			};
+		}
+	}
 }

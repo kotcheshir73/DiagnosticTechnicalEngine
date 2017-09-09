@@ -53,8 +53,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\UserControlFuzzyLabel1.cs">
+    <Compile Include="Controls\UserControlFuzzyLabel.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControlFuzzyTrend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControlPountTrend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControlRuleTrend.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FormFuzzyTrend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPointTrend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormRuleTrend.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="StandartClasses\StandartControl.cs">
       <SubType>UserControl</SubType>
@@ -86,12 +104,6 @@
     <Compile Include="Controls\UserControlDiagnosticTestRecord.Designer.cs">
       <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UserControlFuzzyTrend.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlFuzzyTrend.Designer.cs">
-      <DependentUpon>UserControlFuzzyTrend.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\UserControlGranuleEntropy.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -121,18 +133,6 @@
     </Compile>
     <Compile Include="Controls\UserControlMain.Designer.cs">
       <DependentUpon>UserControlMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlPountTrend.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlPountTrend.Designer.cs">
-      <DependentUpon>UserControlPountTrend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlRuleTrend.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlRuleTrend.Designer.cs">
-      <DependentUpon>UserControlRuleTrend.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserControlSeriesDescription.cs">
       <SubType>UserControl</SubType>
@@ -182,12 +182,6 @@
     <Compile Include="Forms\FormDiagnosticTest.Designer.cs">
       <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormFuzzyTrend.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormFuzzyTrend.Designer.cs">
-      <DependentUpon>FormFuzzyTrend.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormMakePoints.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,18 +193,6 @@
     </Compile>
     <Compile Include="Forms\FormMakeRules.Designer.cs">
       <DependentUpon>FormMakeRules.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormPointTrend.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormPointTrend.Designer.cs">
-      <DependentUpon>FormPointTrend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormRuleTrend.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormRuleTrend.Designer.cs">
-      <DependentUpon>FormRuleTrend.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormSeriesDescription.cs">
       <SubType>Form</SubType>
@@ -253,9 +235,6 @@
     <EmbeddedResource Include="Controls\UserControlDiagnosticTestRecord.resx">
       <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlFuzzyTrend.resx">
-      <DependentUpon>UserControlFuzzyTrend.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlGranuleEntropy.resx">
       <DependentUpon>UserControlGranuleEntropy.cs</DependentUpon>
     </EmbeddedResource>
@@ -270,12 +249,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlMain.resx">
       <DependentUpon>UserControlMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlPountTrend.resx">
-      <DependentUpon>UserControlPountTrend.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlRuleTrend.resx">
-      <DependentUpon>UserControlRuleTrend.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlSeriesDescription.resx">
       <DependentUpon>UserControlSeriesDescription.cs</DependentUpon>
@@ -301,20 +274,11 @@
     <EmbeddedResource Include="Forms\FormDiagnosticTest.resx">
       <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormFuzzyTrend.resx">
-      <DependentUpon>FormFuzzyTrend.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMakePoints.resx">
       <DependentUpon>FormMakePoints.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMakeRules.resx">
       <DependentUpon>FormMakeRules.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormPointTrend.resx">
-      <DependentUpon>FormPointTrend.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormRuleTrend.resx">
-      <DependentUpon>FormRuleTrend.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormSeriesDescription.resx">
       <DependentUpon>FormSeriesDescription.cs</DependentUpon>
