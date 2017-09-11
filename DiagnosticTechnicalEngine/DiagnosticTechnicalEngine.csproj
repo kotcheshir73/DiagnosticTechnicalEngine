@@ -65,6 +65,12 @@
     <Compile Include="Controls\UserControlRuleTrend.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\UserControlStatisticByEntropy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserControlStatisticByFuzzy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Forms\FormFuzzyTrend.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormRuleTrend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormStatisticByEntropy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormStatisticByFuzzy.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StandartClasses\StandartControl.cs">
@@ -146,18 +158,6 @@
     <Compile Include="Controls\UserControlSeriesInfo.Designer.cs">
       <DependentUpon>UserControlSeriesInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UserControlStatisticEntropy.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlStatisticEntropy.Designer.cs">
-      <DependentUpon>UserControlStatisticEntropy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlStatisticFuzzy.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlStatisticFuzzy.Designer.cs">
-      <DependentUpon>UserControlStatisticFuzzy.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,18 +206,6 @@
     <Compile Include="Forms\FormShowAnomaly.Designer.cs">
       <DependentUpon>FormShowAnomaly.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormStatisticEntropy.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormStatisticEntropy.Designer.cs">
-      <DependentUpon>FormStatisticEntropy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormStatisticFuzzy.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormStatisticFuzzy.Designer.cs">
-      <DependentUpon>FormStatisticFuzzy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormFuzzyLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -256,12 +244,6 @@
     <EmbeddedResource Include="Controls\UserControlSeriesInfo.resx">
       <DependentUpon>UserControlSeriesInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlStatisticEntropy.resx">
-      <DependentUpon>UserControlStatisticEntropy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlStatisticFuzzy.resx">
-      <DependentUpon>UserControlStatisticFuzzy.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -285,12 +267,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormShowAnomaly.resx">
       <DependentUpon>FormShowAnomaly.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormStatisticEntropy.resx">
-      <DependentUpon>FormStatisticEntropy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormStatisticFuzzy.resx">
-      <DependentUpon>FormStatisticFuzzy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

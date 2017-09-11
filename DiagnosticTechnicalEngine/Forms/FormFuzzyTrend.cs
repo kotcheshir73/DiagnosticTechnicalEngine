@@ -82,14 +82,10 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		protected override void LoadElement()
 		{
-			base.LoadElement();
-			if(_element != null)
-			{
-				comboBoxTrendNames.SelectedIndex = comboBoxTrendNames.Items.IndexOf(_element.TrendName);
-				comboBoxTrendNames.Enabled = false;
-				textBoxWeight.Text = _element.Weight.ToString();
-				buttonSave.Enabled = false;
-			}
+			comboBoxTrendNames.SelectedIndex = comboBoxTrendNames.Items.IndexOf(_element.TrendName);
+			comboBoxTrendNames.Enabled = false;
+			textBoxWeight.Text = _element.Weight.ToString();
+			buttonSave.Enabled = false;
 		}
 
 		protected override FuzzyTrendBindingModel GetInsertedElement()

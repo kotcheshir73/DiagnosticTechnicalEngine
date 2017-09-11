@@ -67,7 +67,6 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		protected override void LoadData()
 		{
-			base.LoadData();
 			int i = 0;
 			foreach (var rule in _list)
 			{

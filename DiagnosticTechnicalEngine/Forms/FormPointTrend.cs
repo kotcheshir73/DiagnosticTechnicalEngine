@@ -114,14 +114,10 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		protected override void LoadElement()
 		{
-			base.LoadElement();
-			if(_element != null)
-			{
-				textBoxStartPoint.Text = _element.StartPoint.ToString();
-				textBoxFinishPoint.Text = _element.FinishPoint.ToString();
-				textBoxCount.Text = _element.Count.ToString();
-				textBoxWeight.Text = _element.Weight.ToString();
-			}
+			textBoxStartPoint.Text = _element.StartPoint.ToString();
+			textBoxFinishPoint.Text = _element.FinishPoint.ToString();
+			textBoxCount.Text = _element.Count.ToString();
+			textBoxWeight.Text = _element.Weight.ToString();
 		}
 
 		protected override PointTrendBindingModel GetInsertedElement()

@@ -52,10 +52,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.userControlDiagnosticTest.BackColor = System.Drawing.Color.Transparent;
-			this.userControlDiagnosticTest.Location = new System.Drawing.Point(0, 482);
+			this.userControlDiagnosticTest.Location = new System.Drawing.Point(0, 569);
 			this.userControlDiagnosticTest.Name = "userControlDiagnosticTest";
-			this.userControlDiagnosticTest.Size = new System.Drawing.Size(1396, 211);
+			this.userControlDiagnosticTest.Size = new System.Drawing.Size(1396, 124);
 			this.userControlDiagnosticTest.TabIndex = 7;
+			this.userControlDiagnosticTest.Visible = false;
 			// 
 			// labelDescription
 			// 

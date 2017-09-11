@@ -121,13 +121,9 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		protected override void LoadElement()
 		{
-			base.LoadElement();
-			if (_element != null)
-			{
-				comboBoxTrends.SelectedValue = _element.FuzzyTrendId;
-				comboBoxFuzzyLabelFrom.SelectedValue = _element.FuzzyLabelFromId;
-				comboBoxFuzzyLabelTo.SelectedValue = _element.FuzzyLabelToId;
-			}
+			comboBoxTrends.SelectedValue = _element.FuzzyTrendId;
+			comboBoxFuzzyLabelFrom.SelectedValue = _element.FuzzyLabelFromId;
+			comboBoxFuzzyLabelTo.SelectedValue = _element.FuzzyLabelToId;
 		}
 
 		protected override RuleTrendBindingModel GetInsertedElement()

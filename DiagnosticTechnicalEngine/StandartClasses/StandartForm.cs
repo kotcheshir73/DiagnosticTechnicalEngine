@@ -81,7 +81,12 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		{
 			try
 			{
-				LoadElement();
+				LoadComboBox();
+				if (_id.HasValue)
+				{
+					_element = _logicClass.GetElement(_id.Value);
+					LoadElement();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -202,11 +207,6 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// </summary>
 		protected virtual void LoadElement()
 		{
-			LoadComboBox();
-			if (_id.HasValue)
-			{
-				_element = _logicClass.GetElement(_id.Value);
-			}
 		}
 
 		/// <summary>

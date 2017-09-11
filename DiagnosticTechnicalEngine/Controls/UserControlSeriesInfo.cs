@@ -20,6 +20,10 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private UserControlRuleTrend controlRuleTrend;
 
+		private UserControlStatisticByEntropy controlStatisticByEntropy;
+
+		private UserControlStatisticByFuzzy controlStatisticByFuzzy;
+
 		public UserControlSeriesInfo()
 		{
 			InitializeComponent();
@@ -50,7 +54,7 @@ namespace DiagnosticTechnicalEngine.Controls
 				MinimumSize = new System.Drawing.Size(530, 200),
 				Name = "userControlPountTrend",
 				Size = new System.Drawing.Size(600, 200),
-				TabIndex = 1
+				TabIndex = 3
 			};
 			controlPountTrend.Initialize(new PointTrendService());
 			controlRuleTrend = new UserControlRuleTrend
@@ -60,13 +64,35 @@ namespace DiagnosticTechnicalEngine.Controls
 				MinimumSize = new System.Drawing.Size(530, 200),
 				Name = "userControlPountTrend",
 				Size = new System.Drawing.Size(600, 200),
-				TabIndex = 1
+				TabIndex = 4
 			};
 			controlRuleTrend.Initialize(new RuleTrendsService());
+			controlStatisticByEntropy = new UserControlStatisticByEntropy
+			{
+				BackColor = System.Drawing.Color.Transparent,
+				Location = new System.Drawing.Point(0, 482),
+				MinimumSize = new System.Drawing.Size(530, 200),
+				Name = "userControlStatisticByEntropy",
+				Size = new System.Drawing.Size(1206, 200),
+				TabIndex = 5
+			};
+			controlStatisticByEntropy.Initialize(new StatisticsByEntropyService());
+			controlStatisticByFuzzy = new UserControlStatisticByFuzzy
+			{
+				BackColor = System.Drawing.Color.Transparent,
+				Location = new System.Drawing.Point(0, 688),
+				MinimumSize = new System.Drawing.Size(530, 200),
+				Name = "userControlStatisticByEntropy",
+				Size = new System.Drawing.Size(1206, 200),
+				TabIndex = 6
+			};
+			controlStatisticByFuzzy.Initialize(new StatisticsByFuzzyService());
 			groupBoxSeries.Controls.Add(controlFuzzyLabel);
 			groupBoxSeries.Controls.Add(controlFuzzyTrend);
 			groupBoxSeries.Controls.Add(controlPountTrend);
 			groupBoxSeries.Controls.Add(controlRuleTrend);
+			groupBoxSeries.Controls.Add(controlStatisticByEntropy);
+			groupBoxSeries.Controls.Add(controlStatisticByFuzzy);
 
 
 			Visible = false;
@@ -83,7 +109,9 @@ namespace DiagnosticTechnicalEngine.Controls
 			controlFuzzyTrend.ParentId = _seriesId;
 			controlRuleTrend.ParentId = _seriesId;
 			controlPountTrend.ParentId = _seriesId;
-            userControlDiagnosticTest.SeriesId = _seriesId;
+			controlStatisticByEntropy.ParentId = _seriesId;
+			controlStatisticByFuzzy.ParentId = _seriesId;
+			userControlDiagnosticTest.SeriesId = _seriesId;
         }
     }
 }

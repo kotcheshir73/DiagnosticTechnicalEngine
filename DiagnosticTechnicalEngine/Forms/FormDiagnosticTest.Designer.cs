@@ -34,9 +34,7 @@
             this.tabPageRecords = new System.Windows.Forms.TabPage();
             this.userControlDiagnosticTestRecord = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTestRecord();
             this.tabPageStaticticsEntropy = new System.Windows.Forms.TabPage();
-            this.userControlStatisticEntropy = new DiagnosticTechnicalEngine.Controls.UserControlStatisticEntropy();
             this.tabPageStaticticsFuzzy = new System.Windows.Forms.TabPage();
-            this.userControlStatisticFuzzy = new DiagnosticTechnicalEngine.Controls.UserControlStatisticFuzzy();
             this.tabPageAnomalyInfo = new System.Windows.Forms.TabPage();
             this.userControlAnomalyInfo = new DiagnosticTechnicalEngine.Controls.UserControlAnomalyInfo();
             this.tabPageGranuleFTUXs = new System.Windows.Forms.TabPage();
@@ -121,7 +119,6 @@
             // 
             // tabPageStaticticsEntropy
             // 
-            this.tabPageStaticticsEntropy.Controls.Add(this.userControlStatisticEntropy);
             this.tabPageStaticticsEntropy.Location = new System.Drawing.Point(4, 22);
             this.tabPageStaticticsEntropy.Name = "tabPageStaticticsEntropy";
             this.tabPageStaticticsEntropy.Padding = new System.Windows.Forms.Padding(3);
@@ -130,19 +127,8 @@
             this.tabPageStaticticsEntropy.Text = "Статистика энтропий по ряду";
             this.tabPageStaticticsEntropy.UseVisualStyleBackColor = true;
             // 
-            // userControlStatisticEntropy
-            // 
-            this.userControlStatisticEntropy.BackColor = System.Drawing.Color.Transparent;
-            this.userControlStatisticEntropy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.userControlStatisticEntropy.Location = new System.Drawing.Point(3, 3);
-            this.userControlStatisticEntropy.MinimumSize = new System.Drawing.Size(600, 400);
-            this.userControlStatisticEntropy.Name = "userControlStatisticEntropy";
-            this.userControlStatisticEntropy.Size = new System.Drawing.Size(1301, 809);
-            this.userControlStatisticEntropy.TabIndex = 0;
-            // 
             // tabPageStaticticsFuzzy
             // 
-            this.tabPageStaticticsFuzzy.Controls.Add(this.userControlStatisticFuzzy);
             this.tabPageStaticticsFuzzy.Location = new System.Drawing.Point(4, 22);
             this.tabPageStaticticsFuzzy.Name = "tabPageStaticticsFuzzy";
             this.tabPageStaticticsFuzzy.Padding = new System.Windows.Forms.Padding(3);
@@ -150,16 +136,6 @@
             this.tabPageStaticticsFuzzy.TabIndex = 2;
             this.tabPageStaticticsFuzzy.Text = "Статистика нечеткости по ряду";
             this.tabPageStaticticsFuzzy.UseVisualStyleBackColor = true;
-            // 
-            // userControlStatisticFuzzy
-            // 
-            this.userControlStatisticFuzzy.BackColor = System.Drawing.Color.Transparent;
-            this.userControlStatisticFuzzy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.userControlStatisticFuzzy.Location = new System.Drawing.Point(3, 3);
-            this.userControlStatisticFuzzy.MinimumSize = new System.Drawing.Size(600, 400);
-            this.userControlStatisticFuzzy.Name = "userControlStatisticFuzzy";
-            this.userControlStatisticFuzzy.Size = new System.Drawing.Size(1301, 809);
-            this.userControlStatisticFuzzy.TabIndex = 0;
             // 
             // tabPageAnomalyInfo
             // 
@@ -306,9 +282,7 @@
 		private System.Windows.Forms.TabPage tabPageLoadSeries;
 		private Controls.UserControlAnalysisSeries userControlAnalysisSeries;
 		private System.Windows.Forms.TabPage tabPageStaticticsEntropy;
-		private Controls.UserControlStatisticEntropy userControlStatisticEntropy;
 		private System.Windows.Forms.TabPage tabPageStaticticsFuzzy;
-		private Controls.UserControlStatisticFuzzy userControlStatisticFuzzy;
 		private System.Windows.Forms.TabPage tabPageAnomalyInfo;
 		private Controls.UserControlAnomalyInfo userControlAnomalyInfo;
 		private System.Windows.Forms.TabPage tabPageGranuleFTUXs;

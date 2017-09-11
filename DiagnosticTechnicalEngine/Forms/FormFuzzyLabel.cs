@@ -177,18 +177,14 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		protected override void LoadElement()
 		{
-			base.LoadElement();
-			if (_element != null)
-			{
-				comboBoxType.SelectedIndex = comboBoxType.Items.IndexOf(_element.FuzzyLabelType);
-				comboBoxType.Enabled = false;
-				textBoxName.Text = _element.FuzzyLabelName;
-				textBoxWeight.Text = _element.FuzzyLabelWeight.ToString();
-				textBoxMinVal.Text = _element.FuzzyLabelMinVal.ToString();
-				textBoxCenter.Text = _element.FuzzyLabelCenter.ToString();
-				textBoxMaxVal.Text = _element.FuzzyLabelMaxVal.ToString();
-				buttonSave.Enabled = false;
-			}
+			comboBoxType.SelectedIndex = comboBoxType.Items.IndexOf(_element.FuzzyLabelType);
+			comboBoxType.Enabled = false;
+			textBoxName.Text = _element.FuzzyLabelName;
+			textBoxWeight.Text = _element.FuzzyLabelWeight.ToString();
+			textBoxMinVal.Text = _element.FuzzyLabelMinVal.ToString();
+			textBoxCenter.Text = _element.FuzzyLabelCenter.ToString();
+			textBoxMaxVal.Text = _element.FuzzyLabelMaxVal.ToString();
+			buttonSave.Enabled = false;
 		}
 
 		protected override FuzzyLabelBindingModel GetInsertedElement()

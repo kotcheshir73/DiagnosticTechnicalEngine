@@ -17,8 +17,6 @@ namespace DiagnosticTechnicalEngine.Forms
             }
 			if(diagnosticTestId.HasValue)
 			{
-				userControlStatisticEntropy.DiagnosticTestId = diagnosticTestId.Value;
-				userControlStatisticFuzzy.DiagnosticTestId = diagnosticTestId.Value;
                 userControlDiagnosticTestRecord.DiagnosticTestId = diagnosticTestId.Value;
 				userControlAnomalyInfo.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleUX.DiagnosticTestId = diagnosticTestId.Value;

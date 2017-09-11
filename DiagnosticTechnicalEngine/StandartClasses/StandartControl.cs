@@ -48,114 +48,106 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// </summary>
 		protected virtual void InitializeComponent()
 		{
-			groupBox = new GroupBox();
-			dataGridView = new DataGridView();
-			panel = new Panel();
-			buttonRefresh = new Button();
-			buttonClear = new Button();
-			buttonDel = new Button();
-			buttonUpd = new Button();
-			buttonAdd = new Button();
+			dataGridView = new DataGridView
+			{
+				AllowUserToAddRows = false,
+				AllowUserToDeleteRows = false,
+				AllowUserToResizeRows = false,
+				BackgroundColor = System.Drawing.SystemColors.ControlLightLight,
+				ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+				Dock = DockStyle.Fill,
+				Location = new System.Drawing.Point(3, 16),
+				Name = "dataGridView",
+				ReadOnly = true,
+				RowHeadersVisible = false,
+				SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+				Size = new System.Drawing.Size(594, 151),
+				TabIndex = 0
+			};
+			dataGridView.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(DataGridView_CellMouseDoubleClick);
+			buttonAdd = new Button
+			{
+				Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+				Location = new System.Drawing.Point(3, 3),
+				Name = "buttonAdd",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 0,
+				Text = "Добавить",
+				UseVisualStyleBackColor = true
+			};
+			buttonAdd.Click += new EventHandler(ButtonAdd_Click);
+			buttonUpd = new Button
+			{
+				Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+				Location = new System.Drawing.Point(93, 3),
+				Name = "buttonUpd",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 1,
+				Text = "Изменить",
+				UseVisualStyleBackColor = true
+			};
+			buttonUpd.Click += new EventHandler(ButtonUpd_Click);
+			buttonDel = new Button
+			{
+				Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+				Location = new System.Drawing.Point(183, 3),
+				Name = "buttonDel",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 2,
+				Text = "Удалить",
+				UseVisualStyleBackColor = true
+			};
+			buttonDel.Click += new EventHandler(ButtonDel_Click);
+			buttonClear = new Button
+			{
+				Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+				Location = new System.Drawing.Point(273, 3),
+				Name = "buttonClear",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 3,
+				Text = "Отчистить",
+				UseVisualStyleBackColor = true
+			};
+			buttonClear.Click += new EventHandler(ButtonClear_Click);
+			buttonRefresh = new Button
+			{
+				Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+				Location = new System.Drawing.Point(363, 3),
+				Name = "buttonRefresh",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 4,
+				Text = "Обновить",
+				UseVisualStyleBackColor = true
+			};
+			buttonRefresh.Click += new EventHandler(ButtonRefresh_Click);
+			panel = new Panel
+			{
+				Dock = DockStyle.Bottom,
+				Location = new System.Drawing.Point(3, 167),
+				Name = "panel",
+				Size = new System.Drawing.Size(594, 30),
+				TabIndex = 1
+			};
+			panel.Controls.Add(buttonAdd);
+			panel.Controls.Add(buttonUpd);
+			panel.Controls.Add(buttonDel);
+			panel.Controls.Add(buttonClear);
+			panel.Controls.Add(buttonRefresh);
+			groupBox = new GroupBox
+			{
+				Dock = DockStyle.Fill,
+				Location = new System.Drawing.Point(0, 0),
+				Name = "groupBox",
+				Size = new System.Drawing.Size(600, 200),
+				TabIndex = 0,
+				TabStop = false
+			};
 			groupBox.SuspendLayout();
+			groupBox.Controls.Add(dataGridView);
+			groupBox.Controls.Add(panel);
 			((System.ComponentModel.ISupportInitialize)(dataGridView)).BeginInit();
 			panel.SuspendLayout();
 			SuspendLayout();
-			// 
-			// groupBox
-			// 
-			groupBox.Controls.Add(dataGridView);
-			groupBox.Controls.Add(panel);
-			groupBox.Dock = DockStyle.Fill;
-			groupBox.Location = new System.Drawing.Point(0, 0);
-			groupBox.Name = "groupBox";
-			groupBox.Size = new System.Drawing.Size(600, 200);
-			groupBox.TabIndex = 0;
-			groupBox.TabStop = false;
-			// 
-			// dataGridView
-			// 
-			dataGridView.AllowUserToAddRows = false;
-			dataGridView.AllowUserToDeleteRows = false;
-			dataGridView.AllowUserToResizeRows = false;
-			dataGridView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-			dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridView.Dock = DockStyle.Fill;
-			dataGridView.Location = new System.Drawing.Point(3, 16);
-			dataGridView.Name = "dataGridView";
-			dataGridView.ReadOnly = true;
-			dataGridView.RowHeadersVisible = false;
-			dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-			dataGridView.Size = new System.Drawing.Size(594, 151);
-			dataGridView.TabIndex = 0;
-			dataGridView.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(DataGridView_CellMouseDoubleClick);
-			// 
-			// panel
-			// 
-			panel.Controls.Add(buttonRefresh);
-			panel.Controls.Add(buttonClear);
-			panel.Controls.Add(buttonDel);
-			panel.Controls.Add(buttonUpd);
-			panel.Controls.Add(buttonAdd);
-			panel.Dock = DockStyle.Bottom;
-			panel.Location = new System.Drawing.Point(3, 167);
-			panel.Name = "panel";
-			panel.Size = new System.Drawing.Size(594, 30);
-			panel.TabIndex = 1;
-			// 
-			// buttonRefresh
-			// 
-			buttonRefresh.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left);
-			buttonRefresh.Location = new System.Drawing.Point(363, 3);
-			buttonRefresh.Name = "buttonRefresh";
-			buttonRefresh.Size = new System.Drawing.Size(75, 23);
-			buttonRefresh.TabIndex = 4;
-			buttonRefresh.Text = "Обновить";
-			buttonRefresh.UseVisualStyleBackColor = true;
-			buttonRefresh.Click += new EventHandler(ButtonRefresh_Click);
-			// 
-			// buttonClear
-			// 
-			buttonClear.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left);
-			buttonClear.Location = new System.Drawing.Point(273, 3);
-			buttonClear.Name = "buttonClear";
-			buttonClear.Size = new System.Drawing.Size(75, 23);
-			buttonClear.TabIndex = 3;
-			buttonClear.Text = "Отчистить";
-			buttonClear.UseVisualStyleBackColor = true;
-			buttonClear.Click += new EventHandler(ButtonClear_Click);
-			// 
-			// buttonDel
-			// 
-			buttonDel.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left);
-			buttonDel.Location = new System.Drawing.Point(183, 3);
-			buttonDel.Name = "buttonDel";
-			buttonDel.Size = new System.Drawing.Size(75, 23);
-			buttonDel.TabIndex = 2;
-			buttonDel.Text = "Удалить";
-			buttonDel.UseVisualStyleBackColor = true;
-			buttonDel.Click += new EventHandler(ButtonDel_Click);
-			// 
-			// buttonUpd
-			// 
-			buttonUpd.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left);
-			buttonUpd.Location = new System.Drawing.Point(93, 3);
-			buttonUpd.Name = "buttonUpd";
-			buttonUpd.Size = new System.Drawing.Size(75, 23);
-			buttonUpd.TabIndex = 1;
-			buttonUpd.Text = "Изменить";
-			buttonUpd.UseVisualStyleBackColor = true;
-			buttonUpd.Click += new EventHandler(ButtonUpd_Click);
-			// 
-			// buttonAdd
-			// 
-			buttonAdd.Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left);
-			buttonAdd.Location = new System.Drawing.Point(3, 3);
-			buttonAdd.Name = "buttonAdd";
-			buttonAdd.Size = new System.Drawing.Size(75, 23);
-			buttonAdd.TabIndex = 0;
-			buttonAdd.Text = "Добавить";
-			buttonAdd.UseVisualStyleBackColor = true;
-			buttonAdd.Click += new EventHandler(ButtonAdd_Click);
 			// 
 			// UserControl
 			// 
@@ -170,7 +162,6 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			((System.ComponentModel.ISupportInitialize)(dataGridView)).EndInit();
 			panel.ResumeLayout(false);
 			ResumeLayout(false);
-
 		}
 
 		#region Пользовательские поля
@@ -180,7 +171,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 
 		protected IEnumerable<T> _list;
 
-		public int ParentId { set { _parentId = value; if (_parentId > 0) { LoadData(); } } }
+		public int ParentId { set { _parentId = value; if (_parentId > 0) { GetList(); } } }
 		#endregion
 
 		/// <summary>
@@ -204,12 +195,15 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// Получение данных для заполнения таблицы
 		/// Требуется перегрузка для заполнения полей таблицы, исходя из объекта
 		/// </summary>
-		protected virtual void LoadData()
+		protected virtual void LoadData() { }
+
+		private void GetList()
 		{
 			try
 			{
 				_list = _logicClass.GetElements(_parentId);
 				dataGridView.Rows.Clear();
+				LoadData();
 			}
 			catch (Exception ex)
 			{
@@ -229,7 +223,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			form.Initialize(_logicClass, _parentId);
 			if (form.ShowDialog() == DialogResult.OK)
 			{
-				LoadData();
+				GetList();
 			}
 		}
 
@@ -246,7 +240,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 				form.Initialize(_logicClass, _parentId, Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
 				if (form.ShowDialog() == DialogResult.OK)
 				{
-					LoadData();
+					GetList();
 				}
 			}
 		}
@@ -289,7 +283,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			}
 			finally
 			{
-				LoadData();
+				GetList();
 			}
 		}
 
@@ -318,7 +312,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 			}
 			finally
 			{
-				LoadData();
+				GetList();
 			}
 		}
 
@@ -329,7 +323,12 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// <param name="e"></param>
 		protected void ButtonRefresh_Click(object sender, EventArgs e)
 		{
-			LoadData();
+			GetList();
+		}
+
+		protected void ChangeVisibiles(string controlElement, bool visibles)
+		{
+			panel.Controls.Find(controlElement, false).First().Visible = visibles;
 		}
 	}
 }
