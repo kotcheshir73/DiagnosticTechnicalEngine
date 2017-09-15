@@ -1,71 +1,98 @@
-﻿using ServicesModule;
-using System;
+﻿using DiagnosticTechnicalEngine.Forms;
+using DiagnosticTechnicalEngine.StandartClasses;
+using ServicesModule.BindingModels;
+using ServicesModule.ViewModels;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public partial class UserControlAnomalyInfo : UserControl
+	public class UserControlAnomalyInfo : StandartControl<AnomalyInfoViewModel, AnomalyInfoBindingModel, FormAnomalyInfo>
 	{
-		private int _diagnosticTestId;
-
-		private AnomalyInfoService _logicClass;
-
-		public int DiagnosticTestId { set { _diagnosticTestId = value; if (_diagnosticTestId > 0) { LoadData(); } } }
-
-		public UserControlAnomalyInfo()
+		protected override void InitializeComponent()
 		{
-			InitializeComponent();
-		}
+			base.InitializeComponent();
 
-		public void LoadData()
-		{
-			_logicClass = new AnomalyInfoService();
-
-			//var anomalyInfo = _logicClass.GetListAnomalyInfo(_diagnosticTestId);
-			//if (anomalyInfo == null)
-			//{
-			//	MessageBox.Show("Ошибка при загрузке: " + _logicClass.Error, "Анализ временных рядов",
-			//		MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//	return;
-			//}
-			//var logic = new DiagnosticTestService();
-			//var elem = logic.GetElemDiagnosticTest(_diagnosticTestId);
-
-			//dataGridView.Rows.Clear();
-			//int i = 0;
-			//foreach (var anomaly in anomalyInfo)
-			//{
-			//	dataGridView.Rows.Add();
-			//	dataGridView.Rows[i].Cells[0].Value = anomaly.Id;
-			//	dataGridView.Rows[i].Cells[1].Value = anomaly.AnomalyName;
-			//	dataGridView.Rows[i].Cells[2].Value = anomaly.SetSituations + " -> " + anomaly.AnomalySituation;
-			//	dataGridView.Rows[i].Cells[3].Value = anomaly.CountMeet;
-			//	dataGridView.Rows[i].Cells[4].Value = anomaly.Description;
-			//	dataGridView.Rows[i].Cells[5].Value = anomaly.NotAnomaly;
-			//	dataGridView.Rows[i].Cells[6].Value = anomaly.NotDetected;
-			//	i++;
-			//}
-		}
-
-		private void buttonWatch_Click(object sender, EventArgs e)
-		{
-			if (dataGridView.SelectedRows.Count > 0)
+			var ColumnId = new DataGridViewTextBoxColumn
 			{
-				Forms.FormAnomalyInfo form = new Forms.FormAnomalyInfo(_diagnosticTestId,
-					Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
-				if (form.ShowDialog() == DialogResult.OK)
-					LoadData();
+				HeaderText = "Id",
+				Name = "ColumnId",
+				ReadOnly = true,
+				Visible = false
+			};
+			var ColumnName = new DataGridViewTextBoxColumn
+			{
+				AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+				HeaderText = "Название",
+				Name = "ColumnName",
+				ReadOnly = true,
+				Width = 82
+			};
+			var ColumnSetSituation = new DataGridViewTextBoxColumn
+			{
+				AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+				HeaderText = "Набор ситуаций",
+				Name = "ColumnSetSituation",
+				ReadOnly = true,
+				Width = 104
+			};
+			var ColumnCountMeet = new DataGridViewTextBoxColumn
+			{
+				HeaderText = "Количество",
+				Name = "ColumnCountMeet",
+				ReadOnly = true
+			};
+			var ColumnDescription = new DataGridViewTextBoxColumn
+			{
+				AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+				HeaderText = "Описание",
+				Name = "ColumnDescription",
+				ReadOnly = true
+			};
+			var ColumnNotAnomaly = new DataGridViewCheckBoxColumn
+			{
+				FillWeight = 40F,
+				HeaderText = "Аномалия",
+				Name = "ColumnNotAnomaly",
+				ReadOnly = true
+			};
+			var ColumnNotDetected = new DataGridViewCheckBoxColumn
+			{
+				HeaderText = "Не выявляемая",
+				Name = "ColumnNotDetected",
+				ReadOnly = true
+			};
+
+			dataGridView.Columns.AddRange(new DataGridViewColumn[] {
+			ColumnId,
+			ColumnName,
+			ColumnSetSituation,
+			ColumnCountMeet,
+			ColumnDescription,
+			ColumnNotAnomaly,
+			ColumnNotDetected});
+
+			groupBox.Text = "Аномалии";
+
+			ChangeVisibiles("buttonAdd", false);
+			ChangeVisibiles("buttonDel", false);
+			ChangeVisibiles("buttonClear", false);
+		}
+
+		protected override void LoadData()
+		{
+			int i = 0;
+			foreach (var anomaly in _list)
+			{
+				dataGridView.Rows.Add();
+				dataGridView.Rows[i].Cells[0].Value = anomaly.Id;
+				dataGridView.Rows[i].Cells[1].Value = anomaly.AnomalyName;
+				dataGridView.Rows[i].Cells[2].Value = anomaly.SetSituations + " -> " + anomaly.AnomalySituation;
+				dataGridView.Rows[i].Cells[3].Value = anomaly.CountMeet;
+				dataGridView.Rows[i].Cells[4].Value = anomaly.Description;
+				dataGridView.Rows[i].Cells[5].Value = anomaly.NotAnomaly;
+				dataGridView.Rows[i].Cells[6].Value = anomaly.NotDetected;
+				i++;
 			}
 		}
-
-        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            buttonWatch_Click(sender, e);
-        }
-
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            LoadData();
-        }
-    }
+	}
 }

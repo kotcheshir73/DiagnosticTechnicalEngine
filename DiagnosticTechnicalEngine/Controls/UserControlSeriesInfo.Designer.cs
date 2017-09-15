@@ -36,12 +36,13 @@
 			// 
 			// groupBoxSeries
 			// 
+			this.groupBoxSeries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBoxSeries.Controls.Add(this.userControlDiagnosticTest);
 			this.groupBoxSeries.Controls.Add(this.labelDescription);
-			this.groupBoxSeries.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBoxSeries.Location = new System.Drawing.Point(0, 0);
 			this.groupBoxSeries.Name = "groupBoxSeries";
-			this.groupBoxSeries.Size = new System.Drawing.Size(1402, 699);
+			this.groupBoxSeries.Size = new System.Drawing.Size(1385, 1500);
 			this.groupBoxSeries.TabIndex = 0;
 			this.groupBoxSeries.TabStop = false;
 			this.groupBoxSeries.Text = "ряд";
@@ -54,7 +55,7 @@
 			this.userControlDiagnosticTest.BackColor = System.Drawing.Color.Transparent;
 			this.userControlDiagnosticTest.Location = new System.Drawing.Point(0, 569);
 			this.userControlDiagnosticTest.Name = "userControlDiagnosticTest";
-			this.userControlDiagnosticTest.Size = new System.Drawing.Size(1396, 124);
+			this.userControlDiagnosticTest.Size = new System.Drawing.Size(1379, 925);
 			this.userControlDiagnosticTest.TabIndex = 7;
 			this.userControlDiagnosticTest.Visible = false;
 			// 
@@ -64,7 +65,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelDescription.Location = new System.Drawing.Point(17, 27);
 			this.labelDescription.Name = "labelDescription";
-			this.labelDescription.Size = new System.Drawing.Size(1362, 40);
+			this.labelDescription.Size = new System.Drawing.Size(1345, 40);
 			this.labelDescription.TabIndex = 0;
 			this.labelDescription.Text = "описание ряда";
 			// 
@@ -77,7 +78,7 @@
 			this.Controls.Add(this.groupBoxSeries);
 			this.MinimumSize = new System.Drawing.Size(540, 500);
 			this.Name = "UserControlSeriesInfo";
-			this.Size = new System.Drawing.Size(1402, 699);
+			this.Size = new System.Drawing.Size(1385, 699);
 			this.groupBoxSeries.ResumeLayout(false);
 			this.ResumeLayout(false);
 

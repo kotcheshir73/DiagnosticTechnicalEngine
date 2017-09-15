@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\UserControlAnomalyInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\UserControlFuzzyLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -65,11 +68,17 @@
     <Compile Include="Controls\UserControlRuleTrend.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\UserControlSeriesDescription.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\UserControlStatisticByEntropy.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\UserControlStatisticByFuzzy.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAnomalyInfo.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormFuzzyTrend.cs">
       <SubType>Form</SubType>
@@ -78,6 +87,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormRuleTrend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSeriesDescription.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormStatisticByEntropy.cs">
@@ -97,12 +109,6 @@
     </Compile>
     <Compile Include="Controls\UserControlAnalysisSeries.Designer.cs">
       <DependentUpon>UserControlAnalysisSeries.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlAnomalyInfo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlAnomalyInfo.Designer.cs">
-      <DependentUpon>UserControlAnomalyInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserControlDiagnosticTest.cs">
       <SubType>UserControl</SubType>
@@ -146,12 +152,6 @@
     <Compile Include="Controls\UserControlMain.Designer.cs">
       <DependentUpon>UserControlMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UserControlSeriesDescription.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlSeriesDescription.Designer.cs">
-      <DependentUpon>UserControlSeriesDescription.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\UserControlSeriesInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -163,12 +163,6 @@
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormAnomalyInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormAnomalyInfo.Designer.cs">
-      <DependentUpon>FormAnomalyInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormClustering.cs">
       <SubType>Form</SubType>
@@ -194,18 +188,6 @@
     <Compile Include="Forms\FormMakeRules.Designer.cs">
       <DependentUpon>FormMakeRules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormSeriesDescription.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormSeriesDescription.Designer.cs">
-      <DependentUpon>FormSeriesDescription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormShowAnomaly.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormShowAnomaly.Designer.cs">
-      <DependentUpon>FormShowAnomaly.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormFuzzyLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,9 +195,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\UserControlAnalysisSeries.resx">
       <DependentUpon>UserControlAnalysisSeries.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlAnomalyInfo.resx">
-      <DependentUpon>UserControlAnomalyInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlDiagnosticTest.resx">
       <DependentUpon>UserControlDiagnosticTest.cs</DependentUpon>
@@ -238,17 +217,11 @@
     <EmbeddedResource Include="Controls\UserControlMain.resx">
       <DependentUpon>UserControlMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlSeriesDescription.resx">
-      <DependentUpon>UserControlSeriesDescription.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlSeriesInfo.resx">
       <DependentUpon>UserControlSeriesInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormAnomalyInfo.resx">
-      <DependentUpon>FormAnomalyInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormClustering.resx">
       <DependentUpon>FormClustering.cs</DependentUpon>
@@ -261,12 +234,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMakeRules.resx">
       <DependentUpon>FormMakeRules.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormSeriesDescription.resx">
-      <DependentUpon>FormSeriesDescription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormShowAnomaly.resx">
-      <DependentUpon>FormShowAnomaly.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

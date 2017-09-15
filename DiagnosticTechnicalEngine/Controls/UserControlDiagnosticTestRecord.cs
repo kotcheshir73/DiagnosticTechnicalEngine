@@ -48,10 +48,10 @@ namespace DiagnosticTechnicalEngine.Controls
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                Forms.FormAnomalyInfo form = new Forms.FormAnomalyInfo(_diagnosticTestId,
-                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[1].Value));
-                if (form.ShowDialog() == DialogResult.OK)
-                    LoadData();
+                //Forms.FormAnomalyInfo form = new Forms.FormAnomalyInfo(_diagnosticTestId,
+                //    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[1].Value));
+                //if (form.ShowDialog() == DialogResult.OK)
+                //    LoadData();
             }
         }
 

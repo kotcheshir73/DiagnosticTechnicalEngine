@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlStatisticByEntropy :  StandartControl<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel, FormStatisticByEntropy>
+	public class UserControlStatisticByEntropy : StandartControl<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel, FormStatisticByEntropy>
 	{
 		protected override void InitializeComponent()
 		{

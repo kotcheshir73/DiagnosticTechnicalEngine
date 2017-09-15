@@ -24,6 +24,8 @@ namespace DiagnosticTechnicalEngine.Controls
 
 		private UserControlStatisticByFuzzy controlStatisticByFuzzy;
 
+		private UserControlAnomalyInfo controlAnomalyInfo;
+
 		public UserControlSeriesInfo()
 		{
 			InitializeComponent();
@@ -73,26 +75,37 @@ namespace DiagnosticTechnicalEngine.Controls
 				Location = new System.Drawing.Point(0, 482),
 				MinimumSize = new System.Drawing.Size(530, 200),
 				Name = "userControlStatisticByEntropy",
-				Size = new System.Drawing.Size(1206, 200),
+				Size = new System.Drawing.Size(1206, 300),
 				TabIndex = 5
 			};
 			controlStatisticByEntropy.Initialize(new StatisticsByEntropyService());
 			controlStatisticByFuzzy = new UserControlStatisticByFuzzy
 			{
 				BackColor = System.Drawing.Color.Transparent,
-				Location = new System.Drawing.Point(0, 688),
+				Location = new System.Drawing.Point(0, 788),
 				MinimumSize = new System.Drawing.Size(530, 200),
 				Name = "userControlStatisticByEntropy",
-				Size = new System.Drawing.Size(1206, 200),
+				Size = new System.Drawing.Size(1206, 300),
 				TabIndex = 6
 			};
 			controlStatisticByFuzzy.Initialize(new StatisticsByFuzzyService());
+			controlAnomalyInfo = new UserControlAnomalyInfo
+			{
+				BackColor = System.Drawing.Color.Transparent,
+				Location = new System.Drawing.Point(0, 1094),
+				MinimumSize = new System.Drawing.Size(530, 200),
+				Name = "userControlStatisticByEntropy",
+				Size = new System.Drawing.Size(1206, 300),
+				TabIndex = 7
+			};
+			controlAnomalyInfo.Initialize(new AnomalyInfoService());
 			groupBoxSeries.Controls.Add(controlFuzzyLabel);
 			groupBoxSeries.Controls.Add(controlFuzzyTrend);
 			groupBoxSeries.Controls.Add(controlPountTrend);
 			groupBoxSeries.Controls.Add(controlRuleTrend);
 			groupBoxSeries.Controls.Add(controlStatisticByEntropy);
 			groupBoxSeries.Controls.Add(controlStatisticByFuzzy);
+			groupBoxSeries.Controls.Add(controlAnomalyInfo);
 
 
 			Visible = false;
@@ -111,6 +124,7 @@ namespace DiagnosticTechnicalEngine.Controls
 			controlPountTrend.ParentId = _seriesId;
 			controlStatisticByEntropy.ParentId = _seriesId;
 			controlStatisticByFuzzy.ParentId = _seriesId;
+			controlAnomalyInfo.ParentId = _seriesId;
 			userControlDiagnosticTest.SeriesId = _seriesId;
         }
     }

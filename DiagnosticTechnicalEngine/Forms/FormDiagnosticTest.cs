@@ -18,7 +18,6 @@ namespace DiagnosticTechnicalEngine.Forms
 			if(diagnosticTestId.HasValue)
 			{
                 userControlDiagnosticTestRecord.DiagnosticTestId = diagnosticTestId.Value;
-				userControlAnomalyInfo.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleUX.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleFT.DiagnosticTestId = diagnosticTestId.Value;
 				userControlGranuleEntropy.DiagnosticTestId = diagnosticTestId.Value;

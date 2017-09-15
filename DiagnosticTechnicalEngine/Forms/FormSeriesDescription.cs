@@ -1,90 +1,115 @@
-﻿using ServicesModule;
+﻿using DiagnosticTechnicalEngine.StandartClasses;
 using ServicesModule.BindingModels;
+using ServicesModule.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormSeriesDescription : Form
+	public class FormSeriesDescription : StandartForm<SeriesDescriptionViewModel, SeriesDescriptionBindingModel>
 	{
-		private int? _id;
+		#region Контролы для работы
+		private Label labelName;
+		private Label labelDescription;
+		private TextBox textBoxName;
+		private TextBox textBoxDescription;
+		private CheckBox checkBoxNeedForecast;
+		#endregion
 
-		private SeriesDescriptionService _logicClass;
-
-		public FormSeriesDescription(int? id = null)
+		protected override void InitializeComponent()
 		{
-			InitializeComponent();
-			_id = id;
+			base.InitializeComponent();
+			SuspendLayout();
+			labelName = new Label
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(12, 9),
+				Name = "labelName",
+				Size = new System.Drawing.Size(60, 13),
+				TabIndex = 0,
+				Text = "Название:"
+			};
+			labelDescription = new Label
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(12, 46),
+				Name = "labelDescription",
+				Size = new System.Drawing.Size(60, 13),
+				TabIndex = 2,
+				Text = "Описание:"
+			};
+			textBoxName = new TextBox
+			{
+				Location = new System.Drawing.Point(78, 6),
+				MaxLength = 50,
+				Name = "textBoxName",
+				Size = new System.Drawing.Size(250, 20),
+				TabIndex = 1
+			};
+			textBoxName.TextChanged += new EventHandler(TextBox_TextChanged);
+			textBoxDescription = new TextBox
+			{
+				Location = new System.Drawing.Point(78, 43),
+				Multiline = true,
+				Name = "textBoxDescription",
+				Size = new System.Drawing.Size(250, 130),
+				TabIndex = 3
+			};
+			textBoxDescription.TextChanged += new EventHandler(TextBox_TextChanged);
+			checkBoxNeedForecast = new CheckBox
+			{
+				AutoSize = true,
+				Location = new System.Drawing.Point(94, 184),
+				Name = "checkBoxNeedForecast",
+				Size = new System.Drawing.Size(103, 17),
+				TabIndex = 4,
+				Text = "Нужен прогноз",
+				UseVisualStyleBackColor = true
+			};
+			checkBoxNeedForecast.CheckedChanged += new EventHandler(CheckBox_CheckedChanged);
+
+			buttonSave.Location = new System.Drawing.Point(94, 219);
+			buttonClose.Location = new System.Drawing.Point(221, 219);
+
+			ClientSize = new System.Drawing.Size(344, 254);
+			Controls.Add(checkBoxNeedForecast);
+			Controls.Add(textBoxDescription);
+			Controls.Add(labelDescription);
+			Controls.Add(textBoxName);
+			Controls.Add(labelName);
+			Name = "FormSeriesDescription";
+			Text = "Описание временного ряда";
+			ResumeLayout(false);
+			PerformLayout();
 		}
 
-		private void FormSeriesDescription_Load(object sender, EventArgs e)
+		protected override void LoadElement()
 		{
-			_logicClass = new SeriesDescriptionService();
-			if (_id.HasValue)
-			{
-				var elem = _logicClass.GetElement(_id.Value);
-				textBoxName.Text = elem.SeriesName;
-				textBoxDescription.Text = elem.SeriesDiscription;
-				checkBoxNeedForecast.Checked = elem.NeedForecast;
-				buttonSave.Enabled = false;
-			}
+			textBoxName.Text = _element.SeriesName;
+			textBoxDescription.Text = _element.SeriesDiscription;
+			checkBoxNeedForecast.Checked = _element.NeedForecast;
+			buttonSave.Enabled = false;
 		}
 
-		private void textBox_TextChanged(object sender, EventArgs e)
+		protected override SeriesDescriptionBindingModel GetInsertedElement()
 		{
-			buttonSave.Enabled = true;
+			return new SeriesDescriptionBindingModel
+			{
+				SeriesName = textBoxName.Text,
+				SeriesDiscription = textBoxDescription.Text,
+				NeedForecast = checkBoxNeedForecast.Checked
+			};
 		}
 
-		private void checkBox_CheckedChanged(object sender, EventArgs e)
+		protected override SeriesDescriptionBindingModel GetUpdateedElement()
 		{
-			buttonSave.Enabled = true;
-		}
-
-		private void buttonSave_Click(object sender, EventArgs e)
-		{
-			if (!_id.HasValue)
+			return new SeriesDescriptionBindingModel
 			{
-				_logicClass.InsertElement(new SeriesDescriptionBindingModel
-				{
-					SeriesName = textBoxName.Text,
-					SeriesDiscription = textBoxDescription.Text,
-					NeedForecast = checkBoxNeedForecast.Checked
-				});
-			}
-			else
-			{
-				_logicClass.UpdateElement(new SeriesDescriptionBindingModel
-				{
-					Id = _id.Value,
-					SeriesName = textBoxName.Text,
-					SeriesDiscription = textBoxDescription.Text,
-					NeedForecast = checkBoxNeedForecast.Checked
-				});
-			}
-			DialogResult = DialogResult.OK;
-			Close();
-		}
-
-		private void buttonClose_Click(object sender, EventArgs e)
-		{
-			if (buttonSave.Enabled)
-			{
-				if (MessageBox.Show("Сохранить изменения?", "Анализ временных рядов", MessageBoxButtons.YesNo,
-					MessageBoxIcon.Question) == DialogResult.Yes)
-				{
-					buttonSave_Click(sender, e);
-				}
-				else
-				{
-					DialogResult = DialogResult.Cancel;
-					Close();
-				}
-			}
-			else
-			{
-				DialogResult = DialogResult.None;
-				Close();
-			}
+				Id = _id.Value,
+				SeriesName = textBoxName.Text,
+				SeriesDiscription = textBoxDescription.Text,
+				NeedForecast = checkBoxNeedForecast.Checked
+			};
 		}
 	}
 }

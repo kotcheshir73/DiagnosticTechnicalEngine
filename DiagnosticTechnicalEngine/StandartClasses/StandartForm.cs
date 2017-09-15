@@ -244,5 +244,16 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		{
 			buttonSave.Enabled = true;
 		}
+
+		/// <summary>
+		/// Привязывается ко всем чекбоксам
+		/// Делает активной кнопку сохранения, если происходят изменения в чекбоксе
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void CheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			buttonSave.Enabled = true;
+		}
 	}
 }

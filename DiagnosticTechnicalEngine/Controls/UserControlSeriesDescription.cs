@@ -1,29 +1,66 @@
-﻿using ServicesModule;
+﻿using DiagnosticTechnicalEngine.Forms;
+using DiagnosticTechnicalEngine.StandartClasses;
+using ServicesModule.BindingModels;
+using ServicesModule.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-    public partial class UserControlSeriesDescription : UserControl
-    {
-        private SeriesDescriptionService _logicClass;
+	public class UserControlSeriesDescription : StandartControl<SeriesDescriptionViewModel, SeriesDescriptionBindingModel, FormSeriesDescription>
+	{
+		private event Action<int> _onSelect;
 
-        private event Action<int> _onSelect;
+		public void AddEvent(Action<int> method)
+		{
+			_onSelect += method;
+		}
 
-        public UserControlSeriesDescription()
-        {
-            InitializeComponent();
-        }
+		protected override void InitializeComponent()
+		{
+			base.InitializeComponent();
+			var ColumnId = new DataGridViewTextBoxColumn
+			{
+				HeaderText = "ColumnId",
+				Name = "ColumnId",
+				ReadOnly = true,
+				Visible = false
+			};
+			var ColumnName = new DataGridViewTextBoxColumn
+			{
+				AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+				HeaderText = "Название",
+				Name = "ColumnName",
+				ReadOnly = true
+			};
 
-        public void LoadData()
-        {
+			dataGridView.Columns.AddRange(new DataGridViewColumn[] {
+			ColumnId,
+			ColumnName});
 
-            _logicClass = new SeriesDescriptionService();
+			groupBox.Text = "Временные ряды";
 
-			var seriesDescrip = _logicClass.GetElements(0);
-			dataGridView.Rows.Clear();
+			var buttonOpen = new Button
+			{
+				Anchor = AnchorStyles.Left,
+				Location = new System.Drawing.Point(273, 3),
+				Name = "buttonOpen",
+				Size = new System.Drawing.Size(75, 23),
+				TabIndex = 5,
+				Text = "Открыть",
+				UseVisualStyleBackColor = true
+			};
+			buttonOpen.Click += new EventHandler(ButtonOpen_Click);
+
+			panel.Controls.Add(buttonOpen);
+
+			ChangeVisibiles("buttonClear", false);
+		}
+
+		protected override void LoadData()
+		{
 			int i = 0;
-			foreach (var series in seriesDescrip)
+			foreach (var series in _list)
 			{
 				dataGridView.Rows.Add();
 				dataGridView.Rows[i].Cells[0].Value = series.Id;
@@ -32,56 +69,12 @@ namespace DiagnosticTechnicalEngine.Controls
 			}
 		}
 
-        public void AddEvent(Action<int> method)
-        {
-            _onSelect += method;
-        }
-
-        private void buttonAdd_Click(object sender, EventArgs e)
-        {
-            Forms.FormSeriesDescription form = new Forms.FormSeriesDescription();
-            if (form.ShowDialog() == DialogResult.OK)
-                LoadData();
-        }
-
-        private void buttonUpd_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count > 0)
-            {
-                Forms.FormSeriesDescription form = new Forms.FormSeriesDescription(
-                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
-                if (form.ShowDialog() == DialogResult.OK)
-                    LoadData();
-            }
-        }
-
-        private void buttonDel_Click(object sender, EventArgs e)
-        {
-            if(dataGridView.SelectedRows.Count > 0)
-            {
-                if(MessageBox.Show("Вы хотите удалить?", "Анализ временных рядов", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    for(int i = 0; i < dataGridView.SelectedRows.Count; ++i)
-                    {
-                        //if(!_logicClass.DelSeriesDescrip(Convert.ToInt32(dataGridView.SelectedRows[i].Cells[0].Value)))
-                        //{
-                        //    MessageBox.Show("Ошибка при удалении: " + _logicClass.Error, "Анализ временных рядов",
-                        //        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //    return;
-                        //}
-                    }
-                    LoadData();
-                }
-            }
-        }
-
-        private void dataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if(_onSelect != null && dataGridView.SelectedRows.Count > 0)
-            {
-                _onSelect(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
-            }
-        }
-    }
+		private void ButtonOpen_Click(object sender, EventArgs e)
+		{
+			if (_onSelect != null && dataGridView.SelectedRows.Count > 0)
+			{
+				_onSelect(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
+			}
+		}
+	}
 }
