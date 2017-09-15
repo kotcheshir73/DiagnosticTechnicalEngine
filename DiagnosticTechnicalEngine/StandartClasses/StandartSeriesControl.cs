@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.StandartClasses
 {
-	public class StandartControl<T, U, Z> : UserControl where Z : StandartForm<T, U>, new()
+	public class StandartSeriesControl<T, U, Z> : UserControl where Z : StandartForm<T, U>, new()
 	{
 		#region Элементы контрола
 		protected GroupBox groupBox;
@@ -177,7 +177,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// <summary>
 		/// Конструктор, вызывает инициализацию контрола
 		/// </summary>
-		public StandartControl()
+		public StandartSeriesControl()
 		{
 			InitializeComponent();
 		}

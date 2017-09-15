@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlFuzzyLabel : StandartControl<FuzzyLabelViewModel, FuzzyLabelBindingModel, FormFuzzyLabel>
+	public class UserControlFuzzyLabel : StandartSeriesControl<FuzzyLabelViewModel, FuzzyLabelBindingModel, FormFuzzyLabel>
 	{
 		protected override void InitializeComponent()
 		{

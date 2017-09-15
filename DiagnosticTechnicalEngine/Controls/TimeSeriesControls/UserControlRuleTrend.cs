@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlRuleTrend : StandartControl<RuleTrendViewModel, RuleTrendBindingModel, FormRuleTrend>
+	public class UserControlRuleTrend : StandartSeriesControl<RuleTrendViewModel, RuleTrendBindingModel, FormRuleTrend>
 	{
 		protected override void InitializeComponent()
 		{

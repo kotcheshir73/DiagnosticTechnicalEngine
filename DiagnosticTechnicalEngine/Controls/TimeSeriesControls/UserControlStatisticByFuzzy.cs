@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlStatisticByFuzzy : StandartControl<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel, FormStatisticByFuzzy>
+	public class UserControlStatisticByFuzzy : StandartSeriesControl<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel, FormStatisticByFuzzy>
 	{
 		protected override void InitializeComponent()
 		{

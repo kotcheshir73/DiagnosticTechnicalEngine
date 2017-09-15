@@ -53,55 +53,76 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\UserControlAnomalyInfo.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlAnomalyInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlFuzzyLabel.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlDiagnosticTest.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlFuzzyTrend.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlFuzzyLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlPountTrend.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlFuzzyTrend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlRuleTrend.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlPountTrend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlSeriesDescription.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlRuleTrend.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlStatisticByEntropy.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlSeriesDescription.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserControlStatisticByFuzzy.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlStatisticByEntropy.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FormAnomalyInfo.cs">
+    <Compile Include="Controls\TimeSeriesControls\UserControlStatisticByFuzzy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiagnosticTestControls\UserControlDiagnosticTestRecord.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiagnosticTestControls\UserControlGranuleEntropy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiagnosticTestControls\UserControlGranuleFT.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiagnosticTestControls\UserControlGranuleUX.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiagnosticTestControls\UserControlGranuleFuzzy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TimeSeriesForms\FormAnomalyInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormDiagnosticTest1.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormDiagnosticTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormFuzzyTrend.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormFuzzyTrend.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormPointTrend.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormPointTrend.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormRuleTrend.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormRuleTrend.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormSeriesDescription.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormSeriesDescription.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormStatisticByEntropy.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormStatisticByEntropy.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormStatisticByFuzzy.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormStatisticByFuzzy.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StandartClasses\StandartControl.cs">
+    <Compile Include="StandartClasses\StandartDiagnosticTestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StandartClasses\StandartSeriesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="StandartClasses\StandartForm.cs">
@@ -112,42 +133,6 @@
     </Compile>
     <Compile Include="Controls\UserControlAnalysisSeries.Designer.cs">
       <DependentUpon>UserControlAnalysisSeries.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlDiagnosticTest.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlDiagnosticTest.Designer.cs">
-      <DependentUpon>UserControlDiagnosticTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlDiagnosticTestRecord.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlDiagnosticTestRecord.Designer.cs">
-      <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleEntropy.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleEntropy.Designer.cs">
-      <DependentUpon>UserControlGranuleEntropy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleFT.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleFT.Designer.cs">
-      <DependentUpon>UserControlGranuleFT.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleFuzzy.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleFuzzy.Designer.cs">
-      <DependentUpon>UserControlGranuleFuzzy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleUX.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\UserControlGranuleUX.Designer.cs">
-      <DependentUpon>UserControlGranuleUX.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserControlMain.cs">
       <SubType>UserControl</SubType>
@@ -173,12 +158,6 @@
     <Compile Include="Forms\FormClustering.Designer.cs">
       <DependentUpon>FormClustering.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormDiagnosticTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormDiagnosticTest.Designer.cs">
-      <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormMakePoints.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,31 +170,13 @@
     <Compile Include="Forms\FormMakeRules.Designer.cs">
       <DependentUpon>FormMakeRules.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormFuzzyLabel.cs">
+    <Compile Include="Forms\TimeSeriesForms\FormFuzzyLabel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\UserControlAnalysisSeries.resx">
       <DependentUpon>UserControlAnalysisSeries.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlDiagnosticTest.resx">
-      <DependentUpon>UserControlDiagnosticTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlDiagnosticTestRecord.resx">
-      <DependentUpon>UserControlDiagnosticTestRecord.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlGranuleEntropy.resx">
-      <DependentUpon>UserControlGranuleEntropy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlGranuleFT.resx">
-      <DependentUpon>UserControlGranuleFT.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlGranuleFuzzy.resx">
-      <DependentUpon>UserControlGranuleFuzzy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\UserControlGranuleUX.resx">
-      <DependentUpon>UserControlGranuleUX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserControlMain.resx">
       <DependentUpon>UserControlMain.cs</DependentUpon>
@@ -228,9 +189,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormClustering.resx">
       <DependentUpon>FormClustering.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormDiagnosticTest.resx">
-      <DependentUpon>FormDiagnosticTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMakePoints.resx">
       <DependentUpon>FormMakePoints.cs</DependentUpon>
@@ -271,5 +229,6 @@
       <Name>ServicesModule</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

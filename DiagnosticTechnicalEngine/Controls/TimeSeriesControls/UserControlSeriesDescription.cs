@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlSeriesDescription : StandartControl<SeriesDescriptionViewModel, SeriesDescriptionBindingModel, FormSeriesDescription>
+	public class UserControlSeriesDescription : StandartSeriesControl<SeriesDescriptionViewModel, SeriesDescriptionBindingModel, FormSeriesDescription>
 	{
 		private event Action<int> _onSelect;
 

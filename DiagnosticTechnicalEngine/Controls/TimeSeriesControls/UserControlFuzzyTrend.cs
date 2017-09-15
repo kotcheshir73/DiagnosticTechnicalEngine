@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlFuzzyTrend : StandartControl<FuzzyTrendViewModel, FuzzyTrendBindingModel, FormFuzzyTrend>
+	public class UserControlFuzzyTrend : StandartSeriesControl<FuzzyTrendViewModel, FuzzyTrendBindingModel, FormFuzzyTrend>
 	{
 		protected override void InitializeComponent()
 		{

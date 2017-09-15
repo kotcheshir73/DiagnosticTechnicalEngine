@@ -1,10 +1,9 @@
-﻿using DiagnosticTechnicalEngine.Forms;
-using ServicesModule;
+﻿using ServicesModule;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-    public partial class UserControlSeriesInfo : UserControl
+	public partial class UserControlSeriesInfo : UserControl
     {
         private int _seriesId;
 
@@ -25,6 +24,8 @@ namespace DiagnosticTechnicalEngine.Controls
 		private UserControlStatisticByFuzzy controlStatisticByFuzzy;
 
 		private UserControlAnomalyInfo controlAnomalyInfo;
+
+		private UserControlDiagnosticTest controlDiagnosticTest;
 
 		public UserControlSeriesInfo()
 		{
@@ -99,6 +100,16 @@ namespace DiagnosticTechnicalEngine.Controls
 				TabIndex = 7
 			};
 			controlAnomalyInfo.Initialize(new AnomalyInfoService());
+			controlDiagnosticTest = new UserControlDiagnosticTest
+			{
+				BackColor = System.Drawing.Color.Transparent,
+				Location = new System.Drawing.Point(0, 1394),
+				MinimumSize = new System.Drawing.Size(530, 200),
+				Name = "userControlStatisticByEntropy",
+				Size = new System.Drawing.Size(1206, 300),
+				TabIndex = 7
+			};
+			controlDiagnosticTest.Initialize(new DiagnosticTestService());
 			groupBoxSeries.Controls.Add(controlFuzzyLabel);
 			groupBoxSeries.Controls.Add(controlFuzzyTrend);
 			groupBoxSeries.Controls.Add(controlPountTrend);
@@ -106,6 +117,7 @@ namespace DiagnosticTechnicalEngine.Controls
 			groupBoxSeries.Controls.Add(controlStatisticByEntropy);
 			groupBoxSeries.Controls.Add(controlStatisticByFuzzy);
 			groupBoxSeries.Controls.Add(controlAnomalyInfo);
+			groupBoxSeries.Controls.Add(controlDiagnosticTest);
 
 
 			Visible = false;
@@ -125,7 +137,7 @@ namespace DiagnosticTechnicalEngine.Controls
 			controlStatisticByEntropy.ParentId = _seriesId;
 			controlStatisticByFuzzy.ParentId = _seriesId;
 			controlAnomalyInfo.ParentId = _seriesId;
-			userControlDiagnosticTest.SeriesId = _seriesId;
+			controlDiagnosticTest.ParentId = _seriesId;
         }
     }
 }

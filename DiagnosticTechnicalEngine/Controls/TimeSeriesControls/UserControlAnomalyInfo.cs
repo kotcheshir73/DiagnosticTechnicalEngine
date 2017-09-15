@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlAnomalyInfo : StandartControl<AnomalyInfoViewModel, AnomalyInfoBindingModel, FormAnomalyInfo>
+	public class UserControlAnomalyInfo : StandartSeriesControl<AnomalyInfoViewModel, AnomalyInfoBindingModel, FormAnomalyInfo>
 	{
 		protected override void InitializeComponent()
 		{

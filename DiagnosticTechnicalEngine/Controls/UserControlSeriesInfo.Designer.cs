@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
 			this.groupBoxSeries = new System.Windows.Forms.GroupBox();
-			this.userControlDiagnosticTest = new DiagnosticTechnicalEngine.Controls.UserControlDiagnosticTest();
 			this.labelDescription = new System.Windows.Forms.Label();
 			this.groupBoxSeries.SuspendLayout();
 			this.SuspendLayout();
@@ -38,26 +37,13 @@
 			// 
 			this.groupBoxSeries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBoxSeries.Controls.Add(this.userControlDiagnosticTest);
 			this.groupBoxSeries.Controls.Add(this.labelDescription);
 			this.groupBoxSeries.Location = new System.Drawing.Point(0, 0);
 			this.groupBoxSeries.Name = "groupBoxSeries";
-			this.groupBoxSeries.Size = new System.Drawing.Size(1385, 1500);
+			this.groupBoxSeries.Size = new System.Drawing.Size(1351, 1700);
 			this.groupBoxSeries.TabIndex = 0;
 			this.groupBoxSeries.TabStop = false;
 			this.groupBoxSeries.Text = "ряд";
-			// 
-			// userControlDiagnosticTest
-			// 
-			this.userControlDiagnosticTest.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.userControlDiagnosticTest.BackColor = System.Drawing.Color.Transparent;
-			this.userControlDiagnosticTest.Location = new System.Drawing.Point(0, 569);
-			this.userControlDiagnosticTest.Name = "userControlDiagnosticTest";
-			this.userControlDiagnosticTest.Size = new System.Drawing.Size(1379, 925);
-			this.userControlDiagnosticTest.TabIndex = 7;
-			this.userControlDiagnosticTest.Visible = false;
 			// 
 			// labelDescription
 			// 
@@ -65,7 +51,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelDescription.Location = new System.Drawing.Point(17, 27);
 			this.labelDescription.Name = "labelDescription";
-			this.labelDescription.Size = new System.Drawing.Size(1345, 40);
+			this.labelDescription.Size = new System.Drawing.Size(1311, 40);
 			this.labelDescription.TabIndex = 0;
 			this.labelDescription.Text = "описание ряда";
 			// 
@@ -78,7 +64,7 @@
 			this.Controls.Add(this.groupBoxSeries);
 			this.MinimumSize = new System.Drawing.Size(540, 500);
 			this.Name = "UserControlSeriesInfo";
-			this.Size = new System.Drawing.Size(1385, 699);
+			this.Size = new System.Drawing.Size(1351, 699);
 			this.groupBoxSeries.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -88,6 +74,5 @@
 
         private System.Windows.Forms.GroupBox groupBoxSeries;
         private System.Windows.Forms.Label labelDescription;
-        private UserControlDiagnosticTest userControlDiagnosticTest;
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlPountTrend : StandartControl<PointTrendViewModel, PointTrendBindingModel, FormPointTrend>
+	public class UserControlPountTrend : StandartSeriesControl<PointTrendViewModel, PointTrendBindingModel, FormPointTrend>
 	{
 		protected override void InitializeComponent()
 		{
