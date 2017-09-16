@@ -4,6 +4,7 @@ using ServicesModule;
 using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
 using System.Windows.Forms;
+using ServicesModule.Interfaces;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
@@ -205,19 +206,18 @@ namespace DiagnosticTechnicalEngine.Forms
 
 		protected override void LoadElement()
 		{
-			if (!_id.HasValue)
-			{
-				userControlAnalysisSeries.SeriesId = _parentId;
-				userControlDiagnosticTestRecord.ParentId = _id.Value;
-				userControlGranuleUX.ParentId = _id.Value;
-				userControlGranuleFT.ParentId = _id.Value;
-				userControlGranuleEntropy.ParentId = _id.Value;
-				userControlGranuleFuzzy.ParentId = _id.Value;
-			}
-			else
-			{
-				tabControl.TabPages.Remove(tabPageLoadSeries);
-			}
+			userControlDiagnosticTestRecord.ParentId = _id.Value;
+			userControlGranuleUX.ParentId = _id.Value;
+			userControlGranuleFT.ParentId = _id.Value;
+			userControlGranuleEntropy.ParentId = _id.Value;
+			userControlGranuleFuzzy.ParentId = _id.Value;
+			tabControl.TabPages.Remove(tabPageLoadSeries);
+		}
+
+		public override void Initialize(ISeriesDescriptionModel<DiagnosticTestViewModel, DiagnosticTestBindingModel> logicClass, int parentId, int? id = null)
+		{
+			base.Initialize(logicClass, parentId, id);
+			userControlAnalysisSeries.SeriesId = _parentId;
 		}
 	}
 }

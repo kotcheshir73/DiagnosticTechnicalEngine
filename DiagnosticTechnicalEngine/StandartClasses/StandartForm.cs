@@ -188,7 +188,7 @@ namespace DiagnosticTechnicalEngine.StandartClasses
 		/// </summary>
 		/// <param name="parentId"></param>
 		/// <param name="id"></param>
-		public void Initialize(ISeriesDescriptionModel<T, U> logicClass, int parentId, int? id = null)
+		public virtual void Initialize(ISeriesDescriptionModel<T, U> logicClass, int parentId, int? id = null)
 		{
 			_id = id;
 			_parentId = parentId;

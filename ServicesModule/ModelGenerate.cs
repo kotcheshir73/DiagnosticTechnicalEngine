@@ -42,7 +42,7 @@ namespace ServicesModule
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Генерируем правила определения тенденции по нечетким меткам
 		/// </summary>
@@ -93,6 +93,93 @@ namespace ServicesModule
 			}
 
 			return rules;
+		}
+
+		public static void GenerateSituationsByFuzzy(int seriesId)
+		{
+			using (var _context = new DissertationDbContext())
+			using (var transaction = _context.Database.BeginTransaction())
+			{
+				try
+				{
+					var labels = _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == seriesId).ToList();
+					var trends = _context.FuzzyTrends.Where(ft => ft.SeriesDiscriptionId == seriesId).ToList();
+					int counter = 0;
+					for (int i = 0; i < labels.Count; ++i)
+					{
+						for (int j = 0; j < trends.Count; ++j)
+						{
+							for (int t = 0; t < labels.Count; ++t)
+							{
+								for (int r = 0; r < trends.Count; ++r)
+								{
+									_context.StatisticsByFuzzys.Add(new StatisticsByFuzzy
+									{
+										NumberSituation = counter++,
+										SeriesDiscriptionId = seriesId,
+										StartStateFuzzyLabelId = labels[i].Id,
+										StartStateFuzzyTrendId = trends[j].Id,
+										EndStateFuzzyLabelId = labels[t].Id,
+										EndStateFuzzyTrendId = trends[r].Id,
+										CountMeet = 0
+									});
+									_context.SaveChanges();
+								}
+							}
+						}
+					}
+					transaction.Commit();
+				}
+				catch (Exception)
+				{
+					transaction.Rollback();
+					throw;
+				}
+			}
+		}
+
+		public static void GenerateSituationsByEntropy(int seriesId)
+		{
+			using (var _context = new DissertationDbContext())
+			using (var transaction = _context.Database.BeginTransaction())
+			{
+				try
+				{
+					var needForecast = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == seriesId).NeedForecast;
+					var labels = EntropyByFT.Entropyes;
+					var trends = (needForecast)? EntropyByUX.Entropyes4Forecast : EntropyByUX.EntropyesNot4Forecast;
+					int counter = 0;
+					for (int i = 0; i < labels.Count; ++i)
+					{
+						for (int j = 0; j < trends.Count; ++j)
+						{
+							for (int t = 0; t < labels.Count; ++t)
+							{
+								for (int r = 0; r < trends.Count; ++r)
+								{
+									_context.StatisticsByEntropys.Add(new StatisticsByEntropy
+									{
+										NumberSituation = counter++,
+										SeriesDiscriptionId = seriesId,
+										StartStateLingvistUX = trends[j],
+										StartStateLingvistFT = labels[i],
+										EndStateLingvistUX = trends[r],
+										EndStateLingvistFT = labels[t],
+										CountMeet = 0
+									});
+									_context.SaveChanges();
+								}
+							}
+						}
+					}
+					transaction.Commit();
+				}
+				catch (Exception)
+				{
+					transaction.Rollback();
+					throw;
+				}
+			}
 		}
 
 		/// <summary>
@@ -244,7 +331,8 @@ namespace ServicesModule
 					if (_points.Count > 0)
 					{//если уже есть точки, получить тенденцию
 						point = ModelCalculator.CalcFUX(point, seriesId);
-						var rule = _context.RuleTrends.SingleOrDefault(r => r.FuzzyLabelFromId == _points[_points.Count - 1].FuzzyLabelId && r.FuzzyLabelToId == point.FuzzyLabelId);
+						var fuzzyLabelId = _points[_points.Count - 1].FuzzyLabelId;
+						var rule = _context.RuleTrends.SingleOrDefault(r => r.FuzzyLabelFromId == fuzzyLabelId && r.FuzzyLabelToId == point.FuzzyLabelId);
 						if (rule == null)
 						{
 							throw new Exception(string.Format("Нет правила для такого сочитания нечетких меток: {0} и {1}",

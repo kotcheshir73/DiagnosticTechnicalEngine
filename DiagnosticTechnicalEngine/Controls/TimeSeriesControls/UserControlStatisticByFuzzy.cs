@@ -1,7 +1,9 @@
 ﻿using DiagnosticTechnicalEngine.Forms;
 using DiagnosticTechnicalEngine.StandartClasses;
+using ServicesModule;
 using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
+using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
@@ -64,6 +66,20 @@ namespace DiagnosticTechnicalEngine.Controls
 
 			groupBox.Text = "Ситуации по нечеткости";
 
+			var buttonMakeSituations = new Button
+			{
+				Anchor = AnchorStyles.Right,
+				Location = new System.Drawing.Point(490, 3),
+				Name = "buttonMakeRules",
+				Size = new System.Drawing.Size(100, 23),
+				TabIndex = 4,
+				Text = "Сформировать",
+				UseVisualStyleBackColor = true
+			};
+			buttonMakeSituations.Click += new EventHandler(ButtonMakeSituations_Click);
+
+			panel.Controls.Add(buttonMakeSituations);
+
 			ChangeVisibiles("buttonAdd", false);
 			ChangeVisibiles("buttonDel", false);
 			ChangeVisibiles("buttonClear", false);
@@ -82,6 +98,24 @@ namespace DiagnosticTechnicalEngine.Controls
 				dataGridView.Rows[i].Cells[4].Value = fuzzy.Description;
 				dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
 				i++;
+			}
+		}
+
+		private void ButtonMakeSituations_Click(object sender, EventArgs e)
+		{
+			if (MessageBox.Show("Вы хотите сгенрировать ситуации по нечеткости?", "Анализ временных рядов", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				try
+				{
+					ModelGenerate.GenerateSituationsByFuzzy(_parentId);
+					MessageBox.Show("Готово", "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					LoadData();
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Ошибка при генерации: " + ex.Message, "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+				LoadData();
 			}
 		}
 	}
