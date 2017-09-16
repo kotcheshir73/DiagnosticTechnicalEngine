@@ -38,21 +38,28 @@ namespace DiagnosticTechnicalEngine.Controls
 				ReadOnly = true,
 				Width = 140
 			};
-			var ColumnNeedForecast = new DataGridViewCheckBoxColumn
-			{
-				HeaderText = "С прогнозом",
-				Name = "ColumnNeedForecast",
-				ReadOnly = true
-			};
 
 			dataGridView.Columns.AddRange(new DataGridViewColumn[] {
 			ColumnId,
 			ColumnNumber,
 			ColumnFileName,
-			ColumnDate,
-			ColumnNeedForecast});
+			ColumnDate});
 
 			groupBox.Text = "Диагностические тесты";
+		}
+
+		protected override void LoadData()
+		{
+			int i = 0;
+			foreach (var diagnostic in _list)
+			{
+				dataGridView.Rows.Add();
+				dataGridView.Rows[i].Cells[0].Value = diagnostic.Id;
+				dataGridView.Rows[i].Cells[1].Value = diagnostic.TestNumber;
+				dataGridView.Rows[i].Cells[2].Value = diagnostic.FileName;
+				dataGridView.Rows[i].Cells[3].Value = diagnostic.DateTest.ToLongDateString();
+				i++;
+			}
 		}
 	}
 }

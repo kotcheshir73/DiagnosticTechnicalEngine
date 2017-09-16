@@ -146,49 +146,51 @@ namespace DiagnosticTechnicalEngine.Controls
 				richTextBox.AppendText("Результат анализа:\r\n");
 				richTextBox.SelectionAlignment = HorizontalAlignment.Left;
 
-				var logic = new DiagnosticTestService();
-    //            if (!logic.MakeDiagnosticTest(new DiagnosticTestBindingModel
-    //            {
-    //                TestNumber = textBoxNumber.Text,
-				//	FileName = _dialog.FileName,
-				//	TypeFile = Converter.ToTypeFile(_typeFile),
-				//	DatasInFile = _list,
-				//	SeriesDiscriptionId = _seriesId.Value,
-				//	CountPointsForMemmory = Convert.ToInt32(textBoxCountPointsForMemmory.Text),
-    //                NeedForecast = checkBoxGetForecast.Checked,
-				//	MessagerEvent = AddMessage,
-				//	MessageCountPoint = AddValue,
-				//	MakeGranuleUX = checkBoxGranuleUX.Checked,
-				//	MakeGranuleFT = checkBoxGranuleFT.Checked,
-				//	MakeGranuleEntropy = checkBoxGranuleEntropy.Checked,
-				//	MakeGranuleFuzzy = checkBoxGranuleFuzzy.Checked
-				//}))
-				//{
-				//	if (checkBoxSaveLog.Checked)
-				//	{
-				//		_writer.WriteLine("Ошибка при обработке: " + logic.Error);
-				//	}
-				//	else
-				//	{
-				//		MessageBox.Show("Ошибка при обработке: " + logic.Error, "Анализ временных рядов",
-				//		 MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//	}
-				//}
-				//else
-				//{
-				//	if (checkBoxSaveLog.Checked)
-				//	{
-				//		_writer.WriteLine("Сделано");
-				//	}
-				//	else
-				//	{
-				//		MessageBox.Show("Сделано", "Анализ временных рядов",
-				//		 MessageBoxButtons.OK, MessageBoxIcon.Information);
-				//	}
-				//}
-				if (checkBoxSaveLog.Checked)
+				var logic = new ModelDiagnosticTest();
+				try
 				{
-					_writer.Close();
+					logic.MakeDiagnosticTest(new DiagnosticTestBindingModel
+					{
+						TestNumber = textBoxNumber.Text,
+						FileName = _dialog.FileName,
+						TypeFile = Converter.ToTypeFile(_typeFile),
+						DatasInFile = _list,
+						SeriesDiscriptionId = _seriesId.Value,
+						CountPointsForMemmory = Convert.ToInt32(textBoxCountPointsForMemmory.Text),
+						MessagerEvent = AddMessage,
+						MessageCountPoint = AddValue,
+						MakeGranuleUX = checkBoxGranuleUX.Checked,
+						MakeGranuleFT = checkBoxGranuleFT.Checked,
+						MakeGranuleEntropy = checkBoxGranuleEntropy.Checked,
+						MakeGranuleFuzzy = checkBoxGranuleFuzzy.Checked
+					});
+					if (checkBoxSaveLog.Checked)
+					{
+						_writer.WriteLine("Сделано");
+					}
+					else
+					{
+						MessageBox.Show("Сделано", "Анализ временных рядов",
+						 MessageBoxButtons.OK, MessageBoxIcon.Information);
+					}
+				}
+				catch (Exception ex)
+				{
+					if (checkBoxSaveLog.Checked)
+					{
+						_writer.WriteLine("Ошибка при обработке: " + ex.Message);
+					}
+					else
+					{
+						MessageBox.Show("Ошибка при обработке: " + ex.Message, "Анализ временных рядов", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+				}
+				finally
+				{
+					if (checkBoxSaveLog.Checked)
+					{
+						_writer.Close();
+					}
 				}
 			}
 		}
