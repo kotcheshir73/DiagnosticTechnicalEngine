@@ -64,8 +64,21 @@ namespace DiagnosticTechnicalEngine.Controls
 			};
 			buttonWatch.Click += new EventHandler(ButtonWatch_Click);
 
-			panel.Controls.Add(buttonWatch);
-		}
+            var buttonForecast = new Button
+            {
+                Anchor = ((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left),
+                Location = new System.Drawing.Point(203, 3),
+                Name = "buttonForecast",
+                Size = new System.Drawing.Size(95, 23),
+                TabIndex = 0,
+                Text = "Прогноз",
+                UseVisualStyleBackColor = true
+            };
+            buttonForecast.Click += new EventHandler(ButtonForecast_Click);
+
+            panel.Controls.Add(buttonWatch);
+            panel.Controls.Add(buttonForecast);
+        }
 
 		protected override void LoadData()
 		{
@@ -95,6 +108,25 @@ namespace DiagnosticTechnicalEngine.Controls
 				if (form.ShowDialog() == DialogResult.OK)
 					LoadData();
 			}
-		}
-	}
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonForecast_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ModelDiagnosticTest mdt = new ModelDiagnosticTest();
+                var forecast = mdt.GetForecast(_parentId);
+                MessageBox.Show(string.Format("Результат: {0}", forecast), "Прогноз", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Прогноз", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
 }
