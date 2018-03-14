@@ -1098,16 +1098,11 @@ namespace ServicesModule
 
         private void FillPoint(PointInfo point)
         {
-            using (var _context = new DissertationDbContext())
-            {
-                point.StatisticsByFuzzy.EndStateFuzzyLabel = _context.FuzzyLabels.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.EndStateFuzzyLabelId);
-                point.StatisticsByFuzzy.StartStateFuzzyLabel = _context.FuzzyLabels.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.StartStateFuzzyLabelId);
-
-                point.StatisticsByFuzzy.EndStateFuzzyTrend = _context.FuzzyTrends.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.EndStateFuzzyTrendId);
-                point.StatisticsByFuzzy.StartStateFuzzyTrend = _context.FuzzyTrends.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.StartStateFuzzyTrendId);
-
-                point.StatisticsByFuzzy.SeriesDescription = _context.SeriesDescriptions.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.SeriesDiscriptionId);
-            }
+            point.FuzzyLabel = null;
+            point.FuzzyTrend = null;
+            point.DiagnosticTest = null;
+            point.StatisticsByEntropy = null;
+            point.StatisticsByFuzzy = null;
         }
 	}
 }
