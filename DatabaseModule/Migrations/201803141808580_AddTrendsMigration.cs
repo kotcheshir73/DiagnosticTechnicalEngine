@@ -3,16 +3,16 @@ namespace DatabaseModule.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UpdateDiagnosticTest : DbMigration
+    public partial class AddTrendsMigration : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.DiagnosticTests", "TestNumber", c => c.String());
+            AddColumn("dbo.PointTrends", "Trends", c => c.String());
         }
         
         public override void Down()
         {
-            DropColumn("dbo.DiagnosticTests", "TestNumber");
+            DropColumn("dbo.PointTrends", "Trends");
         }
     }
 }

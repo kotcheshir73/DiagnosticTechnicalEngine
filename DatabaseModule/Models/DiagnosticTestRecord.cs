@@ -6,7 +6,7 @@ namespace DatabaseModule
 	{
         public int AnomalyInfoId { get; set; }
 
-        public AnomalyInfo AnomalyInfo { get; set; }
+        public virtual AnomalyInfo AnomalyInfo { get; set; }
 
         public int? PointNumber { get; set; }
 

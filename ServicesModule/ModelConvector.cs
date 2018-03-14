@@ -97,7 +97,8 @@ namespace ServicesModule
 				StartPoint = elem.StartPoint,
 				FinishPoint = elem.FinishPoint,
 				Count = elem.Count,
-				Weight = elem.Weight
+				Weight = elem.Weight,
+                Trends = elem.Trends
 			};
 		}
 

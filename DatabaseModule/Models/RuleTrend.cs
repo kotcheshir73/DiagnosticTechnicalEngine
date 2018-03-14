@@ -12,7 +12,7 @@ namespace DatabaseModule
 		/// <summary>
 		/// Нечеткая тенденция
 		/// </summary>
-		public FuzzyTrend FuzzyTrend { get; set; }
+		public virtual FuzzyTrend FuzzyTrend { get; set; }
 
 		public int FuzzyLabelFromId { get; set; }
 		/// <summary>

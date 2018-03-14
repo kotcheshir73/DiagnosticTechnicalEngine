@@ -7,13 +7,13 @@ namespace DatabaseModule.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class NewChanges : IMigrationMetadata
+    public sealed partial class AddTrendsMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(NewChanges));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTrendsMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708261234241_NewChanges"; }
+            get { return "201803141808580_AddTrendsMigration"; }
         }
         
         string IMigrationMetadata.Source

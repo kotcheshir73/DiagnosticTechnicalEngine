@@ -91,10 +91,12 @@ namespace ServicesModule
 					test.Count = _countPoints;
 					var lastPoint = _points[_points.Count - 1];
 					lastPoint.IsLast = true;
+                    FillPoint(lastPoint);
 					_context.PointInfos.Add(lastPoint);
 					_context.SaveChanges();
 					var preLastPoint = _points[_points.Count - 2];
-					_context.PointInfos.Add(preLastPoint);
+                    FillPoint(preLastPoint);
+                    _context.PointInfos.Add(preLastPoint);
 					_context.SaveChanges();
 					transaction.Commit();
 				}
@@ -1093,5 +1095,19 @@ namespace ServicesModule
 				return result;
 			}
 		}
+
+        private void FillPoint(PointInfo point)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                point.StatisticsByFuzzy.EndStateFuzzyLabel = _context.FuzzyLabels.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.EndStateFuzzyLabelId);
+                point.StatisticsByFuzzy.StartStateFuzzyLabel = _context.FuzzyLabels.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.StartStateFuzzyLabelId);
+
+                point.StatisticsByFuzzy.EndStateFuzzyTrend = _context.FuzzyTrends.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.EndStateFuzzyTrendId);
+                point.StatisticsByFuzzy.StartStateFuzzyTrend = _context.FuzzyTrends.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.StartStateFuzzyTrendId);
+
+                point.StatisticsByFuzzy.SeriesDescription = _context.SeriesDescriptions.FirstOrDefault(rec => rec.Id == point.StatisticsByFuzzy.SeriesDiscriptionId);
+            }
+        }
 	}
 }

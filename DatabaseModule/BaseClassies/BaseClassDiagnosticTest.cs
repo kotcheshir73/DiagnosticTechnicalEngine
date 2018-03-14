@@ -4,6 +4,6 @@
 	{
 		public int DiagnosticTestId { get; set; }
 
-		public DiagnosticTest DiagnosticTest { get; set; }
+		public virtual DiagnosticTest DiagnosticTest { get; set; }
 	}
 }

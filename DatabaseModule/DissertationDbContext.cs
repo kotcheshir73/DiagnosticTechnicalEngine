@@ -88,14 +88,23 @@ namespace DatabaseModule
                 {
                     var entity = entry.Entity;
 
-                    FuzzyLabels.RemoveRange(FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-                    FuzzyTrends.RemoveRange(FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-                    RuleTrends.RemoveRange(RuleTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-                    PointTrends.RemoveRange(PointTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-					AnomalyInfos.RemoveRange(AnomalyInfos.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-					StatisticsByEntropys.RemoveRange(StatisticsByEntropys.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    var diagnosticsTests = DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id).Select(rec => rec.Id).ToList();
+
+                    DiagnosticTestRecords.RemoveRange(DiagnosticTestRecords.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    GranuleFuzzys.RemoveRange(GranuleFuzzys.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    GranuleEntropys.RemoveRange(GranuleEntropys.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    GranuleUXs.RemoveRange(GranuleUXs.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    GranuleFTs.RemoveRange(GranuleFTs.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    PointInfos.RemoveRange(PointInfos.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    DiagnosticTestRecords.RemoveRange(DiagnosticTestRecords.Where(rec => rec.DiagnosticTestId == entity.Id));
+                    DiagnosticTests.RemoveRange(DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    StatisticsByEntropys.RemoveRange(StatisticsByEntropys.Where(rec => rec.SeriesDiscriptionId == entity.Id));
 					StatisticsByFuzzys.RemoveRange(StatisticsByFuzzys.Where(rec => rec.SeriesDiscriptionId == entity.Id));
-					DiagnosticTests.RemoveRange(DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+					AnomalyInfos.RemoveRange(AnomalyInfos.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    PointTrends.RemoveRange(PointTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    RuleTrends.RemoveRange(RuleTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    FuzzyTrends.RemoveRange(FuzzyTrends.Where(rec => rec.SeriesDiscriptionId == entity.Id));
+                    FuzzyLabels.RemoveRange(FuzzyLabels.Where(rec => rec.SeriesDiscriptionId == entity.Id));
                 }
             }
 

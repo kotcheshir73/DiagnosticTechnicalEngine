@@ -15,7 +15,7 @@ namespace DatabaseModule
 
 		public int DiagnosticTestId { get; set; }
 
-		public DiagnosticTest DiagnosticTest { get; set; }
+		public virtual DiagnosticTest DiagnosticTest { get; set; }
 		/// <summary>
 		/// Значение (числовое точки)
 		/// </summary>
@@ -43,7 +43,7 @@ namespace DatabaseModule
 		/// <summary>
 		/// Нечеткая метка
 		/// </summary>
-		public FuzzyLabel FuzzyLabel { get; set; }
+		public virtual FuzzyLabel FuzzyLabel { get; set; }
 		/// <summary>
 		/// Идентификатор нечеткой тенденции
 		/// </summary>
@@ -51,7 +51,7 @@ namespace DatabaseModule
 		/// <summary>
 		/// Нечеткая тенденция
 		/// </summary>
-		public FuzzyTrend FuzzyTrend { get; set; }
+		public virtual FuzzyTrend FuzzyTrend { get; set; }
 		/// <summary>
 		/// Значение меры энтропии по функции принадлежности
 		/// </summary>
@@ -67,7 +67,7 @@ namespace DatabaseModule
 		/// <summary>
 		/// 
 		/// </summary>
-		public StatisticsByEntropy StatisticsByEntropy { get; set; }
+		public virtual StatisticsByEntropy StatisticsByEntropy { get; set; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -75,6 +75,6 @@ namespace DatabaseModule
 		/// <summary>
 		/// 
 		/// </summary>
-		public StatisticsByFuzzy StatisticsByFuzzy { get; set; }
+		public virtual StatisticsByFuzzy StatisticsByFuzzy { get; set; }
 	}
 }

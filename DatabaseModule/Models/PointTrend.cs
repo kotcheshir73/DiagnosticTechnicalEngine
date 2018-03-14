@@ -14,5 +14,7 @@ namespace DatabaseModule
 		public int Count { get; set; }
 
 		public double Weight { get; set; }
+
+        public string Trends { get; set; }
 	}
 }

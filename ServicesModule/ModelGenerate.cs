@@ -373,12 +373,17 @@ namespace ServicesModule
 									FinishPoint = nextPoint,
 									Count = 1,
 									Weight = 0,
-									SeriesDiscriptionId = seriesId
+									SeriesDiscriptionId = seriesId,
+                                    Trends = point.FuzzyTrend.TrendName.ToString()
 								};
 								_context.PointTrends.Add(pointTrend);
 							}
 							else
 							{
+                                if (!pointTrend.Trends.Contains(point.FuzzyTrend.TrendName.ToString()))
+                                {
+                                    pointTrend.Trends += string.Format(", {0}", point.FuzzyTrend.TrendName);
+                                }
 								pointTrend.Count++;
 							}
 							_context.SaveChanges();

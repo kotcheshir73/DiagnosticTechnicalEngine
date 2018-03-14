@@ -4,6 +4,6 @@
 	{
 		public int SeriesDiscriptionId { get; set; }
 
-		public SeriesDescription SeriesDescription { get; set; }
+		public virtual SeriesDescription SeriesDescription { get; set; }
 	}
 }

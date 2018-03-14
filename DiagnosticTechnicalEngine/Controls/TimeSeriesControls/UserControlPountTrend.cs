@@ -48,13 +48,21 @@ namespace DiagnosticTechnicalEngine.Controls
 				Name = "ColumnWeight",
 				ReadOnly = true
 			};
+            var ColumnTrend = new DataGridViewTextBoxColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Тенденции",
+                Name = "ColumnTrend",
+                ReadOnly = true
+            };
 
-			dataGridView.Columns.AddRange(new DataGridViewColumn[] {
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] {
 			ColumnId,
 			ColumnStartPoint,
 			ColumnFinishPount,
 			ColumnCount,
-			ColumnWeight});
+			ColumnWeight,
+            ColumnTrend});
 
 			groupBox.Text = "Точки фазовой плоскости (1 - самый частый, 0,5 - все остальные)";
 
@@ -84,7 +92,8 @@ namespace DiagnosticTechnicalEngine.Controls
 				dataGridView.Rows[i].Cells[2].Value = rule.FinishPoint;
 				dataGridView.Rows[i].Cells[3].Value = rule.Count;
 				dataGridView.Rows[i].Cells[4].Value = rule.Weight;
-				i++;
+                dataGridView.Rows[i].Cells[5].Value = rule.Trends;
+                i++;
 			}
 		}
 

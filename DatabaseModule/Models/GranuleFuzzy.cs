@@ -14,7 +14,7 @@ namespace DatabaseModule
 		/// <summary>
 		/// Значение нечеткой метки
 		/// </summary>
-		public FuzzyLabel FuzzyLabel { get; set; }
+		public virtual FuzzyLabel FuzzyLabel { get; set; }
         /// <summary>
         /// Идентификатор нечеткой метки
         /// </summary>
@@ -22,7 +22,7 @@ namespace DatabaseModule
         /// <summary>
         /// Значение нечеткой тенденции
         /// </summary>
-        public FuzzyTrend FuzzyTrend { get; set; }
+        public virtual FuzzyTrend FuzzyTrend { get; set; }
         /// <summary>
         /// Идентификатор нечеткой тенденции
         /// </summary>
