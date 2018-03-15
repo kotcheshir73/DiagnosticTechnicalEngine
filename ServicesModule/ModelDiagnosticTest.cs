@@ -91,11 +91,11 @@ namespace ServicesModule
 					test.Count = _countPoints;
 					var lastPoint = _points[_points.Count - 1];
 					lastPoint.IsLast = true;
-                    FillPoint(lastPoint);
+                    ClearPoint(lastPoint);
 					_context.PointInfos.Add(lastPoint);
 					_context.SaveChanges();
 					var preLastPoint = _points[_points.Count - 2];
-                    FillPoint(preLastPoint);
+                    ClearPoint(preLastPoint);
                     _context.PointInfos.Add(preLastPoint);
 					_context.SaveChanges();
 					transaction.Commit();
@@ -933,7 +933,7 @@ namespace ServicesModule
 				}
 				// результат - прогнозное значение
 				double result = 0;
-				var LastPoint = _context.PointInfos.FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && pi.IsLast);
+				var LastPoint = _context.PointInfos.Include(pi => pi.FuzzyTrend).FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && pi.IsLast);
 				var PreLastPoint = _context.PointInfos.FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && !pi.IsLast);
 				// пока что - эот будет значение в последней точке
 				result = LastPoint.Value.Value;
@@ -1096,7 +1096,7 @@ namespace ServicesModule
 			}
 		}
 
-        private void FillPoint(PointInfo point)
+        private void ClearPoint(PointInfo point)
         {
             point.FuzzyLabel = null;
             point.FuzzyTrend = null;
