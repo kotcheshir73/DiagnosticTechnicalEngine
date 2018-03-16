@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using DatabaseModule.Models;
+using System.Data.Entity;
 using System.Linq;
 
 namespace DatabaseModule
@@ -140,5 +141,7 @@ namespace DatabaseModule
 		public virtual DbSet<DiagnosticTestRecord> DiagnosticTestRecords { get; set; }
 
 		public virtual DbSet<PointInfo> PointInfos { get; set; }
-	}
+
+        public virtual DbSet<ExperimentFileResult> ExperimentFileResults { get; set; }
+    }
 }

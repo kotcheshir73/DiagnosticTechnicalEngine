@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServicesModule;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,16 @@ namespace DiagnosticTechnicalEngine
         public FormMain()
         {
             InitializeComponent();
+        }
+
+        private void runExperimentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if(fbd.ShowDialog() == DialogResult.OK)
+            {
+                ExperimentByForecast exp = new ExperimentByForecast();
+                exp.RunExperiment(fbd.SelectedPath);
+            }
         }
     }
 }

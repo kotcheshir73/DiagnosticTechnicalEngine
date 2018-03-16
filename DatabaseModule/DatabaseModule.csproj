@@ -67,10 +67,15 @@
     <Compile Include="Migrations\201803141808580_AddTrendsMigration.Designer.cs">
       <DependentUpon>201803141808580_AddTrendsMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803151853501_AddExperimentFileResult.cs" />
+    <Compile Include="Migrations\201803151853501_AddExperimentFileResult.Designer.cs">
+      <DependentUpon>201803151853501_AddExperimentFileResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
     <Compile Include="Models\DiagnosticTestRecord.cs" />
+    <Compile Include="Models\ExperimentFileResult.cs" />
     <Compile Include="Models\FuzzyLabel.cs" />
     <Compile Include="Models\FuzzyTrend.cs" />
     <Compile Include="Models\GranuleEntropy.cs" />
@@ -100,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803141808580_AddTrendsMigration.resx">
       <DependentUpon>201803141808580_AddTrendsMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803151853501_AddExperimentFileResult.resx">
+      <DependentUpon>201803151853501_AddExperimentFileResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

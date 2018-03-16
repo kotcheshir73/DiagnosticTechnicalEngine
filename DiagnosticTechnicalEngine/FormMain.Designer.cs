@@ -30,10 +30,15 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.userControlMain1 = new DiagnosticTechnicalEngine.Controls.UserControlMain();
+            this.действияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runExperimentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.действияToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(981, 24);
@@ -48,6 +53,21 @@
             this.userControlMain1.Size = new System.Drawing.Size(981, 475);
             this.userControlMain1.TabIndex = 1;
             // 
+            // действияToolStripMenuItem
+            // 
+            this.действияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runExperimentToolStripMenuItem});
+            this.действияToolStripMenuItem.Name = "действияToolStripMenuItem";
+            this.действияToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.действияToolStripMenuItem.Text = "Действия";
+            // 
+            // runExperimentToolStripMenuItem
+            // 
+            this.runExperimentToolStripMenuItem.Name = "runExperimentToolStripMenuItem";
+            this.runExperimentToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.runExperimentToolStripMenuItem.Text = "Провести эксперимент 1";
+            this.runExperimentToolStripMenuItem.Click += new System.EventHandler(this.runExperimentToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -59,6 +79,8 @@
             this.Name = "FormMain";
             this.Text = "FormMain";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -68,5 +90,7 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private Controls.UserControlMain userControlMain1;
+        private System.Windows.Forms.ToolStripMenuItem действияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runExperimentToolStripMenuItem;
     }
 }

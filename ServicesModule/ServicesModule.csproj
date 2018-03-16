@@ -66,6 +66,7 @@
     <Compile Include="BindingModels\SeriesDescriptionBindingModel.cs" />
     <Compile Include="BindingModels\StatisticsByEntropyBindingModel.cs" />
     <Compile Include="BindingModels\StatisticsByFuzzyBindingModel.cs" />
+    <Compile Include="ExperimentByForecast.cs" />
     <Compile Include="Interfaces\ISeriesDescriptionModel.cs" />
     <Compile Include="ModelDiagnosticTest.cs" />
     <Compile Include="ModelGenerate.cs" />
