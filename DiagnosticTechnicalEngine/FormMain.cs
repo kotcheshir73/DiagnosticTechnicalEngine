@@ -1,4 +1,5 @@
-﻿using ServicesModule;
+﻿using NLog;
+using ServicesModule;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

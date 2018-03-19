@@ -995,7 +995,7 @@ namespace ServicesModule
 						var tempStateEntropy = listStatEntropyOrdered[indexEntropy];
 
 						// получаем тенденцию в прогнозной точки
-						int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy);
+						int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy, diagTest.SeriesDiscriptionId);
 						// получаем знак прогнозируемой тенденции
 						double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
 						var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);

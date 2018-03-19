@@ -225,69 +225,64 @@ namespace ServicesModule
 		/// <param name="fft">значение меры энтропии</param>
 		/// <param name="point">точка фазовой плоскости по предыдущей тенденции</param>
 		/// <returns></returns>
-		public static int CalcPointFromFFT(double fft, int point)
-		{
-			switch (point)
-			{
-				case 0://0, 1, 3
-					if (fft == 0)
-					{
-						return 0;
-					}
-					else if (fft == 0.5)
-					{
-						return 1;//(3)
-					}
-					return 1;
-				case 1://3, 4, 6
-					if (fft == 0)
-					{
-						return 6;
-					}
-					else if (fft == 0.5)
-					{
-						return 3;//(4)
-					}
-					return -1;
-				case 2://3, 5 - мало вероятные события
-					if (fft == 0.5)
-					{
-						return 3;//(5)
-					}
-					return -1;
-				case 3://1, 2, 3, 5
-					if (fft == 0)
-					{
-						return 5;
-					}
-					else if (fft == 0.5)
-					{
-						return 1;//(2, 3)
-					}
-					return -1;
-				case 4://1, 3, 4, 6- мало вероятные события
-					if (fft == 0.5)
-					{
-						return 1;//(3,4,6)
-					}
-					return -1;
-				case 5://0, 1, 3
-				case 6://0, 1, 3
-					if (fft == 0)
-					{
-						return 0;
-					}
-					else if (fft == 0.5)
-					{
-						return 1;//(3)
-					}
-					return -1;
-				case 7://недопустимые случаи
-				case 8://
-					return -1;
-				default:
-					return -1;
-			}
+		public static int CalcPointFromFFT(double fft, int point, int seriesId)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                var points = _context.PointTrends.Where(x => x.SeriesDiscriptionId == seriesId && x.StartPoint == point).ToList();
+                if(points != null && points.Count > 0)
+                {
+                    var p = points.FirstOrDefault(x => x.Weight == fft);
+                    if(p != null)
+                    {
+                        return p.FinishPoint;
+                    }
+                    if(fft == 0)
+                    {
+                        p = points.FirstOrDefault(x => x.Weight == 0.5);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                        p = points.FirstOrDefault(x => x.Weight == 1);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                    }
+                    else if (fft == 1)
+                    {
+                        p = points.FirstOrDefault(x => x.Weight == 0.5);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                        p = points.FirstOrDefault(x => x.Weight == 0);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                    }
+                    else if (fft == 0.5)
+                    {
+                        p = points.FirstOrDefault(x => x.Weight == 1);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                        p = points.FirstOrDefault(x => x.Weight == 0);
+                        if (p != null)
+                        {
+                            return p.FinishPoint;
+                        }
+                    }
+                    throw new Exception(string.Format("CalcPointFromFFT({0}): Не нашли для точки {1} точку по весу {2}", seriesId, point, fft));
+                }
+                else
+                {
+                    throw new Exception(string.Format("CalcPointFromFFT({0}): Не найдены точки тенденция для ряда", seriesId));
+                }
+            }
 
 		}
 		/// <summary>
@@ -297,7 +292,7 @@ namespace ServicesModule
 		/// <param name="beforeLastPointFTN"></param>
 		/// <param name="tempStateEntropy"></param>
 		/// <returns></returns>
-		public static int CalcPointFromFFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, StatisticsByEntropy tempStateEntropy)
+		public static int CalcPointFromFFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, StatisticsByEntropy tempStateEntropy, int seriesId)
 		{
 			var xLast = Converter.ToFuzzyTrendLabelWeight(lastPointFTN);
 			if (xLast == Converter.TrendWeightNotFound)
@@ -308,7 +303,7 @@ namespace ServicesModule
 			var speedTrendLast = xLastLast - xLast;
 
 			return CalcPointFromFFT(Converter.ToEntropyByFT(tempStateEntropy.EndStateLingvistFT),
-					CalcPointOnPhasePlane(lastPointFTN, speedTrendLast));
+					CalcPointOnPhasePlane(lastPointFTN, speedTrendLast), seriesId);
 		}
 		/// <summary>
 		/// Вычисление тенденции по точке фазовой плоскости (определяем знак, - или + или 0)
