@@ -395,29 +395,29 @@ namespace ServicesModule
                         point.FuzzyTrendId = rule.FuzzyTrendId;
                         point.FuzzyTrend = _context.FuzzyTrends.Single(ft => ft.Id == rule.FuzzyTrendId);
 
-                        if (_points.Count > 3)
+                        if (_points.Count > 2)
                         {//если есть возможность, получить энтропию по тенденции
-                            var xNow = Converter.ToFuzzyTrendLabelWeight(_points[_points.Count - 1].FuzzyTrend.TrendName);
+                            var xNow = Converter.ToFuzzyTrendLabelWeight(point.FuzzyTrend.TrendName);
                             if (xNow == Converter.TrendWeightNotFound)
+                            {
+                                throw new Exception(string.Format("Не найден вес для тенденции {0}", point.FuzzyTrend.TrendName));
+                            }
+                            var xLast = Converter.ToFuzzyTrendLabelWeight(_points[_points.Count - 1].FuzzyTrend.TrendName);
+                            if (xLast == Converter.TrendWeightNotFound)
                             {
                                 throw new Exception(string.Format("Не найден вес для тенденции {0}", _points[_points.Count - 1].FuzzyTrend.TrendName));
                             }
-                            var xLast = Converter.ToFuzzyTrendLabelWeight(_points[_points.Count - 2].FuzzyTrend.TrendName);
-                            if (xLast == Converter.TrendWeightNotFound)
-                            {
-                                throw new Exception(string.Format("Не найден вес для тенденции {0}", _points[_points.Count - 2].FuzzyTrend.TrendName));
-                            }
-                            var xLastLast = Converter.ToFuzzyTrendLabelWeight(_points[_points.Count - 3].FuzzyTrend.TrendName);
+                            var xLastLast = Converter.ToFuzzyTrendLabelWeight(_points[_points.Count - 2].FuzzyTrend.TrendName);
                             if (xLastLast == Converter.TrendWeightNotFound)
                             {
-                                throw new Exception(string.Format("Не найден вес для тенденции {0}", _points[_points.Count - 3].FuzzyTrend.TrendName));
+                                throw new Exception(string.Format("Не найден вес для тенденции {0}", _points[_points.Count - 2].FuzzyTrend.TrendName));
                             }
                             // скорость преращения тенденции в предыдущей точке
                             var speedTrendLast = xLastLast - xLast;
                             // скорость преращения тенденции в ткущей точке
                             var speedTrend = xLast - xNow;
-                            int beforePoint = ModelCalculator.CalcPointOnPhasePlane(_points[_points.Count - 2].FuzzyTrend.TrendName, speedTrendLast);
-                            int nextPoint = ModelCalculator.CalcPointOnPhasePlane(_points[_points.Count - 1].FuzzyTrend.TrendName, speedTrend);
+                            int beforePoint = ModelCalculator.CalcPointOnPhasePlane(_points[_points.Count - 1].FuzzyTrend.TrendName, speedTrendLast);
+                            int nextPoint = ModelCalculator.CalcPointOnPhasePlane(point.FuzzyTrend.TrendName, speedTrend);
                             var pointTrend = _context.PointTrends.FirstOrDefault(p => p.StartPoint == beforePoint && p.FinishPoint == nextPoint && p.SeriesDiscriptionId == seriesId);
                             if (pointTrend == null)
                             {

@@ -270,11 +270,11 @@ namespace ServicesModule
 					point.FuzzyTrendId = rule.FuzzyTrendId;
 					point.FuzzyTrend = _context.FuzzyTrends.Single(ft => ft.Id == rule.FuzzyTrendId);
 
-					if (_points.Count > 3)
+					if (_points.Count > 2)
 					{
-						point.EntropyFT = ModelCalculator.CalcEntropyByFT(_points[_points.Count - 1].FuzzyTrend.TrendName,
+						point.EntropyFT = ModelCalculator.CalcEntropyByFT(point.FuzzyTrend.TrendName,
+																			_points[_points.Count - 1].FuzzyTrend.TrendName,
 																			_points[_points.Count - 2].FuzzyTrend.TrendName,
-																			_points[_points.Count - 3].FuzzyTrend.TrendName,
 																			point.SeriesDiscriptionId);
 					}
 
