@@ -143,5 +143,7 @@ namespace DatabaseModule
 		public virtual DbSet<PointInfo> PointInfos { get; set; }
 
         public virtual DbSet<ExperimentFileResult> ExperimentFileResults { get; set; }
+
+        public virtual DbSet<LogData> LogDatas { get; set; }
     }
 }

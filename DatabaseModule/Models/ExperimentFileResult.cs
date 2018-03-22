@@ -13,5 +13,7 @@ namespace DatabaseModule.Models
         public double Forecast { get; set; }
 
         public double RealValue { get; set; }
+
+        public string ForecastsByPoint { get; set; }
     }
 }

@@ -71,10 +71,15 @@
     <Compile Include="Migrations\201803151853501_AddExperimentFileResult.Designer.cs">
       <DependentUpon>201803151853501_AddExperimentFileResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803221713394_AddLogsAndIntoExperimemt.cs" />
+    <Compile Include="Migrations\201803221713394_AddLogsAndIntoExperimemt.Designer.cs">
+      <DependentUpon>201803221713394_AddLogsAndIntoExperimemt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
     <Compile Include="Models\DiagnosticTestRecord.cs" />
+    <Compile Include="Models\ErrorLog.cs" />
     <Compile Include="Models\ExperimentFileResult.cs" />
     <Compile Include="Models\FuzzyLabel.cs" />
     <Compile Include="Models\FuzzyTrend.cs" />
@@ -108,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803151853501_AddExperimentFileResult.resx">
       <DependentUpon>201803151853501_AddExperimentFileResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803221713394_AddLogsAndIntoExperimemt.resx">
+      <DependentUpon>201803221713394_AddLogsAndIntoExperimemt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

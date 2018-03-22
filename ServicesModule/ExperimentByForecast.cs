@@ -14,9 +14,7 @@ namespace ServicesModule
     {
         private int countCenters = 7;
 
-        private int countTasks = 5;
-
-        private Logger log;
+        // private int countTasks = 5;
 
         private List<PointInfo> _points;
 
@@ -45,32 +43,26 @@ namespace ServicesModule
         public void RunExperiment(string path)
         {
             mdt = new ModelDiagnosticTest();
-            log = LogManager.GetCurrentClassLogger();
             if (Directory.Exists(path))
             {
                 var info = new DirectoryInfo(path);
                 var files = info.GetFiles();
-               // log.Info(string.Format("Начали тесты {0}", files.Length));
+                // log.Info(string.Format("Начали тесты {0}", files.Length));
                 List<Task> tasks = new List<Task>();
                 foreach (var file in files)
                 {
                     // tasks.Add(Task.Run(() => MakeTest(file)));
                     MakeTest(file);
                 }
-              //  Task.WaitAll(tasks.ToArray());
-                log.Info(string.Format("Завершили тесты"));
-            }
-            else
-            {
-                log.Error("Не найдена директория");
+                //  Task.WaitAll(tasks.ToArray());
             }
         }
 
         private bool MakeTest(FileInfo file)
         {
-            try
+            using (var _context = new DissertationDbContext())
             {
-                using (var _context = new DissertationDbContext())
+                try
                 {
                     var entity = ModelConvector.ToSeriesDescription(new SeriesDescriptionBindingModel
                     {
@@ -86,42 +78,78 @@ namespace ServicesModule
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} нечеткие метки получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} нечеткие метки получены", file.Name)
+                    });
 
                     res = CreateFuzzyTrend(file.FullName, entity.Id);
                     if (!res)
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} нечеткие тенденции получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} нечеткие тенденции получены", file.Name)
+                    });
 
                     res = CreateRuleTrend(file.FullName, entity.Id);
                     if (!res)
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} правила для тенденций получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} правила для тенденций получены", file.Name)
+                    });
 
                     res = CreatePointTrend(file.FullName, entity.Id);
                     if (!res)
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} точки для тенденций получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} точки для тенденций получены", file.Name)
+                    });
 
                     res = GenerateSituationsByEntropy(file.FullName, entity.Id);
                     if (!res)
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} ситуации по энтропии получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} ситуации по энтропии получены", file.Name)
+                    });
 
                     res = GenerateSituationsByFuzzy(file.FullName, entity.Id);
                     if (!res)
                     {
                         return false;
                     }
-                    log.Info(string.Format("{0} ситуации по нечеткости получены", file.FullName));
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLogType = "Info",
+                        MessageLogTitle = file.Name,
+                        MessageLog = string.Format("{0} ситуации по нечеткости получены", file.Name)
+                    });
                     #endregion
 
                     lock (runForecast)
@@ -141,13 +169,25 @@ namespace ServicesModule
                         test.Count = 0;
                         _context.DiagnosticTests.Add(test);
                         _context.SaveChanges();
-                        log.Info(string.Format("{0} создали тест", file.FullName));
+                        _context.LogDatas.Add(new LogData
+                        {
+                            DateLog = DateTime.Now,
+                            MessageLogType = "Info",
+                            MessageLogTitle = file.Name,
+                            MessageLog = string.Format("{0} создали тест", file.Name)
+                        });
 
                         var values = LoadFromTxt(file.FullName);
 
                         if (values != null && values.Count > 1)
                         {
-                            log.Info(string.Format("{0} загрузили данные", file.FullName));
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Info",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} загрузили данные", file.Name)
+                            });
                             for (int i = 0; i < values.Count - 1; ++i)
                             {
                                 AddNewPoint(new PointInfo
@@ -157,7 +197,13 @@ namespace ServicesModule
                                     Value = values[i]
                                 }, entity.Id);
                             }
-                            log.Info(string.Format("{0} обработали", file.FullName));
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Info",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} обработали данные", file.Name)
+                            });
                             using (var transaction = _context.Database.BeginTransaction())
                             {
                                 test.Count = _countPoints;
@@ -172,33 +218,66 @@ namespace ServicesModule
                                 _context.SaveChanges();
                                 transaction.Commit();
                             }
-                            log.Info(string.Format("{0} сохранили последние точки", file.FullName));
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Info",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} сохранили последние точки", file.Name)
+                            });
 
                             var forecast = mdt.GetForecast(test.Id);
-                            log.Info(string.Format("{0} получили прогноз", file.FullName));
+                            var forecasts = string.Join(";", mdt.GetForecastByPointTrend(test.Id));
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Info",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} получили прогноз", file.Name)
+                            });
                             var realValue = values[values.Count - 1];
                             _context.ExperimentFileResults.Add(new ExperimentFileResult
                             {
                                 DateExperiment = DateTime.Now,
                                 Forecast = forecast,
+                                ForecastsByPoint = forecasts,
                                 RealValue = realValue,
                                 FileName = file.Name
                             });
                             _context.SaveChanges();
-                            log.Info(string.Format("{0} сохранили прогноз", file.FullName));
+
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Info",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} сохранили прогноз", file.FullName)
+                            });
                         }
                         else
                         {
-                            log.Error(string.Format("{0} не получили точек", file.FullName));
+                            _context.SaveChanges();
+                            _context.LogDatas.Add(new LogData
+                            {
+                                DateLog = DateTime.Now,
+                                MessageLogType = "Error",
+                                MessageLogTitle = file.Name,
+                                MessageLog = string.Format("{0} не получили точек", file.FullName)
+                            });
                         }
                     }
                     return true;
                 }
-            }
-            catch (Exception ex)
-            {
-                log.Error(string.Format("MakeTest {0}: {1}", file.FullName, ex.Message));
-                return false;
+                catch (Exception ex)
+                {
+                    _context.LogDatas.Add(new LogData
+                    {
+                        DateLog = DateTime.Now,
+                        MessageLog = string.Format("MakeTest {0}: {1}", file.FullName, ex.Message),
+                        MessageLogType = "Error"
+                    });
+                    return false;
+                }
             }
         }
 
@@ -209,7 +288,7 @@ namespace ServicesModule
                 try
                 {
                     int _countClasters = countCenters;
-                    while(true)
+                    while (true)
                     {
                         var clust = new ModelClustering(fileName, 1, _countClasters);
                         if (clust.Calc())
@@ -263,7 +342,7 @@ namespace ServicesModule
                             return true;
                         }
                         _countClasters--;
-                        if(_countClasters < 0)
+                        if (_countClasters < 0)
                         {
                             throw new Exception("Кластеризация не прошла");
                         }
@@ -271,8 +350,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("CreateFuzzyLabel {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("CreateFuzzyLabel {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -288,8 +366,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("CreateFuzzyTrend {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("CreateFuzzyTrend {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -324,8 +401,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("CreateRuleTrend {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("CreateRuleTrend {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -346,8 +422,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("CreatePointTrend {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("CreatePointTrend {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -363,8 +438,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("GenerateSituationsByEntropy {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("GenerateSituationsByEntropy {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -380,8 +454,7 @@ namespace ServicesModule
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("GenerateSituationsByFuzzy {0}: {1}", fileName, ex.Message));
-                    return false;
+                    throw new Exception(string.Format("GenerateSituationsByFuzzy {0}: {1}", fileName, ex.Message));
                 }
             }
         }
@@ -609,6 +682,16 @@ namespace ServicesModule
             point.DiagnosticTest = null;
             point.StatisticsByEntropy = null;
             point.StatisticsByFuzzy = null;
+        }
+
+        public List<ExperimentFileResult> Result(DateTime date)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                var dateStart = date.Date;
+                var dateFinifh = date.Date.AddDays(1);
+                return _context.ExperimentFileResults.Where(ex => ex.DateExperiment >= dateStart && ex.DateExperiment <= dateFinifh).ToList();
+            }
         }
     }
 }

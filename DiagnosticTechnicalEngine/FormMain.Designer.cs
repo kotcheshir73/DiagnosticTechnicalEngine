@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.userControlMain1 = new DiagnosticTechnicalEngine.Controls.UserControlMain();
             this.действияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runExperimentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.userControlMain1 = new DiagnosticTechnicalEngine.Controls.UserControlMain();
+            this.результатыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +46,22 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // действияToolStripMenuItem
+            // 
+            this.действияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runExperimentToolStripMenuItem,
+            this.результатыToolStripMenuItem});
+            this.действияToolStripMenuItem.Name = "действияToolStripMenuItem";
+            this.действияToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.действияToolStripMenuItem.Text = "Действия";
+            // 
+            // runExperimentToolStripMenuItem
+            // 
+            this.runExperimentToolStripMenuItem.Name = "runExperimentToolStripMenuItem";
+            this.runExperimentToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.runExperimentToolStripMenuItem.Text = "Провести эксперимент 1";
+            this.runExperimentToolStripMenuItem.Click += new System.EventHandler(this.runExperimentToolStripMenuItem_Click);
+            // 
             // userControlMain1
             // 
             this.userControlMain1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -53,20 +70,12 @@
             this.userControlMain1.Size = new System.Drawing.Size(981, 475);
             this.userControlMain1.TabIndex = 1;
             // 
-            // действияToolStripMenuItem
+            // результатыToolStripMenuItem
             // 
-            this.действияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runExperimentToolStripMenuItem});
-            this.действияToolStripMenuItem.Name = "действияToolStripMenuItem";
-            this.действияToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.действияToolStripMenuItem.Text = "Действия";
-            // 
-            // runExperimentToolStripMenuItem
-            // 
-            this.runExperimentToolStripMenuItem.Name = "runExperimentToolStripMenuItem";
-            this.runExperimentToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.runExperimentToolStripMenuItem.Text = "Провести эксперимент 1";
-            this.runExperimentToolStripMenuItem.Click += new System.EventHandler(this.runExperimentToolStripMenuItem_Click);
+            this.результатыToolStripMenuItem.Name = "результатыToolStripMenuItem";
+            this.результатыToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.результатыToolStripMenuItem.Text = "Результаты эксперимента 1";
+            this.результатыToolStripMenuItem.Click += new System.EventHandler(this.результатыToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -92,5 +101,6 @@
         private Controls.UserControlMain userControlMain1;
         private System.Windows.Forms.ToolStripMenuItem действияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runExperimentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem результатыToolStripMenuItem;
     }
 }

@@ -28,5 +28,11 @@ namespace DiagnosticTechnicalEngine
                 exp.RunExperiment(fbd.SelectedPath);
             }
         }
+
+        private void результатыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Forms.FormExperimentByForecast form = new Forms.FormExperimentByForecast();
+            form.Show();
+        }
     }
 }
