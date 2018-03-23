@@ -100,6 +100,7 @@ namespace ServicesModule
                     foreach(var rule in applyRules)
                     {
                         rule.FuzzyTrendName = lessZeroTrends[i].TrendName;
+                        rule.FuzzyTrendId = lessZeroTrends[i].Id;
                     }
                 }
             }
@@ -117,6 +118,7 @@ namespace ServicesModule
             foreach (var rule in zeroRules)
             {
                 rule.FuzzyTrendName = zeroTrends.TrendName;
+                rule.FuzzyTrendId = zeroTrends.Id;
             }
 
             var moreZeroTrends = trends.Where(t => t.Weight > 0).OrderByDescending(t => t.Weight).ToList();
@@ -132,6 +134,7 @@ namespace ServicesModule
                     foreach (var rule in applyRules)
                     {
                         rule.FuzzyTrendName = moreZeroTrends[i].TrendName;
+                        rule.FuzzyTrendId = moreZeroTrends[i].Id;
                     }
                 }
             }
