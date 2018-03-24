@@ -11,17 +11,17 @@ namespace ServicesModule
 		/// </summary>
 		public static PointInfo CalcFUX(PointInfo point, int? seriesId = null)
 		{
-            if(point.DiagnosticTest == null && !seriesId.HasValue)
-            {
-                throw new Exception("Невозможно получить нечеткие метки");
-            }
-			if(!seriesId.HasValue)
+			if(!seriesId.HasValue && point.SeriesDiscriptionId > 0)
 			{
 				seriesId = point.SeriesDiscriptionId;
 			}
+            if((point.DiagnosticTest == null || point.DiagnosticTest.SeriesDiscriptionId == 0) && !seriesId.HasValue)
+            {
+                throw new Exception("Невозможно получить нечеткие метки");
+            }
 			using (var _context = new DissertationDbContext())
 			{   // индекс нечеткой метки, к которой будет принадлежать точка
-				var fuzzyLabels = (point.DiagnosticTest == null) ?
+				var fuzzyLabels = (seriesId.HasValue) ?
                     _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == seriesId.Value).ToList() :
                     _context.FuzzyLabels.Where(fl => fl.SeriesDiscriptionId == point.DiagnosticTest.SeriesDiscriptionId).ToList();
 				var needForecast = _context.SeriesDescriptions.SingleOrDefault(sd => sd.Id == seriesId.Value)?.NeedForecast ?? false;

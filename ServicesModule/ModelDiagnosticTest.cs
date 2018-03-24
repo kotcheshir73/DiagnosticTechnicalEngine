@@ -1032,6 +1032,10 @@ namespace ServicesModule
                         break;
                     }
                 }
+                if (indexEntropy == listStatEntropyOrdered.Count)
+                {
+                    indexEntropy = 0;
+                }
                 #endregion
 
                 var stateFuzzy = listStatFuzzyOrdered[indexFuzzy];
