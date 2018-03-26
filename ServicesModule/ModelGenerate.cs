@@ -96,7 +96,7 @@ namespace ServicesModule
                 int i = 0;
                 for (double a = lessZeroRules.Min(r => r.FuzzyTrendWeight) - 1; i < lessZeroTrends.Count && a < 0; ++i, a+= delta)
                 {
-                    var applyRules = rules.Where(r => r.FuzzyTrendWeight > a && r.FuzzyTrendWeight <= a + delta).ToList();
+                    var applyRules = rules.Where(r => r.FuzzyTrendWeight > a && r.FuzzyTrendWeight <= a + delta && r.FuzzyTrendWeight < 0).ToList();
                     foreach(var rule in applyRules)
                     {
                         rule.FuzzyTrendName = lessZeroTrends[i].TrendName;
@@ -130,7 +130,7 @@ namespace ServicesModule
                 int i = 0;
                 for (double a = moreZeroRules.Max(r => r.FuzzyTrendWeight) + 1; i < moreZeroTrends.Count && a > 0; ++i, a -= delta)
                 {
-                    var applyRules = rules.Where(r => r.FuzzyTrendWeight < a && r.FuzzyTrendWeight >= a - delta).ToList();
+                    var applyRules = rules.Where(r => r.FuzzyTrendWeight < a && r.FuzzyTrendWeight >= a - delta && r.FuzzyTrendWeight > 0).ToList();
                     foreach (var rule in applyRules)
                     {
                         rule.FuzzyTrendName = moreZeroTrends[i].TrendName;
