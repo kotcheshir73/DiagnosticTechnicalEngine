@@ -30,8 +30,10 @@ namespace ServicesModule
 					case FuzzyLabelType.FuzzyTriangle://фаззификация
 													  // вычисляем функцию принадлежности к первой нечетой метке
 						point.Fux = CalcNu(point.Value.Value, fuzzyLabels.First().FuzzyLabelMinVal, fuzzyLabels.First().FuzzyLabelCenter, fuzzyLabels.First().FuzzyLabelMaxVal);
-						// идем по остальным нечетким меткам
-						foreach (var fuzzyLabel in fuzzyLabels)
+                        point.FuzzyLabel = fuzzyLabels.First();
+                        point.FuzzyLabelId = fuzzyLabels.First().Id;
+                        // идем по остальным нечетким меткам
+                        foreach (var fuzzyLabel in fuzzyLabels)
 						{
 							if (point.Fux < CalcNu(point.Value.Value, fuzzyLabel.FuzzyLabelMinVal, fuzzyLabel.FuzzyLabelCenter, fuzzyLabel.FuzzyLabelMaxVal))
 							{
