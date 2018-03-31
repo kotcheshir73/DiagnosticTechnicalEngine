@@ -204,20 +204,18 @@ namespace ServicesModule
                                 MessageLogTitle = file.Name,
                                 MessageLog = string.Format("{0} обработали данные", file.Name)
                             });
-                            using (var transaction = _context.Database.BeginTransaction())
-                            {
-                                test.Count = _countPoints;
-                                var lastPoint = _points[_points.Count - 1];
-                                lastPoint.IsLast = true;
-                                ClearPoint(lastPoint);
-                                _context.PointInfos.Add(lastPoint);
-                                _context.SaveChanges();
-                                var preLastPoint = _points[_points.Count - 2];
-                                ClearPoint(preLastPoint);
-                                _context.PointInfos.Add(preLastPoint);
-                                _context.SaveChanges();
-                                transaction.Commit();
-                            }
+
+                            test.Count = _countPoints;
+                            var lastPoint = _points[_points.Count - 1];
+                            lastPoint.IsLast = true;
+                            ClearPoint(lastPoint);
+                            _context.PointInfos.Add(lastPoint);
+                            _context.SaveChanges();
+                            var preLastPoint = _points[_points.Count - 2];
+                            ClearPoint(preLastPoint);
+                            _context.PointInfos.Add(preLastPoint);
+                            _context.SaveChanges();
+
                             _context.LogDatas.Add(new LogData
                             {
                                 DateLog = DateTime.Now,
@@ -225,6 +223,7 @@ namespace ServicesModule
                                 MessageLogTitle = file.Name,
                                 MessageLog = string.Format("{0} сохранили последние точки", file.Name)
                             });
+                            _context.SaveChanges();
 
                             var forecast = mdt.GetForecast(test.Id);
                             var forecasts = string.Join(";", mdt.GetForecastByPointTrend(test.Id));
@@ -253,6 +252,7 @@ namespace ServicesModule
                                 MessageLogTitle = file.Name,
                                 MessageLog = string.Format("{0} сохранили прогноз", file.FullName)
                             });
+                            _context.SaveChanges();
                         }
                         else
                         {
@@ -264,6 +264,7 @@ namespace ServicesModule
                                 MessageLogTitle = file.Name,
                                 MessageLog = string.Format("{0} не получили точек", file.FullName)
                             });
+                            _context.SaveChanges();
                         }
                     }
                     return true;
@@ -276,6 +277,7 @@ namespace ServicesModule
                         MessageLog = string.Format("MakeTest {0}: {1}", file.FullName, ex.Message),
                         MessageLogType = "Error"
                     });
+                    _context.SaveChanges();
                     return false;
                 }
             }
