@@ -934,7 +934,7 @@ namespace ServicesModule
                 // результат - прогнозное значение
                 double result = 0;
                 var LastPoint = _context.PointInfos.Include(pi => pi.FuzzyTrend).FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && pi.IsLast);
-                var PreLastPoint = _context.PointInfos.FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && !pi.IsLast);
+                var PreLastPoint = _context.PointInfos.Include(pi => pi.FuzzyTrend).FirstOrDefault(pi => pi.DiagnosticTestId == diagTest.Id && !pi.IsLast);
                 // пока что - эот будет значение в последней точке
                 result = LastPoint.Value.Value;
                 // определяем ситуации по энтропии и по неопределенности

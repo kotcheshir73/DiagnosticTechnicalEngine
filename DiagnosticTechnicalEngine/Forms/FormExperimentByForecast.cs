@@ -24,22 +24,28 @@ namespace DiagnosticTechnicalEngine.Forms
             var list = ex.Result(dateTimePicker1.Value);
             var totalSmap1 = 0.0;
             var totalSmap2 = 0.0;
+            int totalcount = 0;
             foreach (var elem in list)
             {
                 var smapOne = SMAP(elem.Forecast, elem.RealValue);
                 totalSmap1 += smapOne;
                 double smapeTwo = 0;
-                var forecastes = elem.ForecastsByPoint.Split(';');
-                foreach(var forc in forecastes)
+                var forecastes = elem.ForecastsByPoint.Replace(elem.Forecast.ToString(), "").Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries );
+                if (forecastes.Length > 0)
                 {
-                    smapeTwo += SMAP(Convert.ToDouble(forc), elem.RealValue);
+                    foreach (var forc in forecastes)
+                    {
+                        smapeTwo += SMAP(Convert.ToDouble(forc), elem.RealValue);
+                    }
+                    smapeTwo /= forecastes.Length;
+                    totalSmap2 += smapeTwo;
+                    totalcount++;
                 }
-                smapeTwo /= forecastes.Length;
-                totalSmap2 += smapeTwo;
-                dataGridView1.Rows.Add(new object[] { elem.FileName, elem.RealValue, elem.Forecast, elem.ForecastsByPoint, smapOne.ToString("p"), smapeTwo.ToString("p") });
+                dataGridView1.Rows.Add(new object[] { elem.FileName, elem.RealValue, elem.Forecast, string.Join(";", forecastes), elem.ForecastsByPoint,
+                    smapOne.ToString("p"), smapeTwo.ToString("p") });
             }
             totalSmap1 /= list.Count;
-            totalSmap2 /= list.Count;
+            totalSmap2 /= totalcount;
             textBox1.Text = totalSmap1.ToString("p");
             textBox2.Text = totalSmap2.ToString("p");
         }
