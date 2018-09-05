@@ -24,7 +24,13 @@ namespace DiagnosticTechnicalEngine.Controls
 				Name = "ColumnName",
 				ReadOnly = true
 			};
-			var ColumnCount = new DataGridViewTextBoxColumn
+            var ColumnPoint = new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Точка",
+                Name = "ColumnPoint",
+                ReadOnly = true
+            };
+            var ColumnCount = new DataGridViewTextBoxColumn
 			{
 				HeaderText = "Количество",
 				Name = "ColumnCount",
@@ -34,22 +40,27 @@ namespace DiagnosticTechnicalEngine.Controls
 			dataGridView.Columns.AddRange(new DataGridViewColumn[] {
 			ColumnPosition,
 			ColumnName,
-			ColumnCount});
+            ColumnPoint,
+            ColumnCount});
 
-			groupBox.Text = "Гранулы по мерам энтропий";
+			groupBox.Text = "Гранулы по Нечеткости";
 		}
 
 		protected override void LoadData()
 		{
 			int i = 0;
+            int point = 1;
 			foreach (var granule in _list)
 			{
 				dataGridView.Rows.Add();
 				dataGridView.Rows[i].Cells[0].Value = granule.GranulePosition;
 				dataGridView.Rows[i].Cells[1].Value = granule.FuzzyLabelName + " " + granule.FuzzyTrendName;
-				dataGridView.Rows[i].Cells[2].Value = granule.Count;
+                dataGridView.Rows[i].Cells[2].Value = point;
+                dataGridView.Rows[i].Cells[3].Value = granule.Count;
 				i++;
-			}
+                point += granule.Count;
+
+            }
 		}
 	}
 }
