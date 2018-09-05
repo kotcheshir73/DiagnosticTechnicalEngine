@@ -84,6 +84,9 @@ namespace ServicesModule
                     case TypeFile.Текстовый:
                         LoadFromTxt(model.FileName, model.DatasInFile, test);
                         break;
+                    case TypeFile.API:
+                        LoadFromAPI(model.DataFromAPI, test);
+                        break;
                 }
                 SaveGranules();
                 using (var transaction = _context.Database.BeginTransaction())
@@ -230,6 +233,39 @@ namespace ServicesModule
                 {
                     stream.Close();
                 }
+            }
+        }
+        /// <summary>
+        /// Загрузка точек из внешнего API и внесение статистики по каждой точке, через вызов метода AddNewPoint
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="elements"></param>
+        /// <param name="seriesId"></param>
+        /// <returns></returns>
+        private void LoadFromAPI(List<APIData> elements, DiagnosticTest diagnosticTest)
+        {
+            try
+            {
+                foreach(var dat in elements)
+                {
+                    PointInfo point = new PointInfo
+                    {
+                        SeriesDiscriptionId = diagnosticTest.SeriesDiscriptionId,
+                        DiagnosticTest = diagnosticTest,
+                        DiagnosticTestId = diagnosticTest.Id,
+                        Value = dat.Value,
+                        Date = dat.timestamp
+                    };
+                    if (!point.Value.HasValue)
+                    {
+                        throw new Exception("LoadFromAPI: Недостаточно данных для расчетов, нужна или нечеткая метка или числовое значение");
+                    }
+                    AddNewPoint(point);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
         /// <summary>

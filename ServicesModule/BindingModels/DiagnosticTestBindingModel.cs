@@ -32,6 +32,8 @@ namespace ServicesModule.BindingModels
 		/// например: первым идет "дата", потом "числовое значение"
 		/// </summary>
 		public List<TypeDataInFile> DatasInFile { get; set; }
+
+        public List<APIData> DataFromAPI { get; set; }
 		/// <summary>
 		/// Кол-во точек, которые следует хранить для идентификации аномалии
 		/// </summary>

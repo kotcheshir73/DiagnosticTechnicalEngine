@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServicesModule.BindingModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -51,7 +52,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="data">данные</param>
         /// <param name="_accuracy">точность</param>
-        public ModelClustering(string path, int type, int countCenters)
+        public ModelClustering(string path, int type, int countCenters, List<APIData> data = null)
         {
             centers = new List<ClusterCenter>();
             for (int i = 0; i < countCenters; ++i)
@@ -60,6 +61,7 @@ namespace ServicesModule
             {
                 case 0: LoadFromExcel(path); break;
                 case 1: LoadFromTXT(path); break;
+                case 2: LoadFromAPI(data); break;
             }
             accuracy = Math.Pow(10, -5);
             fuzzyness = 2;
@@ -118,7 +120,22 @@ namespace ServicesModule
             {
                 throw;
             }
+        }
 
+        private void LoadFromAPI(List<APIData> data)
+        {
+            try
+            {
+                points = new List<ClusterPoint>();
+                foreach (var dat in data)
+                {
+                    points.Add(new ClusterPoint(dat.Value));
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         /// <summary>
         /// Расчет 

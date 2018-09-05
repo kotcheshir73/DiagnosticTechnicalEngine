@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingModels\AnomalyInfoBindingModel.cs" />
+    <Compile Include="BindingModels\APIData.cs" />
     <Compile Include="BindingModels\DiagnosticTestBindingModel.cs" />
     <Compile Include="BindingModels\DiagnosticTestRecordBindingModel.cs" />
     <Compile Include="BindingModels\FuzzyLabelBindingModel.cs" />
