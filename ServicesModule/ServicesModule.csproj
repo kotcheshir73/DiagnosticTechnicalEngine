@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIService.cs" />
     <Compile Include="BindingModels\AnomalyInfoBindingModel.cs" />
     <Compile Include="BindingModels\APIData.cs" />
     <Compile Include="BindingModels\DiagnosticTestBindingModel.cs" />

@@ -38,5 +38,8 @@ namespace ServicesModule.BindingModels
 		/// например: первым идет "дата", потом "числовое значение"
 		/// </summary>
 		public List<TypeDataInFile> DatasInFile { get; set; }
-	}
+
+        public List<APIData> List { get; set; }
+
+    }
 }

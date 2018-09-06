@@ -253,6 +253,9 @@ namespace ServicesModule
                 case TypeFile.Текстовый:
                     flag = LoadFromTxt(model.FileName, model.DatasInFile, model.SeriesDiscriptionId);
                     break;
+                case TypeFile.API:
+                    flag = LoadFromAPI(model.List, model.SeriesDiscriptionId);
+                    break;
             }
             if(flag)
             {
@@ -360,6 +363,41 @@ namespace ServicesModule
                     AddNewPoint(point, seriesId);
 
                     read = stream.ReadLine();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+            return true;
+        }
+        /// <summary>
+        /// Загрузка точек из списка и внесение статистики по каждой точке, через вызов метода AddNewPoint
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="elements"></param>
+        /// <param name="seriesId"></param>
+        /// <returns></returns>
+        private static bool LoadFromAPI(List<APIData> list, int seriesId)
+        {
+            StreamReader stream = null;
+            try
+            {
+                foreach (var elem in list)
+                {
+                    PointInfo point = new PointInfo();
+                    point.Value = elem.Value;
+                    point.Date = elem.timestamp;
+                    if (!point.Value.HasValue)
+                    {
+                        throw new Exception("Недостаточно данных для расчетов, нужна или нечеткая метка или числовое значение");
+                    }
+                    AddNewPoint(point, seriesId);
                 }
             }
             catch (Exception)
