@@ -116,6 +116,20 @@ namespace ServicesModule
             return true;
         }
 
+        public string GetSeriesUrl(SeriesDescriptionBindingModel model)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
+                if (series == null)
+                {
+                    throw new Exception("Не найдена серия с таким названием");
+                }
+
+                return series.SeriesDiscription;
+            }
+        }
+
         private bool CreateFuzzyLabel(List<APIData> list, int seriesId)
         {
             try
