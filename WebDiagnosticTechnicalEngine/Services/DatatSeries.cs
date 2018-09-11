@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WebDiagnosticTechnicalEngine.Models;
@@ -30,6 +31,8 @@ namespace WebDiagnosticTechnicalEngine.Services
             }
 
             HttpClient client = new HttpClient();
+            var byteArray = Encoding.ASCII.GetBytes("admin:admin");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             client.BaseAddress = new Uri("https://212.8.234.87/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
