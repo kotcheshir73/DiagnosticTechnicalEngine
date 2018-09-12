@@ -185,6 +185,7 @@
     </Compile>
     <Compile Include="Models\ForecastDto.cs" />
     <Compile Include="Models\InitSeriesDto.cs" />
+    <Compile Include="Models\ResponseDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DatatSeries.cs" />
   </ItemGroup>

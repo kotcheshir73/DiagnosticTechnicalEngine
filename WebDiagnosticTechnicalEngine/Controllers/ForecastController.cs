@@ -1,4 +1,5 @@
-﻿using ServicesModule.BindingModels;
+﻿using Newtonsoft.Json;
+using ServicesModule.BindingModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,62 +42,30 @@ namespace WebDiagnosticTechnicalEngine.Controllers
         [System.Web.Http.HttpGet]
         public ActionResult Check()
         {
-            CookieContainer cookies = new CookieContainer();
-            HttpClientHandler handler = new HttpClientHandler
-            {
-                CookieContainer = cookies
-            };
-            HttpClient client = new HttpClient(handler);
+            HttpClient client = new HttpClient();
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.BaseAddress = new Uri("https://212.8.234.87/");
 
-            Task<HttpResponseMessage> responseAuth = client.PostAsJsonAsync("https://212.8.234.87/login", new { username = "admin", password = "admin" });
 
-            if (responseAuth.Result.IsSuccessStatusCode)
+            Task<HttpResponseMessage> response = client.GetAsync("https://212.8.234.87/api/1.0/timeseries/employee?versionId=1");
+            if (response.Result.IsSuccessStatusCode)
             {
-                Uri uri = new Uri("https://212.8.234.87/login");
-                IEnumerable<Cookie> responseCookies = cookies.GetCookies(uri).Cast<Cookie>();
-
-                var cookieGet = new CookieContainer();
-                HttpClientHandler handlerGet = new HttpClientHandler
+                var stringd = response.Result.Content.ReadAsStringAsync();
+                ResponseDto list = JsonConvert.DeserializeObject<ResponseDto>(stringd.Result);
+                if (list != null)
                 {
-                    CookieContainer = cookieGet
-                };
-                HttpClient clientGet = new HttpClient(handler)
-                {
-                    BaseAddress = new Uri("https://212.8.234.87/api/1.0/timeseries/employee?versionId=1")
-                };
-                Uri uriGet = new Uri("https://212.8.234.87/api/1.0/timeseries/employee?versionId=1");
-
-                foreach (Cookie cookie in responseCookies)
-                {
-                    cookieGet.Add(uriGet, cookie);
-                }
-
-                Task<HttpResponseMessage> response = clientGet.GetAsync("https://212.8.234.87/api/1.0/timeseries/employee?versionId=1");
-                if (response.Result.IsSuccessStatusCode)
-                {
-                    var stringd = response.Result.Content.ReadAsStringAsync();
-                    List<APIData> list = response.Result.Content.ReadAsAsync<List<APIData>>().Result;
-                    if (list != null)
-                    {
-                        return new JsonResult { Data = list };
-                    }
-                    else
-                    {
-                        throw new Exception("Ряд не получен");
-                    }
+                    return new JsonResult { Data = list.Data };
                 }
                 else
                 {
-                    throw new Exception(response.Result.Content.ReadAsStringAsync().Result);
+                    throw new Exception("Ряд не получен");
                 }
             }
             else
             {
-                throw new Exception(responseAuth.Result.Content.ReadAsStringAsync().Result);
+                throw new Exception(response.Result.Content.ReadAsStringAsync().Result);
             }
         }
     }
