@@ -31,7 +31,7 @@ namespace WebDiagnosticTechnicalEngine.Controllers
 
         public double MakeForecast(ForecastDto model)
         {
-            return 0;
+            return dataSeries.MakeForecast(model);
         }
 
 
