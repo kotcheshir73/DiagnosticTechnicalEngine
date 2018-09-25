@@ -26,7 +26,7 @@ namespace WebDiagnosticTechnicalEngine.Controllers
 
         public void InitSeries(InitSeriesDto model)
         {
-            dataSeries.InitSeries(model);
+            dataSeries.InitSeries(model, true);
         }
 
         public double MakeForecast(ForecastDto model)
@@ -53,7 +53,7 @@ namespace WebDiagnosticTechnicalEngine.Controllers
             if (response.Result.IsSuccessStatusCode)
             {
                 var stringd = response.Result.Content.ReadAsStringAsync();
-                ResponseDto list = JsonConvert.DeserializeObject<ResponseDto>(stringd.Result);
+                ResponseForecastDto list = JsonConvert.DeserializeObject<ResponseForecastDto>(stringd.Result);
                 if (list != null)
                 {
                     return new JsonResult { Data = list.Data };

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace WebDiagnosticTechnicalEngine.Models
 {
-    public class ResponseDto
+    public class ResponseForecastDto
     {
         public List<APIData> Data { get; set; }
     }

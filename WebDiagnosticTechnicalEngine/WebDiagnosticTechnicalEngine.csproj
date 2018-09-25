@@ -187,7 +187,9 @@
     <Compile Include="Models\DiagnosticDto.cs" />
     <Compile Include="Models\ForecastDto.cs" />
     <Compile Include="Models\InitSeriesDto.cs" />
-    <Compile Include="Models\ResponseDto.cs" />
+    <Compile Include="Models\ResponseDiagnosticDto.cs" />
+    <Compile Include="Models\ResponseDiagnosticRecordDto.cs" />
+    <Compile Include="Models\ResponseForecastDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DatatSeries.cs" />
   </ItemGroup>

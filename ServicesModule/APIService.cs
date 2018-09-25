@@ -1,4 +1,5 @@
 ﻿using DatabaseModule;
+using DatabaseModule.BaseClassies;
 using DatabaseModule.Models;
 using ServicesModule.BindingModels;
 using System;
@@ -12,6 +13,10 @@ namespace ServicesModule
         private int countCenters = 7;
 
         private List<PointInfo> _points;
+
+        private List<KeyValuePair<AnomalyInfo, int>> _anomalyDetected;
+
+        private int _countPoints;
 
         public bool InitSeries(SeriesDescriptionBindingModel model, List<APIData> list)
         {
@@ -27,7 +32,7 @@ namespace ServicesModule
                 {
                     SeriesName = model.SeriesName,
                     SeriesDiscription = model.SeriesDiscription,
-                    NeedForecast = true
+                    NeedForecast = model.NeedForecast
                 });
                 _context.SeriesDescriptions.Add(entity);
                 _context.SaveChanges();
@@ -312,10 +317,10 @@ namespace ServicesModule
                         {
                             SeriesDiscriptionId = series.Id,
                             Value = list[i].Value
-                        }, series.Id);
+                        }, series.Id, false);
                     }
 
-                   return GetForecast(_points[_points.Count - 1], _points[_points.Count - 2], series.Id);
+                    return GetForecast(_points[_points.Count - 1], _points[_points.Count - 2], series.Id);
                 }
             }
             return 0;
@@ -326,7 +331,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        private void AddNewPoint(PointInfo point, int seriesId)
+        private void AddNewPoint(PointInfo point, int seriesId, bool makeDiagnostic)
         {
             using (var _context = new DissertationDbContext())
             {
@@ -383,12 +388,19 @@ namespace ServicesModule
                             point.StatisticsByEntropyId = stateEntropy.Id;
                             point.StatisticsByEntropy = stateEntropy;
                         }
+                        if (makeDiagnostic)
+                        {
+                            // определения возможного наступления аномалии
+                            AnomalyDetected(point);
+                            // поиск новых аномалий
+                            CheckNewState(point);
+                        }
                     }
                 }
                 _points.Add(point);//занести точку;
             }
         }
-        
+
         /// <summary>
         /// Определение ситуации по энтропиям, увеличение статистики по этой ситуации
         /// </summary>
@@ -484,7 +496,7 @@ namespace ServicesModule
         private double GetForecast(PointInfo LastPoint, PointInfo PreLastPoint, int seriesId)
         {
             using (var _context = new DissertationDbContext())
-            {  
+            {
                 // результат - прогнозное значение
                 double result = 0;
                 // пока что - эот будет значение в последней точке
@@ -649,6 +661,285 @@ namespace ServicesModule
                 }
 
                 return result;
+            }
+        }
+
+        public void Diagnostic(SeriesDescriptionBindingModel model, List<APIData> list)
+        {
+            if (list.Count < 3)
+            {
+                throw new Exception("Мало точек для диагностики");
+            }
+            using (var _context = new DissertationDbContext())
+            {
+                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
+                if (series == null)
+                {
+                    throw new Exception("Не найдена серия с таким названием");
+                }
+                _anomalyDetected = new List<KeyValuePair<AnomalyInfo, int>>();
+                _countPoints = 0;
+                if (list != null && list.Count > 1)
+                {
+                    for (int i = 0; i < list.Count; ++i)
+                    {
+                        _countPoints++;
+                        AddNewPoint(new PointInfo
+                        {
+                            SeriesDiscriptionId = series.Id,
+                            Value = list[i].Value
+                        }, series.Id, true);
+                    }
+                }
+            }
+        }
+
+        private void AnomalyDetected(PointInfo point)
+        {
+            if (point.StatisticsByEntropy != null)
+            {
+                AnomalyDetectedByElem(point.StatisticsByEntropy, TypeSituation.ПоЭнтропии, point.DiagnosticTestId);
+            }
+            if (point.StatisticsByFuzzy != null)
+            {
+                AnomalyDetectedByElem(point.StatisticsByFuzzy, TypeSituation.ПоНечеткости, point.DiagnosticTestId);
+            }
+        }
+
+        private void AnomalyDetectedByElem(BaseClassStatisticBy statistic, TypeSituation type, int diagnosticTestId)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                if (_anomalyDetected.Count > 0)
+                {//проверить уже имеющиеся аномалии
+                    for (int i = 0; i < _anomalyDetected.Count; ++i)
+                    {
+                        if (_anomalyDetected[i].Key.TypeSituation != type)
+                        {
+                            continue;
+                        }
+                        int state = Convert.ToInt32(_anomalyDetected[i].Key.SetSituations.Split(',')[_anomalyDetected[i].Value]);
+
+                        if (state == statistic.NumberSituation)
+                        {//подтверждение
+                            _anomalyDetected[i] = new KeyValuePair<AnomalyInfo, int>(_anomalyDetected[i].Key, _anomalyDetected[i].Value + 1);
+                            int lenght = _anomalyDetected[i].Key.SetSituations.Split(',').Length;
+                            if (lenght == _anomalyDetected[i].Value)
+                            {//Обнаружена аномалия (т.е. следующая точка будет аномальной)
+                                var anomalyId = _anomalyDetected[i].Key.Id;
+                                var anomaly = _context.AnomalyInfos.SingleOrDefault(a => a.Id == anomalyId);
+                                anomaly.CountMeet++;
+
+                                var probability = Math.Round((((double)statistic.CountMeet) / _countPoints) * 100, 2);
+
+                                var message = string.Format("Точка № {0}. Возникла аномалия: {1} ({2}%)", _countPoints,
+                                    _anomalyDetected[i].Key.AnomalyName, probability);
+
+                                _context.DiagnosticTestRecords.Add(new DiagnosticTestRecord
+                                {
+                                    DiagnosticTestId = diagnosticTestId,
+                                    PointNumber = _countPoints,
+                                    Description = message,
+                                    AnomalyInfoId = anomalyId
+                                });
+                                _context.SaveChanges();
+
+                                if (AnalysAnomaly(_anomalyDetected[i].Key))
+                                {//аномалия встречается слишком часто, удаляем ее
+                                    anomaly.NotAnomaly = true;
+                                    _anomalyDetected.RemoveAll(r => r.Key.Id == _anomalyDetected[i].Key.Id);
+                                }
+                                else
+                                {
+                                    _anomalyDetected.RemoveAt(i);
+                                }
+                                _context.SaveChanges();
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            _anomalyDetected.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+                //проверить другие аномалии
+                var listAnomaly = _context.AnomalyInfos.Where(ai => ai.TypeSituation == type &&
+                                                                    ai.SeriesDiscriptionId == statistic.SeriesDiscriptionId)
+                                                        .ToList();
+                foreach (var anomaly in listAnomaly)
+                {
+                    int state = Convert.ToInt32(anomaly.SetSituations.Split(',')[0]);
+
+                    if (!anomaly.NotAnomaly && !anomaly.NotDetected)
+                    {
+                        if (state == statistic.NumberSituation)
+                        {
+                            _anomalyDetected.Add(new KeyValuePair<AnomalyInfo, int>(anomaly, 1));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckNewState(PointInfo point)
+        {//список самых вероятных исходов
+            if (point.StatisticsByFuzzy != null)
+            {
+                CheckNewStateByElem(point.StatisticsByFuzzy, TypeSituation.ПоНечеткости, point);
+            }
+
+            if (point.StatisticsByEntropy != null)
+            {
+                CheckNewStateByElem(point.StatisticsByEntropy, TypeSituation.ПоЭнтропии, point);
+            }
+        }
+
+        private void CheckNewStateByElem(BaseClassStatisticBy statistic, TypeSituation type, PointInfo point)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                if ((((double)statistic.CountMeet) / _countPoints) * 100 < 1)
+                {//новая аномалия
+                    string setSituations = "";
+                    string setValues = "";
+                    TypeMemoryValue typeMemory = (point.Value.HasValue) ? TypeMemoryValue.ПоЗначению : TypeMemoryValue.ПоФункции;
+                    var notDetected = true;
+                    for (int i = 0; i < _points.Count; ++i)
+                    {//собираем все номера ситуаций до этой (до 10 точек)
+                        var tempEntropy = type == TypeSituation.ПоНечеткости ?
+                                                        _points[i].StatisticsByFuzzy as BaseClassStatisticBy :
+                                                        _points[i].StatisticsByEntropy as BaseClassStatisticBy;
+                        if (tempEntropy != null)
+                        {
+                            setSituations += tempEntropy.NumberSituation;
+                            if (i < _points.Count - 1)
+                            {
+                                setSituations += ",";
+                            }
+                            setValues += (_points[i].Value ?? _points[i].Fux.Value) + ";";
+                            if (i > 0)
+                            {
+                                var temp2Entropy = type == TypeSituation.ПоНечеткости ?
+                                                        _points[i - 1].StatisticsByFuzzy as BaseClassStatisticBy :
+                                                        _points[i - 1].StatisticsByEntropy as BaseClassStatisticBy;
+                                if (temp2Entropy != null)
+                                {
+                                    if (tempEntropy.NumberSituation != temp2Entropy.NumberSituation)
+                                    {
+                                        notDetected = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //последний номер - аномальное состояние
+                    setValues += (point.Value ?? point.Fux.Value);
+
+                    if (setSituations.Split(',').Length < 6)
+                    {
+                        //_evMessage?.Invoke("Точка №" + _countPoints + ". Зафиксирована аномалия по энтропии, но имеется менее 5 точек для ее идентифкации: " + setSituations);
+                    }
+                    else
+                    {//ищем среди аномалий аномалию с такой последовательностью
+                        var elem = _context.AnomalyInfos.SingleOrDefault(r => r.TypeSituation == type && r.SetSituations == setSituations &&
+                                                            r.SeriesDiscriptionId == point.SeriesDiscriptionId);
+                        if (elem == null)
+                        {
+                            string typeString = (type == TypeSituation.ПоНечеткости ? "нечеткости" : "энтропии");
+                            string name = string.Format("Аномалия по {0}: {1} -> {2}", typeString, setSituations, statistic.NumberSituation);
+
+                            var anomaly = new AnomalyInfo
+                            {
+                                SeriesDiscriptionId = point.SeriesDiscriptionId,
+                                AnomalyName = name,
+                                TypeSituation = type,
+                                TypeMemoryValue = typeMemory,
+                                AnomalySituation = statistic.NumberSituation,
+                                CountMeet = 1,
+                                NotAnomaly = false,
+                                NotDetected = notDetected,
+                                SetSituations = setSituations,
+                                SetValues = setValues
+                            };
+
+                            _context.AnomalyInfos.Add(anomaly);
+                            var probability = Math.Round((((double)statistic.CountMeet) / _countPoints) * 100, 2);
+                            var message = string.Format("Точка № {0}. Обнаружена аномалия по {1}: {2} ({3}%)", _countPoints,
+                                    typeString, setSituations, probability);
+                            //_evMessage(message);
+
+                            _context.SaveChanges();
+
+                            _context.DiagnosticTestRecords.Add(new DiagnosticTestRecord
+                            {
+                                DiagnosticTestId = point.DiagnosticTestId,
+                                PointNumber = _countPoints,
+                                Description = message,
+                                AnomalyInfoId = anomaly.Id
+                            });
+                            _context.SaveChanges();
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+        private bool AnalysAnomaly(AnomalyInfo anomaly)
+        {//список самых вероятных исходов
+            using (var _context = new DissertationDbContext())
+            {
+                if (anomaly.TypeSituation == TypeSituation.ПоЭнтропии)
+                {//
+                    var stateEntropy = _context.StatisticsByEntropys.SingleOrDefault(r => r.NumberSituation == anomaly.AnomalySituation &&
+                                                r.SeriesDiscriptionId == anomaly.SeriesDiscriptionId);
+                    if (stateEntropy == null)
+                    {
+                        //if (_evMessage != null)
+                        //{
+                        //    _evMessage("Точка №" + _countPoints + ". Анализ частоты встречи аномалии по энтропии. Неизвестное состояние №" +
+                        //        anomaly.AnomalySituation);
+                            return false;
+                        //}
+                    }
+                    if ((((double)stateEntropy.CountMeet) / _countPoints) * 100 > 5)
+                    {
+                        //if (_evMessage != null)
+                        //{
+                        //    _evMessage("Точка №" + _countPoints + ". Аномалия " + anomaly.AnomalyName +
+                        //        " встречается очень часто, значит это не аномалия.");
+                            return true;
+                       // }
+                    }
+                }
+                if (anomaly.TypeSituation == TypeSituation.ПоНечеткости)
+                {//
+                    var stateFuzzy = _context.StatisticsByFuzzys.SingleOrDefault(r => r.NumberSituation == anomaly.AnomalySituation &&
+                                                r.SeriesDiscriptionId == anomaly.SeriesDiscriptionId);
+                    if (stateFuzzy == null)
+                    {
+                        //if (_evMessage != null)
+                        //{
+                        //    _evMessage("Точка №" + _countPoints + ". Анализ частоты встречи аномалии по нечеткости. Неизвестное состояние №" +
+                        //        anomaly.AnomalySituation);
+                            return false;
+                       // }
+                    }
+                    if ((((double)stateFuzzy.CountMeet) / _countPoints) * 100 > 5)
+                    {
+                       // if (_evMessage != null)
+                       // {
+                       //     _evMessage("Точка №" + _countPoints + ". Аномалия " + anomaly.AnomalyName +
+                       //         " встречается очень часто, значит это не аномалия.");
+                            return true;
+                        //}
+                    }
+                }
+
+                return false;
             }
         }
     }

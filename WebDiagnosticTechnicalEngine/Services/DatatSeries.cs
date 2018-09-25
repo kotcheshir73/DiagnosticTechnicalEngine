@@ -22,8 +22,6 @@ namespace WebDiagnosticTechnicalEngine.Services
         /// <returns></returns>
         private List<APIData> GetData(InitSeriesDto model)
         {
-            List<APIData> data = new List<APIData>();
-
             string url = model.Url;
 
             var pattern = Regex.Match(url, @"versionId=[\d+]");
@@ -44,7 +42,7 @@ namespace WebDiagnosticTechnicalEngine.Services
             if (response.Result.IsSuccessStatusCode)
             {
                 var stringResult = response.Result.Content.ReadAsStringAsync();
-                ResponseDto list = JsonConvert.DeserializeObject<ResponseDto>(stringResult.Result);
+                ResponseForecastDto list = JsonConvert.DeserializeObject<ResponseForecastDto>(stringResult.Result);
                 if (list != null)
                 {
                     return list.Data;
@@ -60,14 +58,52 @@ namespace WebDiagnosticTechnicalEngine.Services
             }
         }
 
-        public void InitSeries(InitSeriesDto model)
+        private List<ResponseDiagnosticRecordDto> GetData(DiagnosticDto model)
+        {
+            string url = model.Url;
+
+            var pattern = Regex.Match(url, @"versionId=[\d+]");
+            if (pattern.Success)
+            {
+                url = url.Replace(pattern.Value, string.Format("versionId={0}", model.VersionId));
+            }
+
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri("https://212.8.234.87/")
+            };
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            Task<HttpResponseMessage> response = client.GetAsync(url);
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var stringResult = response.Result.Content.ReadAsStringAsync();
+                ResponseDiagnosticDto list = JsonConvert.DeserializeObject<ResponseDiagnosticDto>(stringResult.Result);
+                if (list != null)
+                {
+                    return list.Data;
+                }
+                else
+                {
+                    throw new Exception("Ряд не получен");
+                }
+            }
+            else
+            {
+                throw new Exception(response.Result.Content.ReadAsStringAsync().Result);
+            }
+        }
+
+        public void InitSeries(InitSeriesDto model, bool needForecast)
         {
             APIService service = new APIService();
             service.InitSeries(new SeriesDescriptionBindingModel
             {
                 SeriesName = model.SeriesName,
                 SeriesDiscription = model.Url,
-                NeedForecast = true
+                NeedForecast = needForecast
             }, GetData(model));
         }
 
@@ -88,6 +124,10 @@ namespace WebDiagnosticTechnicalEngine.Services
                 }),
                 VersionId = model.VersionId
             }));
+        }
+
+        public void Diagnostic(DiagnosticDto model)
+        {
         }
     }
 }
