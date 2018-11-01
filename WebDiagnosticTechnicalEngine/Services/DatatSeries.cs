@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using ServicesModule;
 using ServicesModule.BindingModels;
+using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,7 +22,7 @@ namespace WebDiagnosticTechnicalEngine.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private List<APIData> GetData(InitSeriesDto model)
+        private List<APIData> GetData(InitSeriesDto model, string key = null)
         {
             string url = model.Url;
 
@@ -41,15 +43,36 @@ namespace WebDiagnosticTechnicalEngine.Services
             Task<HttpResponseMessage> response = client.GetAsync(url);
             if (response.Result.IsSuccessStatusCode)
             {
-                var stringResult = response.Result.Content.ReadAsStringAsync();
-                ResponseForecastDto list = JsonConvert.DeserializeObject<ResponseForecastDto>(stringResult.Result);
-                if (list != null)
+                if (!string.IsNullOrEmpty(key))
                 {
-                    return list.Data;
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    ResponseDiagnosticDto list = JsonConvert.DeserializeObject<ResponseDiagnosticDto>(stringResult.Result);
+                    if (list != null)
+                    {
+                        var resList = list.Data.FirstOrDefault(x => x.Key == key).Values.Select(x => new APIData
+                        {
+                            timestamp = DateTime.Now,
+                            Value = x
+                        }).ToList();
+                        return resList;
+                    }
+                    else
+                    {
+                        throw new Exception("Ряд не получен");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Ряд не получен");
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    ResponseForecastDto list = JsonConvert.DeserializeObject<ResponseForecastDto>(stringResult.Result);
+                    if (list != null)
+                    {
+                        return list.Data;
+                    }
+                    else
+                    {
+                        throw new Exception("Ряд не получен");
+                    }
                 }
             }
             else
@@ -96,7 +119,7 @@ namespace WebDiagnosticTechnicalEngine.Services
             }
         }
 
-        public void InitSeries(InitSeriesDto model, bool needForecast)
+        public void InitSeries(InitSeriesDto model, bool needForecast, string key = null)
         {
             APIService service = new APIService();
             service.InitSeries(new SeriesDescriptionBindingModel
@@ -104,7 +127,7 @@ namespace WebDiagnosticTechnicalEngine.Services
                 SeriesName = model.SeriesName,
                 SeriesDiscription = model.Url,
                 NeedForecast = needForecast
-            }, GetData(model));
+            }, GetData(model, key));
         }
 
         public double MakeForecast(ForecastDto model)
@@ -126,8 +149,23 @@ namespace WebDiagnosticTechnicalEngine.Services
             }));
         }
 
-        public void Diagnostic(DiagnosticDto model)
+        public List<DiagnosticTestRecordViewModel> Diagnostic(DiagnosticDto model)
         {
+            APIService service = new APIService();
+            return
+            service.Diagnostic(new SeriesDescriptionBindingModel
+            {
+                SeriesName = model.SeriesName,
+                NeedForecast = false
+            }, GetData(new InitSeriesDto
+            {
+                SeriesName = model.SeriesName,
+                Url = service.GetSeriesUrl(new SeriesDescriptionBindingModel
+                {
+                    SeriesName = model.SeriesName
+                }),
+                VersionId = model.VersionId
+            }, model.Key));
         }
     }
 }

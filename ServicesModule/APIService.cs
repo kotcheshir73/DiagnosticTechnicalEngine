@@ -2,6 +2,7 @@
 using DatabaseModule.BaseClassies;
 using DatabaseModule.Models;
 using ServicesModule.BindingModels;
+using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace ServicesModule
 
         public bool InitSeries(SeriesDescriptionBindingModel model, List<APIData> list)
         {
+            _points = new List<PointInfo>();
             using (var _context = new DissertationDbContext())
             {
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
@@ -142,7 +144,7 @@ namespace ServicesModule
                 int _countClasters = countCenters;
                 while (true)
                 {
-                    var clust = new ModelClustering("", 1, _countClasters, list);
+                    var clust = new ModelClustering("", 2, _countClasters, list);
                     if (clust.Calc())
                     {
                         var points = clust.Points;
@@ -301,6 +303,7 @@ namespace ServicesModule
             {
                 throw new Exception("Мало точек для прогноза");
             }
+            _points = new List<PointInfo>();
             using (var _context = new DissertationDbContext())
             {
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
@@ -664,7 +667,7 @@ namespace ServicesModule
             }
         }
 
-        public void Diagnostic(SeriesDescriptionBindingModel model, List<APIData> list)
+        public List<DiagnosticTestRecordViewModel> Diagnostic(SeriesDescriptionBindingModel model, List<APIData> list)
         {
             if (list.Count < 3)
             {
@@ -672,11 +675,21 @@ namespace ServicesModule
             }
             using (var _context = new DissertationDbContext())
             {
+                _points = new List<PointInfo>();
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series == null)
                 {
                     throw new Exception("Не найдена серия с таким названием");
                 }
+                var test = new DiagnosticTest
+                {
+                    SeriesDiscriptionId = series.Id,
+                    TestNumber = series.SeriesName,
+                    DateTest = DateTime.Now,
+                    Count = 0
+                };
+                _context.DiagnosticTests.Add(test);
+                _context.SaveChanges();
                 _anomalyDetected = new List<KeyValuePair<AnomalyInfo, int>>();
                 _countPoints = 0;
                 if (list != null && list.Count > 1)
@@ -686,11 +699,17 @@ namespace ServicesModule
                         _countPoints++;
                         AddNewPoint(new PointInfo
                         {
+                            DiagnosticTestId = test.Id,
                             SeriesDiscriptionId = series.Id,
                             Value = list[i].Value
                         }, series.Id, true);
                     }
                 }
+
+                var listResult = _context.DiagnosticTestRecords.Where(x => x.DiagnosticTestId == test.Id)
+                    .Select(ModelConvector.ToDiagnosticTestRecord).ToList();
+
+                return listResult;
             }
         }
 
