@@ -311,7 +311,7 @@ namespace ServicesModule
                         point.EntropyFT = ModelCalculator.CalcEntropyByFT(point.FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 1].FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 2].FuzzyTrend.TrendName,
-                                                                            point.SeriesDiscriptionId);
+                                                                            point.SeriesDiscriptionId, out int pointNext);
                     }
 
                     if (_points.Count > 1)
@@ -1028,36 +1028,41 @@ namespace ServicesModule
                     // получаем ситуацию по энтропии (ищем с первой ситуации, пока не найдем нужную или не дойдем до конца), (если нашли ситуацию по нечеткости)
                     while (indexEntropy < listStatEntropyOrdered.Count && fuzzyLabelEqFuzzyTrend)
                     {
-                        var tempStateEntropy = listStatEntropyOrdered[indexEntropy];
-
+                        StatisticsByEntropy tempStateEntropy = listStatEntropyOrdered[indexEntropy];
+                        double weight = Converter.ToEntropyByFT(tempStateEntropy.EndStateLingvistFT);
+                        int startPoint = ModelCalculator.GetPoint(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName);
                         // получаем тенденцию в прогнозной точки
-                        int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy, diagTest.SeriesDiscriptionId);
-                        // получаем знак прогнозируемой тенденции
-                        double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
-                        var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);
-                        // 0 - будет означать стабильность
-                        if (featureTrendSign == 0)
+
+                        var point = _context.PointTrends.FirstOrDefault(x => x.Weight == 1 - weight && x.StartPoint == startPoint &&
+                                                    x.SeriesDiscriptionId == diagTest.SeriesDiscriptionId);
+                        if (point != null)
                         {
-                            fuzzyTrendEqEntropyTrend = featureTrend.TrendName == FuzzyTrendLabel.СтабильностьСредняя;
-                        }
-                        // если больше 0, то это рост
-                        else if (featureTrendSign > 0)
-                        {
-                            fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.РостСильный) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.РостСлабый) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.РостСредний);
-                        }
-                        // если меньше 0, то это падение
-                        else
-                        {
-                            fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСильное) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСлабое) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСреднее);
-                        }
-                        if (fuzzyTrendEqEntropyTrend)
-                        {
-                            break;
-                        }
+                            double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(point.FinishPoint);
+                            var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);
+                            // 0 - будет означать стабильность
+                            if (featureTrendSign == 0)
+                            {
+                                fuzzyTrendEqEntropyTrend = featureTrend.TrendName == FuzzyTrendLabel.СтабильностьСредняя;
+                            }
+                            // если больше 0, то это рост
+                            else if (featureTrendSign > 0)
+                            {
+                                fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.РостСильный) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.РостСлабый) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.РостСредний);
+                            }
+                            // если меньше 0, то это падение
+                            else
+                            {
+                                fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСильное) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСлабое) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСреднее);
+                            }
+                            if (fuzzyTrendEqEntropyTrend)
+                            {
+                                break;
+                            }
+                        }                        
                         indexEntropy++;
                     }
                     // если дошли до конца по нечеткости, но так и не получили сочетания, просто берем первые по выпадению

@@ -75,6 +75,10 @@
     <Compile Include="Migrations\201803221713394_AddLogsAndIntoExperimemt.Designer.cs">
       <DependentUpon>201803221713394_AddLogsAndIntoExperimemt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811100607100_AddGranule.cs" />
+    <Compile Include="Migrations\201811100607100_AddGranule.Designer.cs">
+      <DependentUpon>201811100607100_AddGranule.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AnomalyInfo.cs" />
     <Compile Include="Models\DiagnosticTest.cs" />
@@ -83,6 +87,7 @@
     <Compile Include="Models\ExperimentFileResult.cs" />
     <Compile Include="Models\FuzzyLabel.cs" />
     <Compile Include="Models\FuzzyTrend.cs" />
+    <Compile Include="Models\Granule.cs" />
     <Compile Include="Models\GranuleEntropy.cs" />
     <Compile Include="Models\GranuleFT.cs" />
     <Compile Include="Models\GranuleFuzzy.cs" />
@@ -116,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803221713394_AddLogsAndIntoExperimemt.resx">
       <DependentUpon>201803221713394_AddLogsAndIntoExperimemt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811100607100_AddGranule.resx">
+      <DependentUpon>201811100607100_AddGranule.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

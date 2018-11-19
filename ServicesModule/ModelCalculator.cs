@@ -136,7 +136,8 @@ namespace ServicesModule
 		/// </summary>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public static double CalcEntropyByFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, FuzzyTrendLabel beforeBeforeLastPointFTN, int seriesId)
+		public static double CalcEntropyByFT(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN, FuzzyTrendLabel beforeBeforeLastPointFTN, 
+            int seriesId, out int pointNext)
 		{
 			var xNow = Converter.ToFuzzyTrendLabelWeight(lastPointFTN);
 			if (xNow == Converter.TrendWeightNotFound)
@@ -157,8 +158,9 @@ namespace ServicesModule
 			var beforePoint = CalcPointOnPhasePlane(beforeLastPointFTN, xLastLast - xLast);
 			// точка на фазовой плоскости для текущей точки ряда
 			var nextPoint = CalcPointOnPhasePlane(lastPointFTN, xLast - xNow);
-			// получаем энтропию
-			using (var _context = new DissertationDbContext())
+            pointNext = nextPoint;
+            // получаем энтропию
+            using (var _context = new DissertationDbContext())
 			{
 				var point = _context.PointTrends.FirstOrDefault(rec => rec.StartPoint == beforePoint && rec.FinishPoint == nextPoint && rec.SeriesDiscriptionId == seriesId);
 				if (point == null)
@@ -332,6 +334,22 @@ namespace ServicesModule
 					return 0;
 			}
 		}
+
+        public static int GetPoint(FuzzyTrendLabel lastPointFTN, FuzzyTrendLabel beforeLastPointFTN)
+        {
+            var xNow = Converter.ToFuzzyTrendLabelWeight(lastPointFTN);
+            if (xNow == Converter.TrendWeightNotFound)
+            {
+                throw new Exception(string.Format("Не найден вес для тенденции {0}", lastPointFTN));
+            }
+            var xLast = Converter.ToFuzzyTrendLabelWeight(beforeLastPointFTN);
+            if (xLast == Converter.TrendWeightNotFound)
+            {
+                throw new Exception(string.Format("Не найден вес для тенденции {0}", beforeLastPointFTN));
+            }
+            // точка на фазовой плоскости для текущей точки ряда
+            return CalcPointOnPhasePlane(lastPointFTN, xLast - xNow);
+        }
 
 	}
 }

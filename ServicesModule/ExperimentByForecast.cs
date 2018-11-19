@@ -553,7 +553,7 @@ namespace ServicesModule
                         point.EntropyFT = ModelCalculator.CalcEntropyByFT(point.FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 1].FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 2].FuzzyTrend.TrendName,
-                                                                            point.SeriesDiscriptionId);
+                                                                            point.SeriesDiscriptionId, out int pointNext);
                     }
 
                     if (_points.Count > 1)

@@ -130,6 +130,17 @@ namespace WebDiagnosticTechnicalEngine.Services
             }, GetData(model, key));
         }
 
+        public void InitSeries(InitSeriesDto model, bool needForecast, List<APIData> data)
+        {
+            APIService service = new APIService();
+            service.InitSeries(new SeriesDescriptionBindingModel
+            {
+                SeriesName = model.SeriesName,
+                SeriesDiscription = model.Url,
+                NeedForecast = needForecast
+            }, data);
+        }
+
         public double MakeForecast(ForecastDto model)
         {
             APIService service = new APIService();
@@ -149,7 +160,24 @@ namespace WebDiagnosticTechnicalEngine.Services
             }));
         }
 
-        public List<DiagnosticTestRecordViewModel> Diagnostic(DiagnosticDto model)
+        public void Flush(SeriesDescriptionBindingModel model)
+        {
+            APIService service = new APIService();
+            service.FlushStat(model);
+        }
+
+        public double MakeForecast(ForecastDto model, List<APIData> data, bool notchangestat = false)
+        {
+            APIService service = new APIService();
+            return
+            service.MakeForecast(new SeriesDescriptionBindingModel
+            {
+                SeriesName = model.SeriesName,
+                NeedForecast = true
+            }, data, notchangestat);
+        }
+
+        public List<GranuleViewModel> Diagnostic(DiagnosticDto model)
         {
             APIService service = new APIService();
             return
@@ -166,6 +194,17 @@ namespace WebDiagnosticTechnicalEngine.Services
                 }),
                 VersionId = model.VersionId
             }, model.Key));
+        }
+
+        public List<GranuleViewModel> Diagnostic(DiagnosticDto model, List<APIData> data)
+        {
+            APIService service = new APIService();
+            return
+            service.Diagnostic(new SeriesDescriptionBindingModel
+            {
+                SeriesName = model.SeriesName,
+                NeedForecast = false
+            }, data);
         }
     }
 }

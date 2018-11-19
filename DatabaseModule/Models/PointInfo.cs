@@ -60,6 +60,9 @@ namespace DatabaseModule
 		/// Значение меры энтропии по нечеткой тенденции
 		/// </summary>
 		public double EntropyFT { get; set; }
+
+        [NotMapped]
+        public int Point { get; set; }
 		/// <summary>
 		/// 
 		/// </summary>

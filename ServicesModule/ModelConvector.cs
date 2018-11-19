@@ -369,9 +369,9 @@ namespace ServicesModule
 				LingvistFT = elem.LingvistFT,
 				Count = elem.Count
 			};
-		}
+        }
 
-		public static GranuleEntropy ToGranuleEntropy(GranuleEntropyBindingModel model, GranuleEntropy elem = null)
+        public static GranuleEntropy ToGranuleEntropy(GranuleEntropyBindingModel model, GranuleEntropy elem = null)
 		{
 			if (elem == null)
 			{
@@ -411,6 +411,22 @@ namespace ServicesModule
 			elem.FuzzyTrendId = model.FuzzyTrendId;
 			elem.Count = model.Count;
 			return elem;
-		}
-	}
+        }
+
+
+        public static GranuleViewModel ToGranule(Granule elem)
+        {
+            return new GranuleViewModel
+            {
+                Id = elem.Id,
+                DiagnosticTestId = elem.DiagnosticTestId,
+                GranulePosition = elem.GranulePosition,
+                LingvistUX = elem.LingvistUX,
+                LingvistFT = elem.LingvistFT,
+                FuzzyLabelName = elem.FuzzyLabel.FuzzyLabelName,
+                FuzzyTrendName = elem.FuzzyTrend.TrendName.ToString(),
+                Count = elem.Count
+            };
+        }
+    }
 }

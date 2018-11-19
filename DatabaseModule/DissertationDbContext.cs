@@ -92,6 +92,7 @@ namespace DatabaseModule
                     var diagnosticsTests = DiagnosticTests.Where(rec => rec.SeriesDiscriptionId == entity.Id).Select(rec => rec.Id).ToList();
 
                     DiagnosticTestRecords.RemoveRange(DiagnosticTestRecords.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
+                    Granules.RemoveRange(Granules.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
                     GranuleFuzzys.RemoveRange(GranuleFuzzys.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
                     GranuleEntropys.RemoveRange(GranuleEntropys.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
                     GranuleUXs.RemoveRange(GranuleUXs.Where(rec => diagnosticsTests.Contains(rec.DiagnosticTestId)));
@@ -128,7 +129,9 @@ namespace DatabaseModule
 
 		public virtual DbSet<StatisticsByFuzzy> StatisticsByFuzzys { set; get; }
 
-		public virtual DbSet<GranuleUX> GranuleUXs { get; set; }
+        public virtual DbSet<Granule> Granules { get; set; }
+
+        public virtual DbSet<GranuleUX> GranuleUXs { get; set; }
 
 		public virtual DbSet<GranuleFT> GranuleFTs { get; set; }
 

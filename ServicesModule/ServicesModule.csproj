@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\GranuleFTViewModel.cs" />
     <Compile Include="ViewModels\GranuleFuzzyViewModel.cs" />
     <Compile Include="ViewModels\GranuleUXViewModel.cs" />
+    <Compile Include="ViewModels\GranuleViewModel.cs" />
     <Compile Include="ViewModels\PointTrendViewModel.cs" />
     <Compile Include="ViewModels\RuleTrendViewModel.cs" />
     <Compile Include="ViewModels\SeriesDescriptionViewModel.cs" />

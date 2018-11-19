@@ -14,6 +14,6 @@ namespace ServicesModule.ViewModels
 
 		public LingvistFT LingvistFT { get; set; }
 
-		public int Count { get; set; }
+        public int Count { get; set; }
 	}
 }

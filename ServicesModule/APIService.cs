@@ -5,6 +5,7 @@ using ServicesModule.BindingModels;
 using ServicesModule.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace ServicesModule
@@ -19,6 +20,8 @@ namespace ServicesModule
 
         private int _countPoints;
 
+        private List<Granule> _granule;
+
         public bool InitSeries(SeriesDescriptionBindingModel model, List<APIData> list)
         {
             _points = new List<PointInfo>();
@@ -27,7 +30,7 @@ namespace ServicesModule
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series != null)
                 {
-                    throw new Exception("Уже есть серия с таким названием");
+                    return true;
                 }
 
                 var entity = ModelConvector.ToSeriesDescription(new SeriesDescriptionBindingModel
@@ -40,7 +43,7 @@ namespace ServicesModule
                 _context.SaveChanges();
 
                 #region Временной ряд
-                var res = CreateFuzzyLabel(list, entity.Id);
+                var res = CreateFuzzyLabel(list, entity.Id, model.SeriesName.Contains("-koef-"));
                 if (!res)
                 {
                     return false;
@@ -137,11 +140,38 @@ namespace ServicesModule
             }
         }
 
-        private bool CreateFuzzyLabel(List<APIData> list, int seriesId)
+        private bool CreateFuzzyLabel(List<APIData> list, int seriesId, bool setPercent = false)
         {
             try
             {
                 int _countClasters = countCenters;
+                if (setPercent)
+                {
+                    var logic = new FuzzyLabelService();
+                    Dictionary<string, Tuple<int, int, int>> labels = new Dictionary<string, Tuple<int, int, int>>
+                    {
+                        { "Минимально", new Tuple<int, int, int>(0, 25, 50) },
+                        { "Недогруз", new Tuple<int, int, int>(50, 65, 80) },
+                        { "Оптимально", new Tuple<int, int, int>(80, 90, 100) },
+                        { "Перегруз", new Tuple<int, int, int>(100, 110, 120) },
+                        { "Критично", new Tuple<int, int, int>(120, 310, 500) }
+                    };
+                    int k = 1;
+                    foreach (var elem in labels)
+                    {
+                        logic.InsertElement(new FuzzyLabelBindingModel
+                        {
+                            SeriesId = seriesId,
+                            FuzzyLabelType = FuzzyLabelType.FuzzyTriangle,
+                            FuzzyLabelName = elem.Key,
+                            Weigth = k++,
+                            MinVal = elem.Value.Item1,
+                            Center = elem.Value.Item2,
+                            MaxVal = elem.Value.Item3
+                        });
+                    }
+                    return true;
+                }
                 while (true)
                 {
                     var clust = new ModelClustering("", 2, _countClasters, list);
@@ -297,7 +327,37 @@ namespace ServicesModule
             }
         }
 
-        public double MakeForecast(SeriesDescriptionBindingModel model, List<APIData> list)
+        public void FlushStat(SeriesDescriptionBindingModel model)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
+                if (series == null)
+                {
+                    throw new Exception("Не найдена серия с таким названием");
+                }
+                int seriesId = series.Id;
+                using (var trans = _context.Database.BeginTransaction())
+                {
+                    var entropies = _context.StatisticsByEntropys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0).ToList();
+                    foreach (var entr in entropies)
+                    {
+                        entr.CountMeet = 0;
+                    }
+                    _context.SaveChanges();
+
+                    var fuzzies = _context.StatisticsByFuzzys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0).ToList();
+                    foreach (var fuz in fuzzies)
+                    {
+                        fuz.CountMeet = 0;
+                    }
+                    _context.SaveChanges();
+                    trans.Commit();
+                }
+            }
+        }
+
+        public double MakeForecast(SeriesDescriptionBindingModel model, List<APIData> list, bool notchangestat = false)
         {
             if (list.Count < 3)
             {
@@ -320,10 +380,10 @@ namespace ServicesModule
                         {
                             SeriesDiscriptionId = series.Id,
                             Value = list[i].Value
-                        }, series.Id, false);
+                        }, series.Id, false, notchangestat);
                     }
 
-                    return GetForecast(_points[_points.Count - 1], _points[_points.Count - 2], series.Id);
+                    return GetForecast2(_points[_points.Count - 1], _points[_points.Count - 2], series.Id);
                 }
             }
             return 0;
@@ -334,7 +394,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        private void AddNewPoint(PointInfo point, int seriesId, bool makeDiagnostic)
+        private void AddNewPoint(PointInfo point, int seriesId, bool makeDiagnostic, bool notchangestat)
         {
             using (var _context = new DissertationDbContext())
             {
@@ -369,12 +429,13 @@ namespace ServicesModule
                         point.EntropyFT = ModelCalculator.CalcEntropyByFT(point.FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 1].FuzzyTrend.TrendName,
                                                                             _points[_points.Count - 2].FuzzyTrend.TrendName,
-                                                                            point.SeriesDiscriptionId);
+                                                                            point.SeriesDiscriptionId, out int pointNext);
+                        point.Point = pointNext;
                     }
 
                     if (_points.Count > 1)
                     {//получить состояния
-                        var stateFuzzy = GetStateFuzzy(point);
+                        var stateFuzzy = GetStateFuzzy(point, notchangestat);
                         if (stateFuzzy == null)
                         {
                             throw new Exception("AddNewPoint: Не определили номер ситуации по нечеткости");
@@ -383,7 +444,7 @@ namespace ServicesModule
                         point.StatisticsByFuzzy = stateFuzzy;
                         if (_points.Count > 4)
                         {
-                            var stateEntropy = GetStateEntropy(point);
+                            var stateEntropy = GetStateEntropy(point, notchangestat);
                             if (stateEntropy == null)
                             {
                                 throw new Exception("AddNewPoint: Не определили номер ситуации по энтропии");
@@ -401,6 +462,8 @@ namespace ServicesModule
                     }
                 }
                 _points.Add(point);//занести точку;
+
+                Granules(point);
             }
         }
 
@@ -409,7 +472,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        private StatisticsByEntropy GetStateEntropy(PointInfo point)
+        private StatisticsByEntropy GetStateEntropy(PointInfo point, bool notchangeStats)
         {
             using (var _context = new DissertationDbContext())
             {
@@ -423,6 +486,8 @@ namespace ServicesModule
                                                 r.EndStateLingvistUX == endEntropyUX &&
                                                 r.EndStateLingvistFT == endEntropyFT &&
                                                 r.SeriesDiscriptionId == point.SeriesDiscriptionId);
+                if (notchangeStats)
+                    return stateEntropy;
                 if (stateEntropy == null)
                 {
                     var number = _context.StatisticsByEntropys
@@ -456,7 +521,7 @@ namespace ServicesModule
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        private StatisticsByFuzzy GetStateFuzzy(PointInfo point)
+        private StatisticsByFuzzy GetStateFuzzy(PointInfo point, bool notchangeStats)
         {
             using (var _context = new DissertationDbContext())
             {
@@ -468,6 +533,8 @@ namespace ServicesModule
                                             r.EndStateFuzzyLabelId == point.FuzzyLabelId &&
                                             r.EndStateFuzzyTrendId == point.FuzzyTrendId &&
                                             r.SeriesDiscriptionId == point.SeriesDiscriptionId);
+                if (notchangeStats)
+                    return stateFuzzy;
                 if (stateFuzzy == null)
                 {
                     var number = _context.StatisticsByFuzzys
@@ -501,9 +568,7 @@ namespace ServicesModule
             using (var _context = new DissertationDbContext())
             {
                 // результат - прогнозное значение
-                double result = 0;
-                // пока что - эот будет значение в последней точке
-                result = LastPoint.Value.Value;
+                double result = LastPoint.Value.Value;
                 // определяем ситуации по энтропии и по неопределенности
                 var entropy = ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.Single(dt => dt.Id == LastPoint.StatisticsByEntropyId));
                 var fuzzy = ModelConvector.ToStatisticsByFuzzy(_context.StatisticsByFuzzys.Single(dt => dt.Id == LastPoint.StatisticsByFuzzyId));
@@ -513,16 +578,44 @@ namespace ServicesModule
                                                 .Where(r =>
                                                     r.StartStateLingvistFT == entropy.EndStateLingvistFT &&
                                                     r.StartStateLingvistUX == entropy.EndStateLingvistUX &&
-                                                    r.SeriesDiscriptionId == entropy.SeriesDiscriptionId)
+                                                    r.SeriesDiscriptionId == entropy.SeriesDiscriptionId && r.CountMeet > 0)
                                                 .OrderByDescending(r => r.CountMeet)
                                                 .ToList();
                 var listStatFuzzyOrdered = _context.StatisticsByFuzzys
                                                 .Where(r =>
                                                     r.StartStateFuzzyLabelId == fuzzy.EndStateFuzzyLabelId &&
                                                     r.StartStateFuzzyTrendId == fuzzy.EndStateFuzzyTrendId &&
+                                                    r.SeriesDiscriptionId == fuzzy.SeriesDiscriptionId && r.CountMeet > 0)
+                                                .OrderByDescending(r => r.CountMeet)
+                                                .ToList();
+
+                if (listStatEntropyOrdered.Count == 0)
+                {
+                    listStatEntropyOrdered = _context.StatisticsByEntropys
+                                                .Where(r => r.Id == entropy.Id)
+                                                .ToList();
+                }
+
+                if (listStatFuzzyOrdered.Count == 0)
+                {
+                    var trends = GetTrendFromEntropy(listStatEntropyOrdered, LastPoint, PreLastPoint, seriesId);
+                    if (trends.Count > 0)
+                    {
+                        listStatFuzzyOrdered = _context.StatisticsByFuzzys
+                                                .Where(r =>
+                                                    r.StartStateFuzzyLabelId == fuzzy.EndStateFuzzyLabelId &&
+                                                    trends.Contains(r.StartStateFuzzyTrendId) &&
                                                     r.SeriesDiscriptionId == fuzzy.SeriesDiscriptionId)
                                                 .OrderByDescending(r => r.CountMeet)
                                                 .ToList();
+                    }
+                    else
+                    {
+                        listStatFuzzyOrdered = _context.StatisticsByFuzzys
+                                                    .Where(r => r.Id == fuzzy.Id)
+                                                    .ToList();
+                    }
+                }
 
                 int indexEntropy = 0;
 
@@ -560,34 +653,42 @@ namespace ServicesModule
                     while (indexEntropy < listStatEntropyOrdered.Count && fuzzyLabelEqFuzzyTrend)
                     {
                         var tempStateEntropy = listStatEntropyOrdered[indexEntropy];
+                        double weight = Converter.ToEntropyByFT(tempStateEntropy.EndStateLingvistFT);
+                        // int startPoint = ModelCalculator.GetPoint(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName);
 
-                        // получаем тенденцию в прогнозной точки
-                        int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy, seriesId);
-                        // получаем знак прогнозируемой тенденции
-                        double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
-                        var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);
-                        // 0 - будет означать стабильность
-                        if (featureTrendSign == 0)
+                        var point = _context.PointTrends.Where(x => /*x.Weight == 1 - weight &&*/ x.StartPoint == LastPoint.Point &&
+                                                    x.SeriesDiscriptionId == seriesId).OrderByDescending(x => x.Count).FirstOrDefault();
+                        if (point != null)
                         {
-                            fuzzyTrendEqEntropyTrend = featureTrend.TrendName == FuzzyTrendLabel.СтабильностьСредняя;
-                        }
-                        // если больше 0, то это рост
-                        else if (featureTrendSign > 0)
-                        {
-                            fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.РостСильный) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.РостСлабый) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.РостСредний);
-                        }
-                        // если меньше 0, то это падение
-                        else
-                        {
-                            fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСильное) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСлабое) ||
-                                                        (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСреднее);
-                        }
-                        if (fuzzyTrendEqEntropyTrend)
-                        {
-                            break;
+
+                            // получаем тенденцию в прогнозной точки
+                            int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy, seriesId);
+                            // получаем знак прогнозируемой тенденции
+                            double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
+                            var featureTrend = _context.FuzzyTrends.SingleOrDefault(t => t.Id == tempStateFuzzy.EndStateFuzzyTrendId);
+                            // 0 - будет означать стабильность
+                            if (featureTrendSign == 0)
+                            {
+                                fuzzyTrendEqEntropyTrend = featureTrend.TrendName == FuzzyTrendLabel.СтабильностьСредняя;
+                            }
+                            // если больше 0, то это рост
+                            else if (featureTrendSign > 0)
+                            {
+                                fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.РостСильный) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.РостСлабый) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.РостСредний);
+                            }
+                            // если меньше 0, то это падение
+                            else
+                            {
+                                fuzzyTrendEqEntropyTrend = (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСильное) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСлабое) ||
+                                                            (featureTrend.TrendName == FuzzyTrendLabel.ПадениеСреднее);
+                            }
+                            if (fuzzyTrendEqEntropyTrend)
+                            {
+                                break;
+                            }
                         }
                         indexEntropy++;
                     }
@@ -610,28 +711,27 @@ namespace ServicesModule
                         .SingleOrDefault(r => r.Id == stateFuzzy.EndStateFuzzyLabelId && r.SeriesDiscriptionId == seriesId);
                 var newEntropyPUX = listStatEntropyOrdered[indexEntropy].EndStateLingvistUX;
 
-                if (listStatFuzzyOrdered[indexFuzzy].StartStateFuzzyTrendId == fuzzy.EndStateFuzzyTrendId)
-                {// тенденция неизменна
-                    if (listStatEntropyOrdered[indexEntropy].EndStateLingvistUX == entropy.EndStateLingvistUX)
-                    // если значение меры энтропии по функции принадлежности в предыдущей точке 
-                    // равно значению меры энтропии в текущей, то берем значение в предыдущей в качестве прогнозного
-                    {
-                        var trendName = _context.FuzzyTrends.Single(dt => dt.Id == fuzzy.EndStateFuzzyTrendId).TrendName;
-                        switch (trendName)
-                        {
-                            case FuzzyTrendLabel.СтабильностьСредняя:
-                                return LastPoint.Value.Value;
-                            case FuzzyTrendLabel.РостСильный:
-                            case FuzzyTrendLabel.РостСлабый:
-                            case FuzzyTrendLabel.РостСредний:
-                            case FuzzyTrendLabel.ПадениеСильное:
-                            case FuzzyTrendLabel.ПадениеСлабое:
-                            case FuzzyTrendLabel.ПадениеСреднее:
-                                //получить прирост по последним точкам
-                                return LastPoint.Value.Value * 2 - PreLastPoint.Value.Value;
-                        }
-                        return LastPoint.Value.Value;
-                    }
+                result = LastPoint.Value.Value;
+                var trendName = _context.FuzzyTrends.Single(dt => dt.Id == stateFuzzy.EndStateFuzzyTrendId).TrendName;
+                switch (trendName)
+                {
+                    case FuzzyTrendLabel.СтабильностьСредняя:
+                        result = LastPoint.Value.Value;
+                        break;
+                    case FuzzyTrendLabel.РостСильный:
+                    case FuzzyTrendLabel.РостСлабый:
+                    case FuzzyTrendLabel.РостСредний:
+                    case FuzzyTrendLabel.ПадениеСильное:
+                    case FuzzyTrendLabel.ПадениеСлабое:
+                    case FuzzyTrendLabel.ПадениеСреднее:
+                        //получить прирост по последним точкам
+                        result = LastPoint.Value.Value * 2 - PreLastPoint.Value.Value;
+                        break;
+                }
+                if (newEntropyPUX == entropy.EndStateLingvistUX)
+                // если значение меры энтропии по функции принадлежности в предыдущей точке 
+                // равно значению меры энтропии в текущей, то берем значение в предыдущей в качестве прогнозного
+                {
                 }
                 // значения не совпадают, значит идет незначителньое изменение в точке
                 else
@@ -667,7 +767,291 @@ namespace ServicesModule
             }
         }
 
-        public List<DiagnosticTestRecordViewModel> Diagnostic(SeriesDescriptionBindingModel model, List<APIData> list)
+        private double GetForecast2(PointInfo LastPoint, PointInfo PreLastPoint, int seriesId)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                // результат - прогнозное значение
+
+                double result = LastPoint.Value.Value;
+
+                var entropy = ModelConvector.ToStatisticsByEntropy(_context.StatisticsByEntropys.Single(dt => dt.Id == LastPoint.StatisticsByEntropyId));
+                var fuzzy = ModelConvector.ToStatisticsByFuzzy(_context.StatisticsByFuzzys.Single(dt => dt.Id == LastPoint.StatisticsByFuzzyId));
+                // ищем по фазовой плоскости все точки, куда могла пойти точка
+                // на основе этих данных, собираем тенденции возможные
+                var pointTrends = _context.PointTrends.Where(x => x.SeriesDiscriptionId == seriesId && x.StartPoint == LastPoint.Point).OrderByDescending(x => x.Count).ToList();
+                Dictionary<FuzzyTrend, int> trends = new Dictionary<FuzzyTrend, int>();
+                HashSet<FuzzyTrendLabel> trendLabel = new HashSet<FuzzyTrendLabel>();
+                foreach (var pointTrend in pointTrends)
+                {
+                    // получаем знак прогнозируемой тенденции
+                    double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(pointTrend.FinishPoint);
+                    // 0 - будет означать стабильность
+                    IEnumerable<FuzzyTrend> temptrends = null;
+                    if (featureTrendSign == 0)
+                    {
+                        temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                        x.TrendName == FuzzyTrendLabel.СтабильностьСредняя);
+                        trendLabel.Add(FuzzyTrendLabel.СтабильностьСредняя);
+                    }
+                    // если больше 0, то это рост
+                    else if (featureTrendSign > 0)
+                    {
+                        temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                        (x.TrendName == FuzzyTrendLabel.РостСильный ||
+                        x.TrendName == FuzzyTrendLabel.РостСлабый ||
+                        x.TrendName == FuzzyTrendLabel.РостСредний));
+                        trendLabel.Add(FuzzyTrendLabel.РостСлабый);
+                    }
+                    // если меньше 0, то это падение
+                    else
+                    {
+                        temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                        (x.TrendName == FuzzyTrendLabel.ПадениеСильное ||
+                        x.TrendName == FuzzyTrendLabel.ПадениеСлабое ||
+                        x.TrendName == FuzzyTrendLabel.ПадениеСреднее));
+                        trendLabel.Add(FuzzyTrendLabel.ПадениеСлабое);
+                    }
+                    if (temptrends != null)
+                    {
+                        foreach (var trend in temptrends)
+                        {
+                            if (trends.ContainsKey(trend))
+                            {
+                                trends[trend]++;
+                            }
+                            else
+                            {
+                                trends.Add(trend, 1);
+                            }
+                        }
+                    }
+                }
+                // набираем все возможные ситуации по энтропии, у который стартовые значения равны конечным у последней точки
+                // и конечное значение равно высчитанному для каждой из возможных тенденций
+                List<StatisticsByEntropy> listStatEntropyOrdered = new List<StatisticsByEntropy>();
+                foreach (var trend in trends)
+                {
+                    var entropyFT = ModelCalculator.CalcEntropyByFT(trend.Key.TrendName,
+                                                                            LastPoint.FuzzyTrend.TrendName,
+                                                                            PreLastPoint.FuzzyTrend.TrendName,
+                                                                            seriesId, out int pointNext);
+                    var endEntropyFT = Converter.ToLingvistFT(entropyFT);
+                    listStatEntropyOrdered.AddRange(_context.StatisticsByEntropys.Where(x => x.SeriesDiscriptionId == seriesId &&
+                                                    x.StartStateLingvistFT == entropy.EndStateLingvistFT &&
+                                                    x.StartStateLingvistUX == entropy.EndStateLingvistUX &&
+                                                    x.EndStateLingvistFT == endEntropyFT && x.CountMeet > 0).ToList());
+                }
+                listStatEntropyOrdered = listStatEntropyOrdered.Distinct().OrderByDescending(x => x.CountMeet).ToList();
+
+                List<StatisticsByFuzzy> listStatFuzzyOrdered = new List<StatisticsByFuzzy>();
+
+                if (listStatEntropyOrdered.Count == 0)
+                {
+                    listStatEntropyOrdered = _context.StatisticsByEntropys
+                                                .Where(r =>
+                                                    r.StartStateLingvistFT == entropy.EndStateLingvistFT &&
+                                                    r.StartStateLingvistUX == entropy.EndStateLingvistUX &&
+                                                    r.SeriesDiscriptionId == entropy.SeriesDiscriptionId && r.CountMeet > 0)
+                                                .OrderByDescending(r => r.CountMeet)
+                                                .ToList();
+                    if (listStatEntropyOrdered.Count == 0)
+                    {
+                        listStatEntropyOrdered = _context.StatisticsByEntropys
+                                                  .Where(r => r.Id == entropy.Id)
+                                                  .ToList();
+                    }
+                }
+
+                var trendsIDs = trends.Keys.Select(x => x.Id).ToList();
+                if (trendsIDs.Count > 0)
+                {
+                    listStatFuzzyOrdered = _context.StatisticsByFuzzys
+                                            .Where(r =>
+                                                r.StartStateFuzzyLabelId == fuzzy.EndStateFuzzyLabelId &&
+                                                trendsIDs.Contains(r.StartStateFuzzyTrendId) &&
+                                                r.SeriesDiscriptionId == fuzzy.SeriesDiscriptionId && r.CountMeet > 0)
+                                            .ToList();
+                }
+                if (listStatFuzzyOrdered.Count == 0)
+                {
+                    listStatFuzzyOrdered = _context.StatisticsByFuzzys
+                                                   .Where(r =>
+                                                       r.StartStateFuzzyLabelId == fuzzy.EndStateFuzzyLabelId &&
+                                                       r.StartStateFuzzyTrendId == fuzzy.EndStateFuzzyTrendId &&
+                                                       r.SeriesDiscriptionId == fuzzy.SeriesDiscriptionId && r.CountMeet > 0)
+                                                   .OrderByDescending(r => r.CountMeet)
+                                                   .ToList();
+                    if (listStatFuzzyOrdered.Count == 0)
+                    {
+                        listStatFuzzyOrdered = _context.StatisticsByFuzzys
+                                                    .Where(r => r.Id == fuzzy.Id)
+                                                    .ToList();
+                    }
+                }
+
+                listStatFuzzyOrdered = listStatFuzzyOrdered.OrderByDescending(x => x.CountMeet).ToList();
+                FuzzyTrendLabel trendName = FuzzyTrendLabel.Неопределено;
+                var stateFuzzy = listStatFuzzyOrdered[0];
+                FuzzyLabel fuzzyLabel = _context.FuzzyLabels
+                           .SingleOrDefault(r => r.Id == stateFuzzy.EndStateFuzzyLabelId && r.SeriesDiscriptionId == seriesId);
+
+                //if (listStatFuzzyOrdered.Count == 0)
+                //{
+                if (trendLabel.Count == 1)
+                {
+                    trendName = trendLabel.First();
+                }
+                else if (listStatFuzzyOrdered.Count > 0)
+                {
+                    trendName = _context.FuzzyTrends.Single(dt => dt.Id == stateFuzzy.EndStateFuzzyTrendId).TrendName;
+                }
+                else if (trendLabel.Count > 1)
+                {
+                    //нужно определить часто встречаемую тенденцию
+                    var trendsCount = _context.StatisticsByFuzzys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0)
+                        .GroupBy(x => x.EndStateFuzzyTrendId)
+                        .Select(x => new
+                        {
+                            TrendId = x.Key,
+                            Count = x.Count()
+                        })
+                        .OrderByDescending(x => x.Count);
+                    var trendsIds = trends.Keys.Select(x => x.Id).Distinct();
+                    foreach (var tr in trendsCount)
+                    {
+                        if (trendsIds.Contains(tr.TrendId))
+                        {
+                            trendName = _context.FuzzyTrends.FirstOrDefault(x => x.Id == tr.TrendId).TrendName;
+                            break;
+                        }
+                    }
+                }
+
+                var newEntropyPUX = listStatEntropyOrdered[0].EndStateLingvistUX;
+
+                result = LastPoint.Value.Value;
+                if (LastPoint.FuzzyLabelId != fuzzyLabel.Id)
+                {
+                    switch (newEntropyPUX)
+                    {
+                        case LingvistUX.Достоверно:
+                            result = fuzzyLabel.FuzzyLabelCenter;
+                            break;
+                        case LingvistUX.ВероятноМакс:
+                            result = (fuzzyLabel.FuzzyLabelMaxVal - fuzzyLabel.FuzzyLabelCenter) / 2 + fuzzyLabel.FuzzyLabelCenter;
+                            break;
+                        case LingvistUX.ВероятноМин:
+                            result = (fuzzyLabel.FuzzyLabelCenter - fuzzyLabel.FuzzyLabelMinVal) / 2 + fuzzyLabel.FuzzyLabelMinVal;
+                            break;
+                        case LingvistUX.НеопределеноМакс:
+                            result = fuzzyLabel.FuzzyLabelMaxVal;
+                            break;
+                        case LingvistUX.НеопределеноМин:
+                            result = fuzzyLabel.FuzzyLabelMinVal;
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (trendName)
+                    {
+                        case FuzzyTrendLabel.СтабильностьСредняя:
+                            result = LastPoint.Value.Value;
+                            break;
+                        case FuzzyTrendLabel.РостСильный:
+                        case FuzzyTrendLabel.РостСлабый:
+                        case FuzzyTrendLabel.РостСредний:
+                            //получить прирост по последним точкам
+                            result = (LastPoint.Value > PreLastPoint.Value) ? LastPoint.Value.Value * 2 - PreLastPoint.Value.Value :
+                                PreLastPoint.Value.Value * 2 - LastPoint.Value.Value;
+                            break;
+                        case FuzzyTrendLabel.ПадениеСильное:
+                        case FuzzyTrendLabel.ПадениеСлабое:
+                        case FuzzyTrendLabel.ПадениеСреднее:
+                            //получить прирост по последним точкам
+                            result = (LastPoint.Value < PreLastPoint.Value) ? LastPoint.Value.Value * 2 - PreLastPoint.Value.Value :
+                                PreLastPoint.Value.Value * 2 - LastPoint.Value.Value;
+                            break;
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        private List<int> GetTrendFromEntropy(List<StatisticsByEntropy> entropyis, PointInfo LastPoint, PointInfo PreLastPoint, int seriesId)
+        {
+            int indexEntropy = 0;
+            List<int> trends = new List<int>();
+            using (var _context = new DissertationDbContext())
+            {
+                while (indexEntropy < entropyis.Count)
+                {
+                    var tempStateEntropy = entropyis[indexEntropy];
+                    double weight = Converter.ToEntropyByFT(tempStateEntropy.EndStateLingvistFT);
+                    // int startPoint = ModelCalculator.GetPoint(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName);
+
+                    var point = _context.PointTrends.Where(x => /*x.Weight == 1 - weight &&*/ x.StartPoint == LastPoint.Point &&
+                                                x.SeriesDiscriptionId == seriesId).OrderByDescending(x => x.Count).FirstOrDefault();
+                    if (point != null)
+                    {
+
+                        // получаем тенденцию в прогнозной точки
+                        int newPointPhasePlane = ModelCalculator.CalcPointFromFFT(LastPoint.FuzzyTrend.TrendName, PreLastPoint.FuzzyTrend.TrendName, tempStateEntropy, seriesId);
+                        // получаем знак прогнозируемой тенденции
+                        double featureTrendSign = ModelCalculator.CalcTrendByPointOnPhasePlane(newPointPhasePlane);
+                        // 0 - будет означать стабильность
+                        if (featureTrendSign == 0)
+                        {
+                            var temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                            x.TrendName == FuzzyTrendLabel.СтабильностьСредняя);
+                            if (temptrends != null)
+                            {
+                                foreach (var trend in temptrends)
+                                {
+                                    trends.Add(trend.Id);
+                                }
+                            }
+                        }
+                        // если больше 0, то это рост
+                        else if (featureTrendSign > 0)
+                        {
+                            var temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                            (x.TrendName == FuzzyTrendLabel.РостСильный ||
+                            x.TrendName == FuzzyTrendLabel.РостСлабый ||
+                            x.TrendName == FuzzyTrendLabel.РостСредний));
+                            if (temptrends != null)
+                            {
+                                foreach (var trend in temptrends)
+                                {
+                                    trends.Add(trend.Id);
+                                }
+                            }
+                        }
+                        // если меньше 0, то это падение
+                        else
+                        {
+                            var temptrends = _context.FuzzyTrends.Where(x => x.SeriesDiscriptionId == seriesId &&
+                            (x.TrendName == FuzzyTrendLabel.ПадениеСильное ||
+                            x.TrendName == FuzzyTrendLabel.ПадениеСлабое ||
+                            x.TrendName == FuzzyTrendLabel.ПадениеСреднее));
+                            if (temptrends != null)
+                            {
+                                foreach (var trend in temptrends)
+                                {
+                                    trends.Add(trend.Id);
+                                }
+                            }
+                        }
+                    }
+                    indexEntropy++;
+                }
+            }
+            return trends;
+        }
+
+        public List<GranuleViewModel> Diagnostic(SeriesDescriptionBindingModel model, List<APIData> list)
         {
             if (list.Count < 3)
             {
@@ -676,6 +1060,7 @@ namespace ServicesModule
             using (var _context = new DissertationDbContext())
             {
                 _points = new List<PointInfo>();
+                _granule = new List<Granule>();
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series == null)
                 {
@@ -702,14 +1087,17 @@ namespace ServicesModule
                             DiagnosticTestId = test.Id,
                             SeriesDiscriptionId = series.Id,
                             Value = list[i].Value
-                        }, series.Id, true);
+                        }, series.Id, true, notchangestat: true);
                     }
+
+                    SaveGranules();
                 }
 
-                var listResult = _context.DiagnosticTestRecords.Where(x => x.DiagnosticTestId == test.Id)
-                    .Select(ModelConvector.ToDiagnosticTestRecord).ToList();
+                List<GranuleViewModel> granuls = _context.Granules.Where(x => x.DiagnosticTestId == test.Id)
+                    .Include(x => x.FuzzyLabel).Include(x => x.FuzzyTrend)
+                    .Select(ModelConvector.ToGranule).ToList();
 
-                return listResult;
+                return granuls;
             }
         }
 
@@ -921,7 +1309,7 @@ namespace ServicesModule
                         //{
                         //    _evMessage("Точка №" + _countPoints + ". Анализ частоты встречи аномалии по энтропии. Неизвестное состояние №" +
                         //        anomaly.AnomalySituation);
-                            return false;
+                        return false;
                         //}
                     }
                     if ((((double)stateEntropy.CountMeet) / _countPoints) * 100 > 5)
@@ -930,8 +1318,8 @@ namespace ServicesModule
                         //{
                         //    _evMessage("Точка №" + _countPoints + ". Аномалия " + anomaly.AnomalyName +
                         //        " встречается очень часто, значит это не аномалия.");
-                            return true;
-                       // }
+                        return true;
+                        // }
                     }
                 }
                 if (anomaly.TypeSituation == TypeSituation.ПоНечеткости)
@@ -944,21 +1332,101 @@ namespace ServicesModule
                         //{
                         //    _evMessage("Точка №" + _countPoints + ". Анализ частоты встречи аномалии по нечеткости. Неизвестное состояние №" +
                         //        anomaly.AnomalySituation);
-                            return false;
-                       // }
+                        return false;
+                        // }
                     }
                     if ((((double)stateFuzzy.CountMeet) / _countPoints) * 100 > 5)
                     {
-                       // if (_evMessage != null)
-                       // {
-                       //     _evMessage("Точка №" + _countPoints + ". Аномалия " + anomaly.AnomalyName +
-                       //         " встречается очень часто, значит это не аномалия.");
-                            return true;
+                        // if (_evMessage != null)
+                        // {
+                        //     _evMessage("Точка №" + _countPoints + ". Аномалия " + anomaly.AnomalyName +
+                        //         " встречается очень часто, значит это не аномалия.");
+                        return true;
                         //}
                     }
                 }
 
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Определяем, нужно ли формировать гранулы по каким-то данным
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="seriesId"></param>
+        private void Granules(PointInfo point)
+        {
+            if (_granule != null && _points.Count > 5)
+            {
+                if (_granule.Count == 0)
+                {
+                    _granule.Add(new Granule
+                    {
+                        Count = 1,
+                        DiagnosticTestId = point.DiagnosticTestId,
+                        GranulePosition = 0,
+                        LingvistUX = Converter.ToLingvistUX(point.EntropuUX, point.PositionFUX),
+                        LingvistFT = Converter.ToLingvistFT(point.EntropyFT),
+                        FuzzyLabelId = point.FuzzyLabelId.Value,
+                        FuzzyTrendId = point.FuzzyTrendId.Value
+                    });
+                }
+                else
+                {
+                    var entropyUX = Converter.ToLingvistUX(point.EntropuUX, point.PositionFUX);
+                    var entropyFT = Converter.ToLingvistFT(point.EntropyFT);
+                    // если энтропии совпадают, то просто увеличиваем кол-во
+                    if (_granule[_granule.Count - 1].FuzzyLabelId == point.FuzzyLabelId &&
+                        _granule[_granule.Count - 1].FuzzyTrendId == point.FuzzyTrendId &&
+                        _granule[_granule.Count - 1].LingvistUX == entropyUX &&
+                        _granule[_granule.Count - 1].LingvistFT == entropyFT)
+                    {
+                        _granule[_granule.Count - 1].Count++;
+                    }
+                    // иначе, новый элемент в гранулированном ряду
+                    else
+                    {
+                        _granule.Add(new Granule
+                        {
+                            Count = 1,
+                            DiagnosticTestId = point.DiagnosticTestId,
+                            GranulePosition = _granule[_granule.Count - 1].GranulePosition + 1,
+                            LingvistUX = Converter.ToLingvistUX(point.EntropuUX, point.PositionFUX),
+                            LingvistFT = Converter.ToLingvistFT(point.EntropyFT),
+                            FuzzyLabelId = point.FuzzyLabelId.Value,
+                            FuzzyTrendId = point.FuzzyTrendId.Value
+                        });
+                    }
+                }
+            }
+        }
+
+        private void SaveGranules()
+        {
+            using (var _context = new DissertationDbContext())
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                if (_granule != null)
+                {
+                    foreach (var gr in _granule)
+                    {
+                        _context.Granules.Add(new Granule
+                        {
+                            DiagnosticTestId = gr.DiagnosticTestId,
+                            GranulePosition = gr.GranulePosition,
+                            LingvistUX = gr.LingvistUX,
+                            LingvistFT = gr.LingvistFT,
+                            FuzzyLabel = gr.FuzzyLabel,
+                            FuzzyLabelId = gr.FuzzyLabelId,
+                            FuzzyTrend = gr.FuzzyTrend,
+                            FuzzyTrendId = gr.FuzzyTrendId,
+                            Count = gr.Count
+                        });
+                        _context.SaveChanges();
+                    }
+                }
+                transaction.Commit();
             }
         }
     }
