@@ -43,7 +43,7 @@ namespace ServicesModule
                 _context.SaveChanges();
 
                 #region Временной ряд
-                var res = CreateFuzzyLabel(list, entity.Id, model.SeriesName.Contains("-koef-"));
+                var res = CreateFuzzyLabel(list, entity.Id, model.SeriesName.Contains("-koef-"), model.SeriesName.StartsWith("stanok"));
                 if (!res)
                 {
                     return false;
@@ -140,7 +140,7 @@ namespace ServicesModule
             }
         }
 
-        private bool CreateFuzzyLabel(List<APIData> list, int seriesId, bool setPercent = false)
+        private bool CreateFuzzyLabel(List<APIData> list, int seriesId, bool setPercent = false, bool setPercent2 = false)
         {
             try
             {
@@ -155,6 +155,33 @@ namespace ServicesModule
                         { "Оптимально", new Tuple<int, int, int>(80, 90, 100) },
                         { "Перегруз", new Tuple<int, int, int>(100, 110, 120) },
                         { "Критично", new Tuple<int, int, int>(120, 310, 500) }
+                    };
+                    int k = 1;
+                    foreach (var elem in labels)
+                    {
+                        logic.InsertElement(new FuzzyLabelBindingModel
+                        {
+                            SeriesId = seriesId,
+                            FuzzyLabelType = FuzzyLabelType.FuzzyTriangle,
+                            FuzzyLabelName = elem.Key,
+                            Weigth = k++,
+                            MinVal = elem.Value.Item1,
+                            Center = elem.Value.Item2,
+                            MaxVal = elem.Value.Item3
+                        });
+                    }
+                    return true;
+                }
+                if (setPercent2)
+                {
+                    var logic = new FuzzyLabelService();
+                    Dictionary<string, Tuple<int, int, int>> labels = new Dictionary<string, Tuple<int, int, int>>
+                    {
+                        { "Минимально", new Tuple<int, int, int>(-10, 3, 16) },
+                        { "Чуть выше минимума", new Tuple<int, int, int>(14, 30, 40) },
+                        { "Половина", new Tuple<int, int, int>(38, 50, 62) },
+                        { "Почти полный", new Tuple<int, int, int>(60, 73, 86) },
+                        { "Полный", new Tuple<int, int, int>(84, 97, 110) }
                     };
                     int k = 1;
                     foreach (var elem in labels)
@@ -334,11 +361,18 @@ namespace ServicesModule
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series == null)
                 {
-                    throw new Exception("Не найдена серия с таким названием");
+                    return;
                 }
                 int seriesId = series.Id;
                 using (var trans = _context.Database.BeginTransaction())
                 {
+                    var points = _context.PointTrends.Where(x => x.SeriesDiscriptionId == seriesId && x.Count > 0).ToList();
+                    foreach (var point in points)
+                    {
+                        point.Count = 0;
+                    }
+                    _context.SaveChanges();
+
                     var entropies = _context.StatisticsByEntropys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0).ToList();
                     foreach (var entr in entropies)
                     {

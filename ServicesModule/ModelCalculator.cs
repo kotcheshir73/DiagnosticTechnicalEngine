@@ -169,7 +169,9 @@ namespace ServicesModule
 				}
 				else
 				{
-					return 1.0 - point.Weight;
+                    point.Count++;
+                    _context.SaveChanges();
+                    return 1.0 - point.Weight;
 				}
 			}
 		}
