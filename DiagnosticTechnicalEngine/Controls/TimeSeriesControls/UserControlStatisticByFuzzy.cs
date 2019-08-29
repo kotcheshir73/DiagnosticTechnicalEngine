@@ -1,14 +1,14 @@
 ﻿using DiagnosticTechnicalEngine.Forms;
 using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Implement_Level;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlStatisticByFuzzy : StandartSeriesControl<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel, FormStatisticByFuzzy>
+    public class UserControlStatisticByFuzzy : StandartSeriesControl<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel, FormStatisticByFuzzy>
 	{
 		protected override void InitializeComponent()
 		{
@@ -93,8 +93,8 @@ namespace DiagnosticTechnicalEngine.Controls
 				dataGridView.Rows.Add();
 				dataGridView.Rows[i].Cells[0].Value = fuzzy.Id;
 				dataGridView.Rows[i].Cells[1].Value = fuzzy.NumberSituation;
-				dataGridView.Rows[i].Cells[2].Value = fuzzy.StartState;
-				dataGridView.Rows[i].Cells[3].Value = fuzzy.EndState;
+				dataGridView.Rows[i].Cells[2].Value = fuzzy.GetStartState();
+				dataGridView.Rows[i].Cells[3].Value = fuzzy.GetEndState();
 				dataGridView.Rows[i].Cells[4].Value = fuzzy.Description;
 				dataGridView.Rows[i].Cells[5].Value = fuzzy.CountMeet;
 				i++;

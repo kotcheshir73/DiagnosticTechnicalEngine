@@ -1,15 +1,15 @@
-﻿using DatabaseModule;
-using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+﻿using DiagnosticTechnicalEngine.StandartClasses;
+using DTE_Implement_Level.Implementations;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormRuleTrend : StandartForm<RuleTrendViewModel, RuleTrendBindingModel>
+    public class FormRuleTrend : StandartForm<RuleTrendViewModel, RuleTrendBindingModel>
 	{
 		private Label labelTrend;
 		private Label labelFuzzyLabelFrom;

@@ -1,12 +1,12 @@
 ﻿using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormPointTrend : StandartForm<PointTrendViewModel, PointTrendBindingModel>
+    public class FormPointTrend : StandartForm<PointTrendViewModel, PointTrendBindingModel>
 	{
 		private Label labelStartPoint;
 		private Label labelFinishPoint;

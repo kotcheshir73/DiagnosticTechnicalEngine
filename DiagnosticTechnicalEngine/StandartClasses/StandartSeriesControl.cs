@@ -1,14 +1,12 @@
-﻿using ServicesModule.Interfaces;
+﻿using DTE_Interface_Level.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.StandartClasses
 {
-	public class StandartSeriesControl<T, U, Z> : UserControl where Z : StandartForm<T, U>, new()
+    public class StandartSeriesControl<T, U, Z> : UserControl where Z : StandartForm<T, U>, new()
 	{
 		#region Элементы контрола
 		protected GroupBox groupBox;

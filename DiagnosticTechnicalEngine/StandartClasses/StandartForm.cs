@@ -1,10 +1,10 @@
-﻿using ServicesModule.Interfaces;
+﻿using DTE_Interface_Level.Interfaces;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.StandartClasses
 {
-	public class StandartForm<T, U> : Form
+    public class StandartForm<T, U> : Form
 	{
 		// Две кнопки будут всегда
 		protected Button buttonClose;

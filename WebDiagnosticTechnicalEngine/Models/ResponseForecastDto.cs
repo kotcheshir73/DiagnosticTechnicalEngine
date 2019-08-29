@@ -1,6 +1,5 @@
-﻿using ServicesModule.BindingModels;
+﻿using DTE_Interface_Level.BindingModels;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace WebDiagnosticTechnicalEngine.Models
 {

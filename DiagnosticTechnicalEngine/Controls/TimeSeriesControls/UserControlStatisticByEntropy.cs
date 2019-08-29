@@ -1,14 +1,14 @@
 ﻿using DiagnosticTechnicalEngine.Forms;
 using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Implement_Level;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlStatisticByEntropy : StandartSeriesControl<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel, FormStatisticByEntropy>
+    public class UserControlStatisticByEntropy : StandartSeriesControl<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel, FormStatisticByEntropy>
 	{
 		protected override void InitializeComponent()
 		{

@@ -1,13 +1,13 @@
 ﻿using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Implement_Level.Implementations;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormStatisticByFuzzy : StandartForm<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel>
+    public class FormStatisticByFuzzy : StandartForm<StatisticsByFuzzyViewModel, StatisticsByFuzzyBindingModel>
 	{
 		#region Контролы для работы
 		private Label labelNumberSituation;

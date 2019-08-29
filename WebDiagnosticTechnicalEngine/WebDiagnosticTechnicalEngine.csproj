@@ -263,13 +263,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatabaseModule\DatabaseModule.csproj">
-      <Project>{09a0a1ce-9cf6-4131-8e3c-332ad6a66c52}</Project>
-      <Name>DatabaseModule</Name>
+    <ProjectReference Include="..\DTE_Implement_Level\DTE_Implement_Level.csproj">
+      <Project>{1ED8A96C-8FEC-41C1-8871-A61F22ABA7FD}</Project>
+      <Name>DTE_Implement_Level</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServicesModule\ServicesModule.csproj">
-      <Project>{fc94b655-93a3-455a-b5a9-3edea38b6760}</Project>
-      <Name>ServicesModule</Name>
+    <ProjectReference Include="..\DTE_Interface_Level\DTE_Interface_Level.csproj">
+      <Project>{78FF8D6D-43D4-429F-BF72-A2052BEA2C30}</Project>
+      <Name>DTE_Interface_Level</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

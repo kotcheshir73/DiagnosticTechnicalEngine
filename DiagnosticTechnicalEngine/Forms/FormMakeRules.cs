@@ -1,12 +1,13 @@
-﻿using ServicesModule;
-using ServicesModule.BindingModels;
-using DatabaseModule;
+﻿using DTE_Implement_Level;
+using DTE_Implement_Level.Implementations;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormMakeRules : Form
+    public partial class FormMakeRules : Form
 	{
 		private int _seriesId;
 

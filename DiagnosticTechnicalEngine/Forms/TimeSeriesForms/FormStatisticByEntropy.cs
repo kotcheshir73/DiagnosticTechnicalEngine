@@ -1,12 +1,12 @@
-﻿using DatabaseModule;
-using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+﻿using DiagnosticTechnicalEngine.StandartClasses;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormStatisticByEntropy : StandartForm<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel>
+    public class FormStatisticByEntropy : StandartForm<StatisticsByEntropyViewModel, StatisticsByEntropyBindingModel>
 	{
 		#region Контролы для работы
 		private Label labelNumberSituation;

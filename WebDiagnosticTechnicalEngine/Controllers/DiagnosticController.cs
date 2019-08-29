@@ -1,16 +1,8 @@
-﻿using Newtonsoft.Json;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+﻿using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization.Json;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using WebDiagnosticTechnicalEngine.Models;
 using WebDiagnosticTechnicalEngine.Services;
 

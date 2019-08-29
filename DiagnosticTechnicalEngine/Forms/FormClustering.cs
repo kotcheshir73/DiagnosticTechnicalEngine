@@ -1,6 +1,7 @@
-﻿using ServicesModule;
-using ServicesModule.BindingModels;
-using DatabaseModule;
+﻿using DTE_Implement_Level;
+using DTE_Implement_Level.Implementations;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Enums;
 using System;
 using System.Data;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormClustering : Form
+    public partial class FormClustering : Form
     {
         private int _seriesId;
 
@@ -41,15 +42,15 @@ namespace DiagnosticTechnicalEngine.Forms
                     {
                         if (points.Count > 0)
                         {
-                            var point = points.First(r => r.x == points.Min(rex => rex.x));
+                            var point = points.First(r => r.X == points.Min(rex => rex.X));
                             dataGridView.Rows.Add();
-                            var clustPoints = points.Where(r => r.clusterIndex == point.clusterIndex);
+                            var clustPoints = points.Where(r => r.ClusterIndex == point.ClusterIndex);
                             dataGridView.Rows[i].Cells[0].Value = "Кластер " + (i + 1);
                             dataGridView.Rows[i].Cells[1].Value = i + 1;
-                            dataGridView.Rows[i].Cells[2].Value = clustPoints.Min(rex => rex.x);
-                            dataGridView.Rows[i].Cells[3].Value = clust.Centers[(int)point.clusterIndex].x;
-                            dataGridView.Rows[i].Cells[4].Value = clustPoints.Max(rex => rex.x);
-                            points.RemoveAll(r => r.clusterIndex == point.clusterIndex);
+                            dataGridView.Rows[i].Cells[2].Value = clustPoints.Min(rex => rex.X);
+                            dataGridView.Rows[i].Cells[3].Value = clust.Centers[(int)point.ClusterIndex].X;
+                            dataGridView.Rows[i].Cells[4].Value = clustPoints.Max(rex => rex.X);
+                            points.RemoveAll(r => r.ClusterIndex == point.ClusterIndex);
                         }
                         else
                         {
@@ -93,15 +94,15 @@ namespace DiagnosticTechnicalEngine.Forms
                     {
                         if (points.Count > 0)
                         {
-                            var point = points.First(r => r.x == points.Min(rex => rex.x));
+                            var point = points.First(r => r.X == points.Min(rex => rex.X));
                             dataGridView.Rows.Add();
-                            var clustPoints = points.Where(r => r.clusterIndex == point.clusterIndex);
+                            var clustPoints = points.Where(r => r.ClusterIndex == point.ClusterIndex);
                             dataGridView.Rows[i].Cells[0].Value = "Кластер " + (i + 1);
                             dataGridView.Rows[i].Cells[1].Value = i + 1;
-                            dataGridView.Rows[i].Cells[2].Value = clustPoints.Min(rex => rex.x);
-                            dataGridView.Rows[i].Cells[3].Value = clust.Centers[(int)point.clusterIndex].x;
-                            dataGridView.Rows[i].Cells[4].Value = clustPoints.Max(rex => rex.x);
-                            points.RemoveAll(r => r.clusterIndex == point.clusterIndex);
+                            dataGridView.Rows[i].Cells[2].Value = clustPoints.Min(rex => rex.X);
+                            dataGridView.Rows[i].Cells[3].Value = clust.Centers[(int)point.ClusterIndex].X;
+                            dataGridView.Rows[i].Cells[4].Value = clustPoints.Max(rex => rex.X);
+                            points.RemoveAll(r => r.ClusterIndex == point.ClusterIndex);
                         }
                         else
                         {

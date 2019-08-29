@@ -1,14 +1,14 @@
 ﻿using DiagnosticTechnicalEngine.Controls;
 using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Implement_Level.Implementations;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Interfaces;
+using DTE_Interface_Level.ViewModels;
 using System.Windows.Forms;
-using ServicesModule.Interfaces;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormDiagnosticTest : StandartForm<DiagnosticTestViewModel, DiagnosticTestBindingModel>
+    public class FormDiagnosticTest : StandartForm<DiagnosticTestViewModel, DiagnosticTestBindingModel>
 	{
 		#region Контролы для работы
 		private UserControlAnalysisSeries userControlAnalysisSeries;

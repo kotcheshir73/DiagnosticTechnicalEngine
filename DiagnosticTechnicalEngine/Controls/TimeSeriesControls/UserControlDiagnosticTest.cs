@@ -1,8 +1,8 @@
 ﻿using DiagnosticTechnicalEngine.Forms;
 using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Implement_Level;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Text;
 using System.Windows.Forms;

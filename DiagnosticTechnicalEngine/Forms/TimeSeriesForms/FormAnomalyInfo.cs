@@ -1,14 +1,14 @@
-﻿using DatabaseModule;
-using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+﻿using DiagnosticTechnicalEngine.StandartClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Enums;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormAnomalyInfo : StandartForm<AnomalyInfoViewModel, AnomalyInfoBindingModel>
+    public class FormAnomalyInfo : StandartForm<AnomalyInfoViewModel, AnomalyInfoBindingModel>
 	{
 		#region Контролы для работы
 		private Label labelName;

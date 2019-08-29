@@ -1,9 +1,9 @@
-﻿using ServicesModule;
+﻿using DTE_Implement_Level.Implementations;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public partial class UserControlSeriesInfo : UserControl
+    public partial class UserControlSeriesInfo : UserControl
     {
         private int _seriesId;
 

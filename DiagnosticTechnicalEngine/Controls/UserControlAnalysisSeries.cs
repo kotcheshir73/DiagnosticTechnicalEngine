@@ -1,6 +1,7 @@
-﻿using ServicesModule;
-using ServicesModule.BindingModels;
-using DatabaseModule;
+﻿using DTE_Implement_Level;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public partial class UserControlAnalysisSeries : UserControl
+    public partial class UserControlAnalysisSeries : UserControl
 	{
 		private int? _seriesId;
 

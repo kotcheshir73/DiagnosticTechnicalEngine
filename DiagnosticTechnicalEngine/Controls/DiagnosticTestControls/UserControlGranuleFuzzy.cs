@@ -1,11 +1,11 @@
 ﻿using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.ViewModels;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Controls
 {
-	public class UserControlGranuleFuzzy : StandartDiagnosticTestControl<GranuleFuzzyViewModel, GranuleFuzzyBindingModel>
+    public class UserControlGranuleFuzzy : StandartDiagnosticTestControl<GranuleFuzzyViewModel, GranuleFuzzyBindingModel>
 	{
 		protected override void InitializeComponent()
 		{

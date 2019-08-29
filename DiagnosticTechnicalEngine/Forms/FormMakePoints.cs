@@ -1,13 +1,14 @@
-﻿using ServicesModule;
-using ServicesModule.BindingModels;
-using DatabaseModule;
+﻿using DTE_Implement_Level;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Enums;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public partial class FormMakePoints : Form
+    public partial class FormMakePoints : Form
 	{
 		private int _seriesId;
 

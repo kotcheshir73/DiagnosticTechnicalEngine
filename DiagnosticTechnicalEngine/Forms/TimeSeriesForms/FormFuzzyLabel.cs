@@ -1,13 +1,14 @@
-﻿using DatabaseModule;
-using DiagnosticTechnicalEngine.StandartClasses;
-using ServicesModule.BindingModels;
-using ServicesModule.ViewModels;
+﻿using DiagnosticTechnicalEngine.StandartClasses;
+using DTE_Implement_Level.StaticClasses;
+using DTE_Interface_Level.BindingModels;
+using DTE_Interface_Level.Enums;
+using DTE_Interface_Level.ViewModels;
 using System;
 using System.Windows.Forms;
 
 namespace DiagnosticTechnicalEngine.Forms
 {
-	public class FormFuzzyLabel : StandartForm<FuzzyLabelViewModel, FuzzyLabelBindingModel>
+    public class FormFuzzyLabel : StandartForm<FuzzyLabelViewModel, FuzzyLabelBindingModel>
 	{
 		#region Контролы для работы с нечеькой меткой
 		private Label labelType;
