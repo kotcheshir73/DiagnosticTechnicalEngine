@@ -5,17 +5,15 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticTechnicalEngine", "DiagnosticTechnicalEngine\DiagnosticTechnicalEngine.csproj", "{9FE5FED7-0C8E-4EDB-876F-C2C40A9684B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseModule", "DatabaseModule\DatabaseModule.csproj", "{09A0A1CE-9CF6-4131-8E3C-332AD6A66C52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesModule", "ServicesModule\ServicesModule.csproj", "{FC94B655-93A3-455A-B5A9-3EDEA38B6760}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDiagnosticTechnicalEngine", "WebDiagnosticTechnicalEngine\WebDiagnosticTechnicalEngine.csproj", "{20DD4AB8-26A4-433E-9CED-F8700218C862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTE_Interface_Level", "DTE_Interface_Level\DTE_Interface_Level.csproj", "{78FF8D6D-43D4-429F-BF72-A2052BEA2C30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTE_Interface_Level", "DTE_Interface_Level\DTE_Interface_Level.csproj", "{78FF8D6D-43D4-429F-BF72-A2052BEA2C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTE_Implement_Level", "DTE_Implement_Level\DTE_Implement_Level.csproj", "{1ED8A96C-8FEC-41C1-8871-A61F22ABA7FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTE_Implement_Level", "DTE_Implement_Level\DTE_Implement_Level.csproj", "{1ED8A96C-8FEC-41C1-8871-A61F22ABA7FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTE_Model_Level", "DTE_Model_Level\DTE_Model_Level.csproj", "{EE169015-A062-4F9F-B8DA-4971452A8E65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTE_Model_Level", "DTE_Model_Level\DTE_Model_Level.csproj", "{EE169015-A062-4F9F-B8DA-4971452A8E65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticTechnicalEngineWebApi", "DiagnosticTechnicalEngineWebApi\DiagnosticTechnicalEngineWebApi.csproj", "{3A16D328-11E2-416E-B721-42CFAC5B6C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,14 +25,6 @@ Global
 		{9FE5FED7-0C8E-4EDB-876F-C2C40A9684B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FE5FED7-0C8E-4EDB-876F-C2C40A9684B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FE5FED7-0C8E-4EDB-876F-C2C40A9684B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09A0A1CE-9CF6-4131-8E3C-332AD6A66C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09A0A1CE-9CF6-4131-8E3C-332AD6A66C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09A0A1CE-9CF6-4131-8E3C-332AD6A66C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09A0A1CE-9CF6-4131-8E3C-332AD6A66C52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC94B655-93A3-455A-B5A9-3EDEA38B6760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC94B655-93A3-455A-B5A9-3EDEA38B6760}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC94B655-93A3-455A-B5A9-3EDEA38B6760}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC94B655-93A3-455A-B5A9-3EDEA38B6760}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20DD4AB8-26A4-433E-9CED-F8700218C862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20DD4AB8-26A4-433E-9CED-F8700218C862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20DD4AB8-26A4-433E-9CED-F8700218C862}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +41,10 @@ Global
 		{EE169015-A062-4F9F-B8DA-4971452A8E65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE169015-A062-4F9F-B8DA-4971452A8E65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE169015-A062-4F9F-B8DA-4971452A8E65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A16D328-11E2-416E-B721-42CFAC5B6C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A16D328-11E2-416E-B721-42CFAC5B6C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A16D328-11E2-416E-B721-42CFAC5B6C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A16D328-11E2-416E-B721-42CFAC5B6C32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

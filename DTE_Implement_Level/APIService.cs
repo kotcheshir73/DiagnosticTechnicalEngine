@@ -24,6 +24,16 @@ namespace DTE_Implement_Level
 
         private List<Granule> _granule;
 
+        public bool CheckSeries(SeriesDescriptionBindingModel model)
+        {
+            using (var _context = new DissertationDbContext())
+            {
+                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
+
+                return series != null;
+            }
+        }
+
         public bool InitSeries(SeriesDescriptionBindingModel model, List<APIData> list)
         {
             _points = new List<PointInfo>();
