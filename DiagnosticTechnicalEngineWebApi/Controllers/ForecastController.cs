@@ -1,8 +1,9 @@
 ﻿using DiagnosticTechnicalEngineWebApi.Models;
-using DTE_Implement_Level;
+using DTE_Implement_Level_List;
 using DTE_Interface_Level.BindingModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DiagnosticTechnicalEngineWebApi.Controllers
@@ -12,7 +13,7 @@ namespace DiagnosticTechnicalEngineWebApi.Controllers
     public class ForecastController : ControllerBase
     {
         [HttpPost]
-        public double MakeForecast([FromBody] ForecastDto model)
+        public List<double> MakeForecast([FromBody] ForecastDto model)
         {
             APIService service = new APIService();
 
@@ -22,22 +23,28 @@ namespace DiagnosticTechnicalEngineWebApi.Controllers
                 NeedForecast = model.NeedForecast
             };
 
-            if (service.CheckSeries(sdModel))
+            var res = service.InitSeries(sdModel, model.DiagnosticList.Select(x => new APIData { timestamp = x.DataSeriesDate, Value = x.DataSeriesValue }).ToList());
+            if (!res)
             {
-                service.FlushStat(sdModel);
-            }
-            else
-            {
-                var res = service.InitSeries(sdModel, model.DiagnosticList.Select(x => new APIData { timestamp = x.DataSeriesDate, Value = x.DataSeriesValue }).ToList());
-                if (!res)
-                {
-                    throw new Exception("Невозможно сформировать данные по ряду");
-                }
+                throw new Exception("Невозможно сформировать данные по ряду");
             }
 
-            var result = service.MakeForecast(sdModel, model.DiagnosticList.Select(x => new APIData { timestamp = x.DataSeriesDate, Value = x.DataSeriesValue }).ToList(), model.NotSaveStatistic);
+            var list = model.DiagnosticList.Select(x => new APIData { timestamp = x.DataSeriesDate, Value = x.DataSeriesValue }).ToList();
 
-            return result;
+            var diff = (list[list.Count - 1].timestamp - list[list.Count - 2].timestamp).Ticks;
+
+            var resultList = new List<double>();
+
+            for (int i = 0; i < model.CountPoints; ++i)
+            {
+                var result = service.MakeForecast(sdModel, list, model.NotSaveStatistic);
+
+                list.Add(new APIData { timestamp = list[list.Count - 1].timestamp.AddTicks(diff), Value = result });
+
+                resultList.Add(result);
+            }
+
+            return resultList;
         }
     }
 }

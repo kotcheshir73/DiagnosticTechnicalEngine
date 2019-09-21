@@ -23,5 +23,10 @@ namespace DiagnosticTechnicalEngineWebApi.Models
         /// Сохранение информации в бд
         /// </summary>
         public bool NotSaveStatistic { get; set; }
+
+        /// <summary>
+        /// Количество точек прогноза
+        /// </summary>
+        public int CountPoints { get; set; }
     }
 }

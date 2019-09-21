@@ -1,16 +1,15 @@
-﻿using DTE_Implement_Level.Implementations;
-using DTE_Implement_Level.StaticClasses;
+﻿using DTE_Implement_Level_List.Implementations;
+using DTE_Implement_Level_List.StaticClasses;
 using DTE_Interface_Level.BindingModels;
 using DTE_Interface_Level.Enums;
 using DTE_Interface_Level.ViewModels;
 using DTE_Model_Level.BaseClassies;
 using DTE_Model_Level.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DTE_Implement_Level
+namespace DTE_Implement_Level_List
 {
     public class APIService
     {
@@ -26,14 +25,8 @@ namespace DTE_Implement_Level
 
         public bool InitSeries(SeriesDescriptionBindingModel model, List<APIData> list)
         {
-            if(CheckSeries(model))
-            {
-                FlushStat(model);
-                return true;
-            }
-
             _points = new List<PointInfo>();
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series != null)
@@ -48,7 +41,6 @@ namespace DTE_Implement_Level
                     NeedForecast = model.NeedForecast
                 });
                 _context.SeriesDescriptions.Add(entity);
-                _context.SaveChanges();
 
                 #region Временной ряд
                 var res = CreateFuzzyLabel(list, entity.Id, model.SeriesName.Contains("-koef-"), model.SeriesName.StartsWith("stanok"));
@@ -56,143 +48,40 @@ namespace DTE_Implement_Level
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} нечеткие метки получены", model.SeriesName)
-                });
 
                 res = CreateFuzzyTrend(model.SeriesName, entity.Id);
                 if (!res)
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} нечеткие тенденции получены", model.SeriesName)
-                });
 
                 res = CreateRuleTrend(model.SeriesName, entity.Id);
                 if (!res)
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} правила для тенденций получены", model.SeriesName)
-                });
 
                 res = CreatePointTrend(model.SeriesName, entity.Id, list);
                 if (!res)
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} точки для тенденций получены", model.SeriesName)
-                });
 
                 res = GenerateSituationsByEntropy(model.SeriesName, entity.Id);
                 if (!res)
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} ситуации по энтропии получены", model.SeriesName)
-                });
 
                 res = GenerateSituationsByFuzzy(model.SeriesName, entity.Id);
                 if (!res)
                 {
                     return false;
                 }
-                _context.LogDatas.Add(new LogData
-                {
-                    DateLog = DateTime.Now,
-                    MessageLogType = "Info",
-                    MessageLogTitle = model.SeriesName,
-                    MessageLog = string.Format("{0} ситуации по нечеткости получены", model.SeriesName)
-                });
                 #endregion
             }
 
             return true;
-        }
-
-        public bool CheckSeries(SeriesDescriptionBindingModel model)
-        {
-            using (var _context = new DissertationDbContext())
-            {
-                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
-
-                return series != null;
-            }
-        }
-
-        public void FlushStat(SeriesDescriptionBindingModel model)
-        {
-            using (var _context = new DissertationDbContext())
-            {
-                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
-                if (series == null)
-                {
-                    return;
-                }
-                int seriesId = series.Id;
-                using (var trans = _context.Database.BeginTransaction())
-                {
-                    var points = _context.PointTrends.Where(x => x.SeriesDiscriptionId == seriesId && x.Count > 0).ToList();
-                    foreach (var point in points)
-                    {
-                        point.Count = 0;
-                    }
-                    _context.SaveChanges();
-
-                    var entropies = _context.StatisticsByEntropys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0).ToList();
-                    foreach (var entr in entropies)
-                    {
-                        entr.CountMeet = 0;
-                    }
-                    _context.SaveChanges();
-
-                    var fuzzies = _context.StatisticsByFuzzys.Where(x => x.SeriesDiscriptionId == seriesId && x.CountMeet > 0).ToList();
-                    foreach (var fuz in fuzzies)
-                    {
-                        fuz.CountMeet = 0;
-                    }
-                    _context.SaveChanges();
-                    trans.Commit();
-                }
-            }
-        }
-
-        public string GetSeriesUrl(SeriesDescriptionBindingModel model)
-        {
-            using (var _context = new DissertationDbContext())
-            {
-                var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
-                if (series == null)
-                {
-                    throw new Exception("Не найдена серия с таким названием");
-                }
-
-                return series.SeriesDiscription;
-            }
         }
 
         private bool CreateFuzzyLabel(List<APIData> list, int seriesId, bool setPercent = false, bool setPercent2 = false)
@@ -416,7 +305,8 @@ namespace DTE_Implement_Level
                 throw new Exception("Мало точек для прогноза");
             }
             _points = new List<PointInfo>();
-            using (var _context = new DissertationDbContext())
+
+            var _context = DissertationDbList.getInstance();
             {
                 var series = _context.SeriesDescriptions.FirstOrDefault(x => x.SeriesName == model.SeriesName);
                 if (series == null)
@@ -448,7 +338,7 @@ namespace DTE_Implement_Level
         /// <returns></returns>
         private void AddNewPoint(PointInfo point, int seriesId, bool makeDiagnostic, bool notchangestat)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 if (!point.Fux.HasValue)
                 {//вычисляем функцию принадлежности и меру энтропии по функции принадлежности
@@ -526,7 +416,7 @@ namespace DTE_Implement_Level
         /// <returns></returns>
         private StatisticsByEntropy GetStateEntropy(PointInfo point, bool notchangeStats)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 var startEntropyUX = Converter.ToLingvistUX(_points[_points.Count - 1].EntropuUX, _points[_points.Count - 1].PositionFUX);
                 var startEntropyFT = Converter.ToLingvistFT(_points[_points.Count - 1].EntropyFT);
@@ -563,7 +453,6 @@ namespace DTE_Implement_Level
                 {
                     stateEntropy.CountMeet++;
                 }
-                _context.SaveChanges();
                 return stateEntropy;
             }
         }
@@ -575,7 +464,7 @@ namespace DTE_Implement_Level
         /// <returns></returns>
         private StatisticsByFuzzy GetStateFuzzy(PointInfo point, bool notchangeStats)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 var startLabelId = _points[_points.Count - 1].FuzzyLabelId;
                 var startTrendId = _points[_points.Count - 1].FuzzyTrendId;
@@ -610,14 +499,13 @@ namespace DTE_Implement_Level
                 {
                     stateFuzzy.CountMeet++;
                 }
-                _context.SaveChanges();
                 return stateFuzzy;
             }
         }
 
         private double GetForecast(PointInfo LastPoint, PointInfo PreLastPoint, int seriesId)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 // результат - прогнозное значение
                 double result = LastPoint.Value.Value;
@@ -821,7 +709,7 @@ namespace DTE_Implement_Level
 
         private double GetForecast2(PointInfo LastPoint, PointInfo PreLastPoint, int seriesId)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 // результат - прогнозное значение
 
@@ -1036,7 +924,7 @@ namespace DTE_Implement_Level
         {
             int indexEntropy = 0;
             List<int> trends = new List<int>();
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 while (indexEntropy < entropyis.Count)
                 {
@@ -1109,7 +997,7 @@ namespace DTE_Implement_Level
             {
                 throw new Exception("Мало точек для диагностики");
             }
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 _points = new List<PointInfo>();
                 _granule = new List<Granule>();
@@ -1126,7 +1014,6 @@ namespace DTE_Implement_Level
                     Count = 0
                 };
                 _context.DiagnosticTests.Add(test);
-                _context.SaveChanges();
                 _anomalyDetected = new List<KeyValuePair<AnomalyInfo, int>>();
                 _countPoints = 0;
                 if (list != null && list.Count > 1)
@@ -1146,7 +1033,7 @@ namespace DTE_Implement_Level
                 }
 
                 List<GranuleViewModel> granuls = _context.Granules.Where(x => x.DiagnosticTestId == test.Id)
-                    .Include(x => x.FuzzyLabel).Include(x => x.FuzzyTrend)
+                    //.Include(x => x.FuzzyLabel).Include(x => x.FuzzyTrend)
                     .Select(ModelConvector.ToGranule).ToList();
 
                 return granuls;
@@ -1167,7 +1054,7 @@ namespace DTE_Implement_Level
 
         private void AnomalyDetectedByElem(BaseClassStatisticBy statistic, TypeSituation type, int diagnosticTestId)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 if (_anomalyDetected.Count > 0)
                 {//проверить уже имеющиеся аномалии
@@ -1201,7 +1088,6 @@ namespace DTE_Implement_Level
                                     Description = message,
                                     AnomalyInfoId = anomalyId
                                 });
-                                _context.SaveChanges();
 
                                 if (AnalysAnomaly(_anomalyDetected[i].Key))
                                 {//аномалия встречается слишком часто, удаляем ее
@@ -1212,7 +1098,6 @@ namespace DTE_Implement_Level
                                 {
                                     _anomalyDetected.RemoveAt(i);
                                 }
-                                _context.SaveChanges();
                                 return;
                             }
                         }
@@ -1257,7 +1142,7 @@ namespace DTE_Implement_Level
 
         private void CheckNewStateByElem(BaseClassStatisticBy statistic, TypeSituation type, PointInfo point)
         {
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 if ((((double)statistic.CountMeet) / _countPoints) * 100 < 1)
                 {//новая аномалия
@@ -1329,7 +1214,6 @@ namespace DTE_Implement_Level
                                     typeString, setSituations, probability);
                             //_evMessage(message);
 
-                            _context.SaveChanges();
 
                             _context.DiagnosticTestRecords.Add(new DiagnosticTestRecord
                             {
@@ -1338,7 +1222,6 @@ namespace DTE_Implement_Level
                                 Description = message,
                                 AnomalyInfoId = anomaly.Id
                             });
-                            _context.SaveChanges();
 
                         }
                     }
@@ -1349,7 +1232,7 @@ namespace DTE_Implement_Level
 
         private bool AnalysAnomaly(AnomalyInfo anomaly)
         {//список самых вероятных исходов
-            using (var _context = new DissertationDbContext())
+            var _context = DissertationDbList.getInstance();
             {
                 if (anomaly.TypeSituation == TypeSituation.ПоЭнтропии)
                 {//
@@ -1456,8 +1339,7 @@ namespace DTE_Implement_Level
 
         private void SaveGranules()
         {
-            using (var _context = new DissertationDbContext())
-            using (var transaction = _context.Database.BeginTransaction())
+            var _context = DissertationDbList.getInstance();
             {
                 if (_granule != null)
                 {
@@ -1475,10 +1357,8 @@ namespace DTE_Implement_Level
                             FuzzyTrendId = gr.FuzzyTrendId,
                             Count = gr.Count
                         });
-                        _context.SaveChanges();
                     }
                 }
-                transaction.Commit();
             }
         }
     }
