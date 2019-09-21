@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DTE_Implement_Level\DTE_Implement_Level.csproj" />
+    <ProjectReference Include="..\DTE_Implement_Level_List\DTE_Implement_Level_List.csproj" />
   </ItemGroup>
 
 </Project>
